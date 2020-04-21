@@ -4,16 +4,16 @@
  * ProductListFromCategory - Products list based on the category
  */
 
-import React from 'react';
-import styles from './styles';
-import Login from '../LoginScreen';
-import Modal from 'react-native-modal';
-import Constants from '../../config/constants';
-import HudView from '../../components/hudView';
-import commonStyles from '../../config/commonStyles';
-import {translate} from '../../config/languageSwitching';
-import ProductCell from '../../components/productCell';
-import {TabBar, TabView, SceneMap} from 'react-native-tab-view';
+import React from "react";
+import styles from "./styles";
+import Login from "../LoginScreen";
+import Modal from "react-native-modal";
+import Constants from "../../config/constants";
+import HudView from "../../components/hudView";
+import commonStyles from "../../config/commonStyles";
+import { translate } from "../../config/languageSwitching";
+import ProductCell from "../../components/productCell";
+import { TabBar, TabView, SceneMap } from "react-native-tab-view";
 import {
   Text,
   View,
@@ -22,40 +22,45 @@ import {
   Dimensions,
   FlatList,
   ActivityIndicator,
-} from 'react-native';
+} from "react-native";
 import {
   normalizedHeight,
   normalizedWidth,
   showSimpleSnackbar,
   showAlertWithCallback,
-} from '../../config/common';
-import {RecyclerListView, DataProvider, LayoutProvider} from 'recyclerlistview';
-import NavigationHeader2 from '../../components/NavigationHeaders/NavigationHeader2';
-import EmptyDataPlaceholder from '../../components/emptyDataPlaceholder';
-import Images from '../../config/images';
-import NetInfo from '@react-native-community/netinfo';
-import ContextHelper from '../../lib/ContextHelper';
+} from "../../config/common";
+import {
+  RecyclerListView,
+  DataProvider,
+  LayoutProvider,
+} from "recyclerlistview";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
+import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import Images from "../../config/images";
+import NetInfo from "@react-native-community/netinfo";
+import ContextHelper from "../../lib/ContextHelper";
 
-const renderTabBar = props => (
+const renderTabBar = (props) => (
   <TabBar
     {...props}
     scrollEnabled
-    indicatorStyle={{backgroundColor: 'rgb(167,106,28)'}}
-    style={{backgroundColor: Constants.APP_WHITE_COLOR, height: 42}}
-    renderLabel={({route, focused, color}) => (
+    indicatorStyle={{ backgroundColor: "rgb(167,106,28)" }}
+    style={{ backgroundColor: Constants.APP_WHITE_COLOR, height: 42 }}
+    renderLabel={({ route, focused, color }) => (
       <Text
         style={{
           color: Constants.APP_BLACK_COLOR,
           fontSize: Constants.Fonts.REGULAR,
           fontSize: 13,
-        }}>
+        }}
+      >
         {route.title}
       </Text>
     )}
   />
 );
 
-const initialLayout = {width: Constants.SCREEN_WIDTH};
+const initialLayout = { width: Constants.SCREEN_WIDTH };
 
 const ViewTypes = {
   FULL: 0,
@@ -71,19 +76,19 @@ class ProductListFromCategory extends React.Component {
   constructor(args) {
     super(args);
     this._layoutProvider = new LayoutProvider(
-      index => {
+      (index) => {
         return ViewTypes.FULL;
       },
       (type, dim) => {
         dim.width = (Constants.SCREEN_WIDTH - 41) / 2; //width / 2.01;
         dim.height = normalizedHeight(420);
-      },
+      }
     );
 
-    const {subCategories} = this.props.navigation.state.params;
+    const { subCategories } = this.props.navigation.state.params;
     let routsArray = [];
-    subCategories.map(item => {
-      let dict = {key: item.id, title: item.name};
+    subCategories.map((item) => {
+      let dict = { key: item.id, title: item.name };
       routsArray.push(dict);
     });
 
@@ -100,7 +105,7 @@ class ProductListFromCategory extends React.Component {
       routes: routsArray,
       filterParams: {},
       wishlistItems: [],
-      parent_id: subCategories.length > 0 ? subCategories[0].id : '',
+      parent_id: subCategories.length > 0 ? subCategories[0].id : "",
       pageIndexCategory1: 0,
       pageIndexCategory2: 0,
       pageIndexCategory3: 0,
@@ -146,7 +151,7 @@ class ProductListFromCategory extends React.Component {
       isAPICalledCategory10: false,
     };
 
-    this._parentContextProvider = new ContextHelper('PARENT');
+    this._parentContextProvider = new ContextHelper("PARENT");
   }
 
   _generateArray(n) {
@@ -159,21 +164,21 @@ class ProductListFromCategory extends React.Component {
   }
 
   componentDidMount() {
-    const {isHandset, orientation} = this.props;
+    const { isHandset, orientation } = this.props;
 
     const selectedSubCategoryIndex = this.props.navigation.state.params
       .selectedSubCategoryIndex
       ? this.props.navigation.state.params.selectedSubCategoryIndex
       : 0;
 
-    if (!isHandset && orientation === 'LANDSCAPE') {
-      this.setState({index: 0});
+    if (!isHandset && orientation === "LANDSCAPE") {
+      this.setState({ index: 0 });
       setTimeout(() => {
-        this.setState({index: selectedSubCategoryIndex});
+        this.setState({ index: selectedSubCategoryIndex });
       }, 1000);
 
       setTimeout(() => {
-        this.unsubscribe = NetInfo.addEventListener(state => {
+        this.unsubscribe = NetInfo.addEventListener((state) => {
           let networkStatus = state.isConnected;
           if (networkStatus) {
             this._onIndexChange(this.state.index, true);
@@ -181,8 +186,8 @@ class ProductListFromCategory extends React.Component {
         });
       }, 1500);
     } else {
-      this.setState({index: selectedSubCategoryIndex}, () => {
-        this.unsubscribe = NetInfo.addEventListener(state => {
+      this.setState({ index: selectedSubCategoryIndex }, () => {
+        this.unsubscribe = NetInfo.addEventListener((state) => {
           let networkStatus = state.isConnected;
           if (networkStatus) {
             this._onIndexChange(this.state.index, true);
@@ -191,12 +196,12 @@ class ProductListFromCategory extends React.Component {
       });
     }
 
-    const {wishList} = this.props;
+    const { wishList } = this.props;
     let mArray = [];
-    wishList.map(item => {
+    wishList.map((item) => {
       mArray.push(item.productId);
     });
-    this.setState({wishlistItems: mArray});
+    this.setState({ wishlistItems: mArray });
   }
 
   _didTapOnBackButton = () => {
@@ -205,20 +210,20 @@ class ProductListFromCategory extends React.Component {
   };
 
   _didTapOnSearch = () => {
-    this.props.navigation.navigate('Search');
+    this.props.navigation.navigate("Search");
   };
 
   _didTapOnCart = () => {
-    this.props.navigation.navigate('Cart');
+    this.props.navigation.navigate("Cart");
   };
 
   _didTapOnFilter = () => {
-    const {routes, index} = this.state;
+    const { routes, index } = this.state;
     let categoryId = routes[index].key;
 
-    console.log('FILTER DAT ===', categoryId);
+    console.log("FILTER DAT ===", categoryId);
 
-    this.props.navigation.navigate('FilterScreen', {
+    this.props.navigation.navigate("FilterScreen", {
       didTapOnApplyFilter: this.didTapOnApplyFilter,
       category_id: categoryId,
     });
@@ -229,7 +234,7 @@ class ProductListFromCategory extends React.Component {
     // });
   };
 
-  didTapOnApplyFilter = params => {
+  didTapOnApplyFilter = (params) => {
     this.props.clearCategoryProducts();
     this.setState(
       {
@@ -278,17 +283,17 @@ class ProductListFromCategory extends React.Component {
         isAPICalledCategory9: false,
         isAPICalledCategory10: false,
       },
-      () => this._onIndexChange(this.state.index, true),
+      () => this._onIndexChange(this.state.index, true)
     );
   };
 
-  _loadMoreProductsInCategory = indexVal => {
-    const {routes, filterParams} = this.state;
+  _loadMoreProductsInCategory = (indexVal) => {
+    const { routes, filterParams } = this.state;
     let categoryId = routes[indexVal].key;
     let index = indexVal + 1;
-    let pageIndex = this.state['pageIndexCategory' + index];
-    let isAPILoading = this.state['isAPILoadingCategory' + index];
-    let isLoadMore = this.state['isLoadMoreCategory' + index];
+    let pageIndex = this.state["pageIndexCategory" + index];
+    let isAPILoading = this.state["isAPILoadingCategory" + index];
+    let isLoadMore = this.state["isLoadMoreCategory" + index];
 
     if (isAPILoading) return;
 
@@ -297,59 +302,61 @@ class ProductListFromCategory extends React.Component {
     this.props.getCategoryProductsList(
       pageIndex + 1,
       Constants.PRODUCTS_PAGE_COUNT,
-      'categoryType' + index,
+      "categoryType" + index,
       categoryId,
       filterParams,
       (status, isLoadMore) => {
         this._getCategoryProductsListCallback(status, index, isLoadMore);
-      },
+      }
     );
 
     let dict = {};
-    dict['isAPILoadingCategory' + index] = true;
+    dict["isAPILoadingCategory" + index] = true;
     this.setState(dict);
   };
 
   _getCategoryProductsListCallback = (status, index, isLoadMore) => {
     let dict = {};
-    let pageIndex = this.state['pageIndexCategory' + index];
+    let pageIndex = this.state["pageIndexCategory" + index];
     let newIndex = pageIndex + 1;
-    dict['pageIndexCategory' + index] = newIndex;
-    dict['isAPILoadingCategory' + index] = false;
-    dict['isLoadMoreCategory' + index] = isLoadMore;
-    dict['isAPICalledCategory' + index] = true;
+    dict["pageIndexCategory" + index] = newIndex;
+    dict["isAPILoadingCategory" + index] = false;
+    dict["isLoadMoreCategory" + index] = isLoadMore;
+    dict["isAPICalledCategory" + index] = true;
     this.setState(dict);
   };
 
-  addToWishlistState = productId => {
-    this.setState(prevState => ({
+  addToWishlistState = (productId) => {
+    this.setState((prevState) => ({
       wishlistItems: [...prevState.wishlistItems, productId],
     }));
   };
 
-  removeFromWishlistState = productId => {
-    this.setState(prevState => ({
-      wishlistItems: prevState.wishlistItems.filter(item => item !== productId),
+  removeFromWishlistState = (productId) => {
+    this.setState((prevState) => ({
+      wishlistItems: prevState.wishlistItems.filter(
+        (item) => item !== productId
+      ),
     }));
   };
 
   _didTapOnLikeButton = (isLiked, data) => {
-    const {onDislikeTap, onLikeTap, userToken} = this.props;
+    const { onDislikeTap, onLikeTap, userToken } = this.props;
     if (userToken.length > 0) {
       if (isLiked) {
         this.removeFromWishlistState(data.entity_id);
-        onDislikeTap(data.entity_id, status => {
+        onDislikeTap(data.entity_id, (status) => {
           if (status) {
-            showSimpleSnackbar(translate('Item removed from wishlist'));
+            showSimpleSnackbar(translate("Item removed from wishlist"));
           } else {
             this.addToWishlistState(data.entity_id);
           }
         });
       } else {
         this.addToWishlistState(data.entity_id);
-        onLikeTap(data.entity_id, status => {
+        onLikeTap(data.entity_id, (status) => {
           if (status) {
-            showSimpleSnackbar(translate('Item added to wishlist'));
+            showSimpleSnackbar(translate("Item added to wishlist"));
           } else {
             this.removeFromWishlistState(data.entity_id);
           }
@@ -357,19 +364,19 @@ class ProductListFromCategory extends React.Component {
       }
     } else {
       showAlertWithCallback(
-        translate('user_not_login'),
-        translate('Login'),
-        translate('Cancel'),
+        translate("user_not_login"),
+        translate("Login"),
+        translate("Cancel"),
         () => {
-          this.setState({isLoginViewShow: true});
+          this.setState({ isLoginViewShow: true });
         },
-        null,
+        null
       );
     }
   };
 
-  _renderScene = ({route}) => {
-    const {routes, wishlistItems} = this.state;
+  _renderScene = ({ route }) => {
+    const { routes, wishlistItems } = this.state;
     const {
       // screenWidth,
       currency,
@@ -377,11 +384,11 @@ class ProductListFromCategory extends React.Component {
       selectedFilters,
     } = this.props;
 
-    let screenWidth = Dimensions.get('window').width;
+    let screenWidth = Dimensions.get("window").width;
 
-    const index = routes.findIndex(obj => obj.key === route.key);
+    const index = routes.findIndex((obj) => obj.key === route.key);
     let indexVal = index + 1;
-    let isShowBottomLoader = this.state['isAPILoadingCategory' + indexVal];
+    let isShowBottomLoader = this.state["isAPILoadingCategory" + indexVal];
 
     const {
       productsListOnCategory1,
@@ -458,8 +465,8 @@ class ProductListFromCategory extends React.Component {
         // </View>
 
         <EmptyDataPlaceholder
-          titleText={translate('No matching product found')}
-          descriptionText={'Lorem Ipsum is simply dummy text of the printing'}
+          titleText={translate("No matching product found")}
+          descriptionText={"Lorem Ipsum is simply dummy text of the printing"}
           placeHolderImage={Images.emptyFilterResult}
         />
       );
@@ -467,8 +474,8 @@ class ProductListFromCategory extends React.Component {
     if (isDataEmpty && !isLoadingProductList) {
       return (
         <EmptyDataPlaceholder
-          titleText={translate('No product found')}
-          descriptionText={'Lorem Ipsum is simply dummy text of the printing'}
+          titleText={translate("No product found")}
+          descriptionText={"Lorem Ipsum is simply dummy text of the printing"}
           placeHolderImage={Images.noProductFoundPlaceholder}
         />
       );
@@ -479,22 +486,22 @@ class ProductListFromCategory extends React.Component {
     }
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <RecyclerListView
           style={{
-            paddingTop: 20,
+            // paddingTop: 20,
             paddingHorizontal: 14,
             backgroundColor: Constants.APP_GRAY_COLOR2,
           }}
           layoutProvider={
             new LayoutProvider(
-              index => {
+              (index) => {
                 return ViewTypes.FULL;
               },
               (type, dim) => {
                 dim.width = cellWidth; //(Constants.SCREEN_WIDTH - 41) / 2; //width / 2.01;
                 dim.height = normalizedHeight(400);
-              },
+              }
             )
           }
           contextProvider={this._parentContextProvider}
@@ -514,11 +521,11 @@ class ProductListFromCategory extends React.Component {
                 numOfColumns={numOfColums}
                 currency={currency}
                 likeActive={likeValue}
-                didTapOnLikeButton={value => {
+                didTapOnLikeButton={(value) => {
                   this._didTapOnLikeButton(value, data);
                 }}
-                didSelectAdd={item =>
-                  this.props.navigation.navigate('ProductDetail', {
+                didSelectAdd={(item) =>
+                  this.props.navigation.navigate("ProductDetail", {
                     sku: item.sku,
                   })
                 }
@@ -563,11 +570,12 @@ class ProductListFromCategory extends React.Component {
         {isShowBottomLoader && (
           <View
             style={{
-              width: '100%',
+              width: "100%",
               height: 50,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <ActivityIndicator />
           </View>
         )}
@@ -576,15 +584,15 @@ class ProductListFromCategory extends React.Component {
   };
 
   _onIndexChange = (index, isFromFilterApply) => {
-    const {routes} = this.state;
+    const { routes } = this.state;
 
     let filterParams = this.state.filterParams;
     if (!isFromFilterApply) {
       this.props.clearFilters();
-      this.setState({filterParams: {}});
+      this.setState({ filterParams: {} });
       filterParams = {};
     }
-    this.setState({setIndex: index, index: index});
+    this.setState({ setIndex: index, index: index });
 
     let categoryId = routes[index].key;
 
@@ -594,16 +602,16 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType1',
+            "categoryType1",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
       case 1:
@@ -611,16 +619,16 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType2',
+            "categoryType2",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
       case 2:
@@ -628,16 +636,16 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType3',
+            "categoryType3",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
       case 3:
@@ -645,16 +653,16 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType4',
+            "categoryType4",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
       case 4:
@@ -662,16 +670,16 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType5',
+            "categoryType5",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
       case 5:
@@ -679,16 +687,16 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType6',
+            "categoryType6",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
       case 6:
@@ -696,16 +704,16 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType7',
+            "categoryType7",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
       case 7:
@@ -713,12 +721,12 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType8',
+            "categoryType8",
             categoryId,
             filterParams,
-            status => {
+            (status) => {
               this._getCategoryProductsListCallback(status, index + 1);
-            },
+            }
           );
         break;
       case 8:
@@ -726,16 +734,16 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType9',
+            "categoryType9",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
       case 9:
@@ -743,32 +751,32 @@ class ProductListFromCategory extends React.Component {
           this.props.getCategoryProductsList(
             0,
             Constants.PRODUCTS_PAGE_COUNT,
-            'categoryType10',
+            "categoryType10",
             categoryId,
             filterParams,
             (status, isLoadMore) => {
               this._getCategoryProductsListCallback(
                 status,
                 index + 1,
-                isLoadMore,
+                isLoadMore
               );
-            },
+            }
           );
         break;
     }
   };
 
   render() {
-    const {index, routes, setIndex, parent_id, isLoginViewShow} = this.state;
+    const { index, routes, setIndex, parent_id, isLoginViewShow } = this.state;
     const {
       isRTL,
       isLoadingProductList,
       cartArray,
       selectedFilters,
     } = this.props;
-    const {categoryName} = this.props.navigation.state.params;
+    const { categoryName } = this.props.navigation.state.params;
 
-    let isAPICalled = this.state['isAPICalledCategory' + (index + 1)];
+    let isAPICalled = this.state["isAPICalledCategory" + (index + 1)];
 
     return (
       <SafeAreaView style={styles.safeContainer}>
@@ -783,7 +791,7 @@ class ProductListFromCategory extends React.Component {
           didTapOnSearch={this._didTapOnSearch}
           didTapOnCart={this._didTapOnCart}
           showBackButton={true}
-          showFilter={parent_id === '' ? false : true}
+          showFilter={parent_id === "" ? false : true}
           didTapOnBackButton={this._didTapOnBackButton}
           didTapOnFilter={this._didTapOnFilter}
           hideBottomLine={true}
@@ -792,29 +800,30 @@ class ProductListFromCategory extends React.Component {
           cartItemsCount={cartArray.length}
           isFilterApplied={selectedFilters}
         />
-        <View style={{flex: 1, backgroundColor: Constants.APP_GRAY_COLOR2}}>
+        <View style={{ flex: 1, backgroundColor: Constants.APP_GRAY_COLOR2 }}>
           {routes.length > 0 ? (
             <TabView
-              navigationState={{index, routes}}
+              navigationState={{ index, routes }}
               renderScene={this._renderScene}
-              onIndexChange={index => this._onIndexChange(index, false)}
+              onIndexChange={(index) => this._onIndexChange(index, false)}
               initialLayout={initialLayout}
               renderTabBar={renderTabBar}
             />
           ) : (
             <View style={commonStyles.noDataFoundContainer}>
               <Text style={commonStyles.noDataFoundText}>
-                {translate('No products found')}
+                {translate("No products found")}
               </Text>
             </View>
           )}
         </View>
         <Modal
-          onBackButtonPress={() => this.setState({isLoginViewShow: false})}
-          isVisible={isLoginViewShow}>
-          <View style={{flex: 1}}>
+          onBackButtonPress={() => this.setState({ isLoginViewShow: false })}
+          isVisible={isLoginViewShow}
+        >
+          <View style={{ flex: 1 }}>
             <Login
-              didTapOnclose={() => this.setState({isLoginViewShow: false})}
+              didTapOnclose={() => this.setState({ isLoginViewShow: false })}
             />
           </View>
         </Modal>

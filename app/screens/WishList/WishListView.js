@@ -12,27 +12,31 @@ import {
   TouchableOpacity,
   StatusBar,
   ActivityIndicator,
-} from 'react-native';
-import styles from './styles';
-import Login from '../LoginScreen';
-import Modal from 'react-native-modal';
-import React, {Component} from 'react';
-import Images from '../../config/images';
-import Constants from '../../config/constants';
-import HudView from '../../components/hudView';
-import ProductCell from '../../components/productCell';
-import {translate} from '../../config/languageSwitching/index';
-import EmptyDataPlaceholder from '../../components/emptyDataPlaceholder';
-import {RecyclerListView, DataProvider, LayoutProvider} from 'recyclerlistview';
-import NavigationHeader2 from '../../components/NavigationHeaders/NavigationHeader2';
+} from "react-native";
+import styles from "./styles";
+import Login from "../LoginScreen";
+import Modal from "react-native-modal";
+import React, { Component } from "react";
+import Images from "../../config/images";
+import Constants from "../../config/constants";
+import HudView from "../../components/hudView";
+import ProductCell from "../../components/productCell";
+import { translate } from "../../config/languageSwitching/index";
+import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import {
+  RecyclerListView,
+  DataProvider,
+  LayoutProvider,
+} from "recyclerlistview";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 import {
   normalizedHeight,
   normalizedWidth,
   showSimpleSnackbar,
   showAlertWithCallback,
-} from '../../config/common';
+} from "../../config/common";
 // import {FlatGrid} from 'react-native-super-grid';
-import Orientation from 'react-native-orientation';
+import Orientation from "react-native-orientation";
 
 const ViewTypes = {
   FULL: 0,
@@ -53,13 +57,13 @@ class WishListView extends Component {
     });
 
     this._layoutProvider = new LayoutProvider(
-      index => {
+      (index) => {
         return ViewTypes.FULL;
       },
       (type, dim) => {
         dim.width = (props.screenWidth - 40) / 3; //(Constants.SCREEN_WIDTH - 41) / 2; //width / 2.01;
         dim.height = 380; //normalizedHeight(420);
-      },
+      }
     );
 
     // const {wishList} = this.props;
@@ -153,31 +157,31 @@ class WishListView extends Component {
   // };
 
   _didTapOnSearch = () => {
-    this.props.navigation.navigate('Search');
+    this.props.navigation.navigate("Search");
   };
 
   _didTapOnCart = () => {
-    this.props.navigation.navigate('Cart');
+    this.props.navigation.navigate("Cart");
   };
 
-  _removeCallback = status => {
+  _removeCallback = (status) => {
     if (status) {
-      showSimpleSnackbar(translate('Item removed from wishlist'));
+      showSimpleSnackbar(translate("Item removed from wishlist"));
     }
   };
 
-  onRemoveCalled = productId => {
+  onRemoveCalled = (productId) => {
     showAlertWithCallback(
-      translate('remove from wishlist?'),
-      translate('Yes'),
-      translate('No'),
+      translate("remove from wishlist?"),
+      translate("Yes"),
+      translate("No"),
       () => this.props.onRemoveTap(productId, this._removeCallback),
-      null,
+      null
     );
   };
 
   render() {
-    const {isShowBottomLoader, isLoginViewShow} = this.state;
+    const { isShowBottomLoader, isLoginViewShow } = this.state;
     const {
       selectedLanguage,
       screenWidth,
@@ -199,22 +203,24 @@ class WishListView extends Component {
       if (wishList && wishList.length > 0) {
         // show wishlist
         subComponent = (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.titleStyle}>{translate("Wishlist")}</Text>
             <RecyclerListView
               style={{
-                paddingTop: 20,
+                // paddingTop: 20,
                 paddingHorizontal: 14,
-                backgroundColor: Constants.APP_GRAY_COLOR2,
+                backgroundColor: Constants.APP_WHITE_COLOR,
+                // height: normalizedHeight(1000),
               }}
               layoutProvider={
                 new LayoutProvider(
-                  index => {
+                  (index) => {
                     return ViewTypes.FULL;
                   },
                   (type, dim) => {
                     dim.width = cellWidth; //(Constants.SCREEN_WIDTH - 41) / 2; //width / 2.01;
                     dim.height = normalizedHeight(400);
-                  },
+                  }
                 )
               }
               //dataProvider={this.state.dataProvider}
@@ -234,8 +240,8 @@ class WishListView extends Component {
                     didTapOnLikeButton={() => {
                       this.onRemoveCalled(data.productId);
                     }}
-                    didSelectAdd={item =>
-                      this.props.navigation.navigate('ProductDetail', {
+                    didSelectAdd={(item) =>
+                      this.props.navigation.navigate("ProductDetail", {
                         sku: item.sku,
                       })
                     }
@@ -250,8 +256,8 @@ class WishListView extends Component {
         // no wishlist
         subComponent = (
           <EmptyDataPlaceholder
-            titleText={translate('Your wishlist is empty')}
-            descriptionText={translate('wish_list_empty_placeholder')}
+            titleText={translate("Your wishlist is empty")}
+            descriptionText={translate("wish_list_empty_placeholder")}
             placeHolderImage={Images.noWishlist}
           />
         );
@@ -259,22 +265,23 @@ class WishListView extends Component {
     } else {
       // show login
       subComponent = (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <EmptyDataPlaceholder
-            titleText={translate('wishlist not found')}
-            descriptionText={''}
+            titleText={translate("wishlist not found")}
+            descriptionText={""}
             placeHolderImage={Images.noWishlist}
           />
           <View style={styles.bottomContainer}>
             <Text style={styles.loginContentText}>
-              {translate('Login below to see your wishlist')}
+              {translate("Login below to see your wishlist")}
             </Text>
             <TouchableOpacity
               onPress={() => {
-                this.setState({isLoginViewShow: true});
+                this.setState({ isLoginViewShow: true });
               }}
-              style={styles.buttonLogin}>
-              <Text style={styles.socialName}>{translate('Login')}</Text>
+              style={styles.buttonLogin}
+            >
+              <Text style={styles.socialName}>{translate("Login")}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -284,18 +291,19 @@ class WishListView extends Component {
     return (
       <SafeAreaView style={styles.safeContainer}>
         <StatusBar
-          barStyle="light-content"
+          // barStyle="light-content"
           hidden={false}
-          backgroundColor={Constants.APP_BLACK_COLOR}
+          backgroundColor={Constants.APP_WHITE_COLOR}
           // translucent={true}
         />
-        <View style={{flex: 1, backgroundColor: Constants.APP_GRAY_COLOR2}}>
+        <View style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}>
           <NavigationHeader2
-            title={translate('WishList')}
+            hideSearch
+            // title={translate("WishList")}
             didTapOnSearch={this._didTapOnSearch}
             didTapOnCart={this._didTapOnCart}
             isShowFlag={false}
-            isDark={true}
+            isDark={false}
             showCart={true}
             cartItemsCount={cartArray.length}
           />
@@ -334,11 +342,12 @@ class WishListView extends Component {
           )} */}
         </View>
         <Modal
-          onBackButtonPress={() => this.setState({isLoginViewShow: false})}
-          isVisible={isLoginViewShow}>
-          <View style={{flex: 1}}>
+          onBackButtonPress={() => this.setState({ isLoginViewShow: false })}
+          isVisible={isLoginViewShow}
+        >
+          <View style={{ flex: 1 }}>
             <Login
-              didTapOnclose={() => this.setState({isLoginViewShow: false})}
+              didTapOnclose={() => this.setState({ isLoginViewShow: false })}
             />
           </View>
         </Modal>

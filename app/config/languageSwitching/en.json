@@ -21,7 +21,7 @@
   "Apple": "Apple",
   "Home": "HOME",
   "Categories": "CATEGORIES",
-  "Wishlist": "WISHLIST",
+  "Wishlist": "WishList",
   "My Account": "My Account",
   "Account": "Account",
   "New Arrival": "New Arrival",
@@ -201,5 +201,8 @@
   "products maximum count exceeds2": ", one or more product's quantity exceeds the limit.",
   "cart count exceeds1": "The allowable limit of cart is ",
   "cart count exceeds2": ", now your cart is exceeds the limit",
-  "Product maximum count is": "Product maximum count is"
+  "Product maximum count is": "Product maximum count is",
+
+  "NEW COLLECTIONS": "New Collections",
+  "BEST SELLING": "Best Selling"
 }

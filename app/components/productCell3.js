@@ -13,7 +13,7 @@ import { translate } from "../config/languageSwitching/index";
 
 import ImageLoader from "react-native-image-progress";
 
-const ProductCell = React.memo(
+const ProductCell3 = React.memo(
   ({
     data,
     index,
@@ -24,14 +24,9 @@ const ProductCell = React.memo(
     currency,
     likeActive,
   }) => {
-    // console.log('ITEM', data);
-    // console.log('INDEX', index);
-
-    console.log("---------", data);
-
-    let imageUrl = Constants.APP_BASE_URL + "/pub/media/" + data.image;
-    let actualPrice = data.price;
-    let finalPrice = data.finalPrice;
+    let imageUrl = Constants.APP_BASE_URL + "/pub/media/" + data.thumbnail;
+    let actualPrice = parseFloat(data.price);
+    let finalPrice = data.final_price;
     let itemWidth = Constants.IS_ANDROID
       ? (screenWidth - 32) / numOfColumns
       : (screenWidth - 38) / numOfColumns; //32
@@ -41,13 +36,11 @@ const ProductCell = React.memo(
 
     return (
       <TouchableOpacity
-        // key={index}
         activeOpacity={Constants.ACTIVE_OPACITY}
         style={{
-          // marginTop: index == 0 || index == 1 ? 15 : 0,
-          // width: (Constants.SCREEN_WIDTH - 40) / 4,
-          padding: 5,
-          height: normalizedHeight(400),
+          marginLeft: index == 0 ? 15 : 5,
+          margin: 5,
+          // height: normalizedHeight(280),
         }}
         onPress={() => {
           didSelectAdd(data);
@@ -59,8 +52,7 @@ const ProductCell = React.memo(
             borderWidth: 0.5,
             borderColor: Constants.APP_GRAY_COLOR,
             borderRadius: 5,
-            height: normalizedHeight(380),
-            // height: 300,
+            height: normalizedHeight(260),
           }}
         >
           <View style={{ overflow: "hidden" }}>
@@ -70,7 +62,8 @@ const ProductCell = React.memo(
               // defaultSource={Images.placeHolderProduct}
               style={{
                 // width: 100, //(screenWidth - 32) / numOfColumns, //(Constants.SCREEN_WIDTH - 50) / 2,
-                height: normalizedHeight(300),
+                height: normalizedHeight(150),
+                marginTop: 20,
               }}
             />
 
@@ -91,14 +84,14 @@ const ProductCell = React.memo(
                 </View>
               </View>
             )} */}
-            {!data.is_in_stock && (
+            {/* {!data.is_in_stock && (
               <View style={[styles.overlay, { width: itemWidth - 4 }]} />
             )}
             {!data.is_in_stock && (
               <Text style={styles.outOfStockText}>
                 {translate("Out of stock")}
               </Text>
-            )}
+            )} */}
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -110,13 +103,9 @@ const ProductCell = React.memo(
               source={Images.likeImage}
               resizeMode={"contain"}
               style={{
-                width: 20,
-                height: 20,
-                tintColor: likeActive
-                  ? data.is_in_stock
-                    ? Constants.APP_THEME_COLOR2
-                    : "rgba(203,39,100, 0.5)"
-                  : null,
+                width: 15,
+                height: 15,
+                tintColor: likeActive ? Constants.APP_THEME_COLOR2 : null,
               }}
             />
           </TouchableOpacity>
@@ -130,31 +119,9 @@ const ProductCell = React.memo(
               flex: 1,
             }}
           >
-            <Text
-              style={[
-                styles.productName,
-                {
-                  color: data.is_in_stock
-                    ? Constants.APP_BLACK_COLOR
-                    : "rgba(0,0,0,0.4)",
-                },
-              ]}
-            >
-              {data.name}
-            </Text>
+            <Text style={[styles.productName]}>{data.name}</Text>
             <View style={{ flexDirection: "row", marginTop: 5 }}>
-              <Text
-                style={[
-                  styles.cost,
-                  {
-                    color: data.is_in_stock
-                      ? Constants.APP_THEME_COLOR
-                      : "rgba(203,39,100,0.4)",
-                  },
-                ]}
-              >
-                {data.finalPrice + " " + currency}
-              </Text>
+              <Text style={[styles.cost]}>{finalPrice + " " + currency}</Text>
               {actualPrice !== finalPrice && (
                 <Text style={styles.offerText}>
                   {actualPrice + " " + currency}
@@ -221,8 +188,8 @@ const styles = StyleSheet.create({
   },
   cost: {
     fontFamily: Constants.Fonts.REGULAR,
-    fontSize: 14,
-    color: Constants.APP_THEME_COLOR2,
+    fontSize: 12,
+    color: Constants.APP_THEME_COLOR,
     flex: 1,
     marginStart: 3,
     textAlign: "left",
@@ -285,4 +252,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductCell;
+export default ProductCell3;
