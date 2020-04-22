@@ -198,8 +198,9 @@ class NavigationHeader1 extends Component {
             >
               <Text
                 style={{
-                  color: Constants.APP_GREY_TEXT_COLOR,
+                  color: Constants.APP_THEME_COLOR,
                   fontFamily: Constants.Fonts.REGULAR,
+                  fontSize: 12,
                 }}
               >
                 RESET

@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect, memo} from 'react';
+import React, { Component, useState, useEffect, memo } from "react";
 import {
   SafeAreaView,
   TextInput,
@@ -8,21 +8,22 @@ import {
   FlatList,
   Dimensions,
   Image,
+  ImageBackground,
   TouchableOpacity,
-} from 'react-native';
-import Constants from '../../config/constants';
-import Images from '../../config/images';
-import HudView from '../../components/hudView';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Styles from './style';
-import NavigationHeader2 from '../../components/NavigationHeaders/NavigationHeader2';
-import {translate} from '../../config/languageSwitching/index';
-import {showSingleAlert} from '../../config/common';
-const {width} = Dimensions.get('window');
+} from "react-native";
+import Constants from "../../config/constants";
+import Images from "../../config/images";
+import HudView from "../../components/hudView";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import Styles from "./style";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
+import { translate } from "../../config/languageSwitching/index";
+import { showSingleAlert } from "../../config/common";
+const { width } = Dimensions.get("window");
 
 /** Accordion Component */
 let finalObj = {};
-let sortValue = '';
+let sortValue = "";
 let accordionRef = React.createRef();
 const AccordionComponent = memo(
   ({
@@ -36,7 +37,7 @@ const AccordionComponent = memo(
     reset,
     isDiscountSelected,
   }) => {
-    console.log('isDiscountSelected!!!!!!', isDiscountSelected);
+    console.log("isDiscountSelected!!!!!!", isDiscountSelected);
 
     const [expanded, setexpanded] = useState(false);
     const [discount, setDiscount] = useState(isDiscountSelected);
@@ -45,15 +46,15 @@ const AccordionComponent = memo(
     const [minimumAmt, setminimumAmt] = useState(
       props.selectedFilters.filter_attributes
         ? props.selectedFilters.filter_attributes.price_from
-        : '',
+        : ""
     );
     const [maximumAmt, setmaximumAmt] = useState(
       props.selectedFilters.filter_attributes
         ? props.selectedFilters.filter_attributes.price_to
-        : '',
+        : ""
     );
-    const {title} = item;
-    const numCol = title === 'Grade' || item.title === 'Size' ? 4 : 1;
+    const { title } = item;
+    const numCol = title === "Grade" || item.title === "Size" ? 4 : 1;
 
     function toggleExpand() {
       setexpanded(!expanded);
@@ -64,18 +65,18 @@ const AccordionComponent = memo(
       emptyArray();
       if (reset) {
         setDiscount(false);
-        setminimumAmt('');
-        setmaximumAmt('');
+        setminimumAmt("");
+        setmaximumAmt("");
       }
     }, [reset]);
 
     function emptyArray() {
-      console.log('12344');
+      console.log("12344");
     }
 
-    const {currency} = props;
+    const { currency } = props;
 
-    const multiSort = childindex => {
+    const multiSort = (childindex) => {
       setDummy(!dummy);
       const tempArray = item.keys;
       const newArray = tempArray.map((key, keyIndex) => {
@@ -92,7 +93,7 @@ const AccordionComponent = memo(
       setPriceRange(key, value);
     }
 
-    const sortedIndex = childindex => {
+    const sortedIndex = (childindex) => {
       setDummy(!dummy);
       const tempArray = item.keys;
       const newArray = tempArray.map((key, keyIndex) => {
@@ -112,31 +113,37 @@ const AccordionComponent = memo(
       didSelectDiscount(!discount);
     }
 
+    let screenWidth = Constants.SCREEN_WIDTH - 40;
+    let numberOfColumns = screenWidth / 65;
+    numberOfColumns = Math.round(numberOfColumns);
+
     return (
       <View
-        style={{paddingBottom: 5, backgroundColor: Constants.APP_GRAY_COLOR2}}>
-        {title !== 'Discount' && title !== 'Price' && (
-          <View style={{backgroundColor: 'white', paddingHorizontal: 10}}>
+        style={{ paddingBottom: 0, backgroundColor: Constants.APP_GRAY_COLOR2 }}
+      >
+        {title !== "Discount" && title !== "Price" && title !== "Choose Color" && (
+          <View style={{ backgroundColor: "white", paddingHorizontal: 20 }}>
             <TouchableOpacity
               style={Styles.sub_container_view}
-              onPress={toggleExpand}>
-              <Text style={{fontFamily: Constants.Fonts.MEDIUM}}>
+              onPress={toggleExpand}
+            >
+              <Text style={{ fontFamily: Constants.Fonts.MEDIUM }}>
                 {item.title}
               </Text>
               <Icon
-                name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+                name={expanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
                 size={20}
-                color={'black'}
+                color={"black"}
               />
             </TouchableOpacity>
             {expanded && (
-              <View style={{marginBottom: 10}}>
+              <View style={{ marginBottom: 10 }}>
                 <FlatList
                   data={item.keys}
                   numColumns={numCol}
                   scrollEnabled={false}
                   extraData={item}
-                  renderItem={({item, index}) => (
+                  renderItem={({ item, index }) => (
                     <ChildComponent
                       title={title}
                       childItem={item}
@@ -151,12 +158,54 @@ const AccordionComponent = memo(
             )}
           </View>
         )}
-        {title === 'Discount' && (
+
+        {title === "Choose Color" && (
+          <View style={{ backgroundColor: "white", paddingHorizontal: 20 }}>
+            <TouchableOpacity
+              style={Styles.sub_container_view}
+              onPress={toggleExpand}
+            >
+              <Text style={{ fontFamily: Constants.Fonts.MEDIUM }}>
+                {item.title}
+              </Text>
+              <Icon
+                name={expanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
+                size={20}
+                color={"black"}
+              />
+            </TouchableOpacity>
+            {expanded && (
+              <View style={{ marginBottom: 10 }}>
+                <FlatList
+                  style={{ flex: 1 }}
+                  data={item.keys}
+                  numColumns={numberOfColumns}
+                  scrollEnabled={false}
+                  extraData={item}
+                  // horizontal
+                  renderItem={({ item, index }) => (
+                    <ChildComponent2
+                      title={title}
+                      childItem={item}
+                      childIndex={index}
+                      sortedIndex={sortedIndex}
+                      multiSort={multiSort}
+                      props={props}
+                    />
+                  )}
+                />
+              </View>
+            )}
+          </View>
+        )}
+
+        {title === "Discount" && (
           <TouchableOpacity
-            style={{backgroundColor: 'white', paddingHorizontal: 10}}
-            onPress={setDiscountBool}>
+            style={{ backgroundColor: "white", paddingHorizontal: 20 }}
+            onPress={setDiscountBool}
+          >
             <View style={Styles.discount_conatiner_view}>
-              <Text style={{fontFamily: Constants.Fonts.MEDIUM}}>
+              <Text style={{ fontFamily: Constants.Fonts.MEDIUM }}>
                 {item.title}
               </Text>
 
@@ -176,71 +225,75 @@ const AccordionComponent = memo(
             </View>
           </TouchableOpacity>
         )}
-        {title === 'Price' && (
-          <View style={{backgroundColor: 'white', paddingHorizontal: 13}}>
+        {title === "Price" && (
+          <View style={{ backgroundColor: "white", paddingHorizontal: 20 }}>
             <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                flexDirection: "row",
+                justifyContent: "space-between",
                 height: 56,
-                alignItems: 'center',
+                alignItems: "center",
                 // margin: 3,
 
-                backgroundColor: 'white',
+                backgroundColor: "white",
               }}
-              onPress={toggleExpand}>
-              <Text style={{fontFamily: Constants.Fonts.MEDIUM}}>
+              onPress={toggleExpand}
+            >
+              <Text style={{ fontFamily: Constants.Fonts.MEDIUM }}>
                 {item.title}
               </Text>
               <Icon
-                name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+                name={expanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
                 size={20}
-                color={'black'}
+                color={"black"}
               />
             </TouchableOpacity>
             {expanded && (
               <View
                 style={{
                   flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
+                  flexDirection: "row",
+                  justifyContent: "center",
                   marginBottom: 20,
-                }}>
+                }}
+              >
                 <View style={Styles.view_textinputs}>
                   <TextInput
-                    placeholder={'Minimum'}
-                    keyboardType={'decimal-pad'}
-                    style={{width: 80}}
-                    onChangeText={minimumAmt => {
+                    placeholder={"Minimum"}
+                    keyboardType={"decimal-pad"}
+                    style={{ width: 80 }}
+                    onChangeText={(minimumAmt) => {
                       setminimumAmt(minimumAmt);
                     }}
                     value={minimumAmt}
-                    onBlur={getPrice('price_from', minimumAmt)}
+                    onBlur={getPrice("price_from", minimumAmt)}
                   />
                   <Text
                     style={{
                       marginLeft: 8,
                       color: Constants.APP_GREY_TEXT_COLOR,
-                    }}>
+                    }}
+                  >
                     {currency}
                   </Text>
                 </View>
                 <View style={Styles.view_textinputs}>
                   <TextInput
-                    placeholder={'Maximum'}
-                    style={{width: 80}}
-                    keyboardType={'decimal-pad'}
-                    onChangeText={maximumAmt => {
+                    placeholder={"Maximum"}
+                    style={{ width: 80 }}
+                    keyboardType={"decimal-pad"}
+                    onChangeText={(maximumAmt) => {
                       setmaximumAmt(maximumAmt);
                     }}
                     value={maximumAmt}
-                    onBlur={getPrice('price_to', maximumAmt)}
+                    onBlur={getPrice("price_to", maximumAmt)}
                   />
                   <Text
                     style={{
                       marginLeft: 8,
                       color: Constants.APP_GREY_TEXT_COLOR,
-                    }}>
+                    }}
+                  >
                     {currency}
                   </Text>
                 </View>
@@ -250,16 +303,16 @@ const AccordionComponent = memo(
         )}
       </View>
     );
-  },
+  }
 );
 
 const ChildComponent = memo(
-  ({childItem, childIndex, title, sortedIndex, multiSort, props}) => {
-    let imgSrc = '';
-    console.log('childItem');
-    if (title === 'Choose Color') {
+  ({ childItem, childIndex, title, sortedIndex, multiSort, props }) => {
+    let imgSrc = "";
+    console.log("childItem");
+    if (title === "Choose Color") {
       imgSrc =
-        'https://staging.saloonaat.com/pub/media/' + childItem.image_code;
+        "https://staging.saloonaat.com/pub/media/" + childItem.image_code;
     }
     const [sortItem, setsortItem] = useState(false);
 
@@ -271,61 +324,53 @@ const ChildComponent = memo(
       multiSort(childIndex);
     }
 
-    const {selectedFilters} = props;
+    const { selectedFilters } = props;
 
     return (
       <View>
-        {title === 'Sort By' && (
+        {title === "Sort By" && (
           <TouchableOpacity onPress={selectSort} activeOpacity={0.7}>
             <View style={Styles.child_view}>
-              <Image
-                source={
-                  !childItem.togglevalue
-                    ? Images.filterIcons.toggle_outline
-                    : Images.filterIcons.toggle_selected
-                }
-                style={Styles.checkbox_icon}
-              />
               <Text
                 style={{
-                  marginLeft: 30,
+                  flex: 1,
                   fontSize: 15,
                   fontFamily: Constants.Fonts.REGULAR,
                   color: Constants.APP_GREY_TEXT_COLOR,
-                }}>
+                }}
+              >
                 {childItem.title}
               </Text>
+              {childItem.togglevalue && (
+                <Image source={Images.tick} style={Styles.checkbox_icon} />
+              )}
             </View>
           </TouchableOpacity>
         )}
-        {title === 'Style' && (
+        {title === "Style" && (
           <TouchableOpacity onPress={multiSelect} activeOpacity={0.7}>
             <View style={Styles.child_view}>
-              <Image
-                source={
-                  !childItem.togglevalue
-                    ? Images.filterIcons.check_outline
-                    : Images.filterIcons.check_tick
-                }
-                style={Styles.checkbox_icon}
-              />
               <Text
                 style={{
-                  marginLeft: 30,
-                  fontSize: 16,
+                  flex: 1,
+                  fontSize: 15,
                   fontFamily: Constants.Fonts.REGULAR,
                   color: Constants.APP_GREY_TEXT_COLOR,
-                }}>
+                }}
+              >
                 {childItem.label}
               </Text>
+              {childItem.togglevalue && (
+                <Image source={Images.tick} style={Styles.checkbox_icon} />
+              )}
             </View>
           </TouchableOpacity>
         )}
-        {title === 'Choose Color' && (
+        {title === "Choose Color" && (
           <TouchableOpacity onPress={multiSelect} activeOpacity={0.7}>
             <View style={Styles.child_color_view}>
               <Image
-                source={{uri: imgSrc}}
+                source={{ uri: imgSrc }}
                 style={
                   childItem.togglevalue
                     ? {
@@ -344,20 +389,21 @@ const ChildComponent = memo(
                       }
                 }
               />
-              <Text
+              {/* <Text
                 style={{
                   marginLeft: 30,
                   fontSize: 16,
                   marginVertical: 10,
                   fontFamily: Constants.Fonts.REGULAR,
                   color: Constants.APP_GREY_TEXT_COLOR,
-                }}>
+                }}
+              >
                 {childItem.label}
-              </Text>
+              </Text> */}
             </View>
           </TouchableOpacity>
         )}
-        {title === 'Attachment Type' && (
+        {title === "Attachment Type" && (
           <TouchableOpacity onPress={multiSelect} activeOpacity={0.7}>
             <View style={Styles.child_view}>
               <Image
@@ -375,14 +421,15 @@ const ChildComponent = memo(
                   fontSize: 16,
                   fontFamily: Constants.Fonts.REGULAR,
                   color: Constants.APP_GREY_TEXT_COLOR,
-                }}>
+                }}
+              >
                 {childItem.label}
               </Text>
             </View>
           </TouchableOpacity>
         )}
-        {title === 'Size' && (
-          <View style={{flex: 1, justifyContent: 'center'}}>
+        {title === "Size" && (
+          <View style={{ flex: 1, justifyContent: "center" }}>
             <TouchableOpacity
               onPress={multiSelect}
               style={{
@@ -394,22 +441,24 @@ const ChildComponent = memo(
                   ? Constants.APP_THEME_COLOR
                   : Constants.APP_BOX_BACKGROUND_GREY,
                 margin: 5,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   flex: 1,
                   fontSize: 16,
-                  textAlign: 'center',
+                  textAlign: "center",
                   paddingVertical: 10,
                   color: Constants.APP_GREY_TEXT_COLOR,
-                }}>
+                }}
+              >
                 {childItem.label}
               </Text>
             </TouchableOpacity>
           </View>
         )}
-        {title === 'Grade' && (
-          <View style={{flex: 1}}>
+        {title === "Grade" && (
+          <View style={{ flex: 1 }}>
             <TouchableOpacity
               onPress={multiSelect}
               style={{
@@ -421,85 +470,144 @@ const ChildComponent = memo(
                   ? Constants.APP_THEME_COLOR
                   : Constants.APP_BOX_BACKGROUND_GREY,
                 margin: 5,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   flex: 1,
                   fontSize: 16,
-                  textAlign: 'center',
+                  textAlign: "center",
                   paddingVertical: 10,
                   color: Constants.APP_GREY_TEXT_COLOR,
-                }}>
+                }}
+              >
                 {childItem.label}
               </Text>
             </TouchableOpacity>
           </View>
         )}
-        {title === 'Brand' && (
+        {title === "Brand" && (
           <TouchableOpacity onPress={multiSelect} activeOpacity={0.7}>
             <View style={Styles.child_view}>
-              <Image
-                source={
-                  !childItem.togglevalue
-                    ? Images.filterIcons.check_outline
-                    : Images.filterIcons.check_tick
-                }
-                style={Styles.checkbox_icon}
-              />
-
               <Text
                 style={{
-                  marginLeft: 30,
-                  fontSize: 16,
+                  flex: 1,
+                  fontSize: 15,
                   fontFamily: Constants.Fonts.REGULAR,
                   color: Constants.APP_GREY_TEXT_COLOR,
-                }}>
+                }}
+              >
                 {childItem.label}
               </Text>
+              {childItem.togglevalue && (
+                <Image source={Images.tick} style={Styles.checkbox_icon} />
+              )}
             </View>
           </TouchableOpacity>
         )}
-        {title === 'Size (Inch)' && (
+        {title === "Size (Inch)" && (
           <TouchableOpacity onPress={multiSelect} activeOpacity={0.7}>
             <View style={Styles.child_view}>
-              <Image
-                source={
-                  !childItem.togglevalue
-                    ? Images.filterIcons.check_outline
-                    : Images.filterIcons.check_tick
-                }
-                style={Styles.checkbox_icon}
-              />
-
               <Text
                 style={{
-                  marginLeft: 30,
-                  fontSize: 16,
+                  flex: 1,
+                  fontSize: 15,
                   fontFamily: Constants.Fonts.REGULAR,
                   color: Constants.APP_GREY_TEXT_COLOR,
-                }}>
+                }}
+              >
                 {childItem.label}
               </Text>
+              {childItem.togglevalue && (
+                <Image source={Images.tick} style={Styles.checkbox_icon} />
+              )}
             </View>
           </TouchableOpacity>
         )}
       </View>
     );
-  },
+  }
+);
+
+const ChildComponent2 = memo(
+  ({ childItem, childIndex, title, sortedIndex, multiSort, props }) => {
+    let imgSrc = "";
+    console.log("childItem");
+    if (title === "Choose Color") {
+      imgSrc =
+        "https://staging.saloonaat.com/pub/media/" + childItem.image_code;
+    }
+    const [sortItem, setsortItem] = useState(false);
+
+    function selectSort(key, value) {
+      sortedIndex(childIndex);
+    }
+
+    function multiSelect() {
+      multiSort(childIndex);
+    }
+
+    const { selectedFilters } = props;
+
+    return (
+      <View style={{}}>
+        {title === "Choose Color" && (
+          <TouchableOpacity onPress={multiSelect} activeOpacity={0.7}>
+            <View style={Styles.child_color_view}>
+              <ImageBackground
+                source={{ uri: imgSrc }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  borderWidth: 1,
+                  borderColor: Constants.APP_GRAY_COLOR2,
+                  overflow: "hidden",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {childItem.togglevalue && (
+                  <Image
+                    source={Images.whiteTick}
+                    style={[
+                      Styles.checkbox_icon,
+                      { tintColor: Constants.APP_WHITE_COLOR },
+                    ]}
+                  />
+                )}
+              </ImageBackground>
+              {/* <Text
+                style={{
+                  marginLeft: 30,
+                  fontSize: 16,
+                  marginVertical: 10,
+                  fontFamily: Constants.Fonts.REGULAR,
+                  color: Constants.APP_GREY_TEXT_COLOR,
+                }}
+              >
+                {childItem.label}
+              </Text> */}
+            </View>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
 );
 
 class FilterScreen extends Component {
   constructor(props) {
     super(props);
 
-    console.log('selectedFilters====:::>>>', props.selectedFilters);
+    console.log("selectedFilters====:::>>>", props.selectedFilters);
 
     let filter_attributes = props.selectedFilters.filter_attributes
       ? props.selectedFilters.filter_attributes
       : null;
 
     this.state = {
-      reset: '',
+      reset: "",
       isDiscountSelected:
         filter_attributes && filter_attributes.sale ? true : false,
     };
@@ -510,17 +618,17 @@ class FilterScreen extends Component {
   };
 
   componentDidMount() {
-    const {selectedFilters} = this.props;
-    let sortOrder = selectedFilters.sort_orer ? selectedFilters.sort_orer : '';
+    const { selectedFilters } = this.props;
+    let sortOrder = selectedFilters.sort_orer ? selectedFilters.sort_orer : "";
 
-    console.log('=====isDiscountSelected====', this.state.isDiscountSelected);
-    this.props.filterArray.map(datas => {
+    console.log("=====isDiscountSelected====", this.state.isDiscountSelected);
+    this.props.filterArray.map((datas) => {
       if (!!datas.keys) {
-        datas.keys.map(val => {
+        datas.keys.map((val) => {
           switch (datas.title) {
-            case 'Sort By':
-              console.log('=====>>', val);
-              console.log('==++++===>>', sortOrder);
+            case "Sort By":
+              console.log("=====>>", val);
+              console.log("==++++===>>", sortOrder);
 
               val.togglevalue = val.value === sortOrder ? true : false;
               break;
@@ -533,35 +641,36 @@ class FilterScreen extends Component {
       return datas;
     });
 
-    sortValue = selectedFilters.sort_orer ? selectedFilters.sort_orer : '';
+    sortValue = selectedFilters.sort_orer ? selectedFilters.sort_orer : "";
   }
 
   componentWillUnmount() {
     finalObj = {};
-    sortValue = '';
+    sortValue = "";
   }
   resetData = () => {
     this.props.clearSelectedFilters();
-    this.props.filterArray.map(datas => {
+    this.props.filterArray.map((datas) => {
       if (!!datas.keys) {
-        datas.keys.map(val => {
+        datas.keys.map((val) => {
           return (val.togglevalue = false);
         });
       }
       return datas;
     });
-    this.setState({isDiscountSelected: false}, () => {
-      this.setState({reset: !this.state.reset});
+    this.setState({ isDiscountSelected: false }, () => {
+      this.setState({ reset: !this.state.reset });
     });
-    sortValue = '';
+    sortValue = "";
   };
   render() {
-    const {isDiscountSelected} = this.state;
+    const { isDiscountSelected } = this.state;
 
-    const {loader, currency, isRTL} = this.props;
+    const { loader, currency, isRTL } = this.props;
     return (
       <SafeAreaView
-        style={{flex: 1, backgroundColor: Constants.APP_WHITE_COLOR}}>
+        style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}
+      >
         <StatusBar
           barStyle="light-content"
           hidden={false}
@@ -569,11 +678,12 @@ class FilterScreen extends Component {
           translucent={false}
         />
         <NavigationHeader2
+          hideBottomLine
           showBackButton={true}
           didTapOnBackButton={this._didTapOnBackButton}
           resetButton={true}
           didTapOnReset={this.resetData}
-          title={'Filter'}
+          title={""}
           hideSearch={true}
           isShowFlag={false}
           showCart={false}
@@ -583,11 +693,13 @@ class FilterScreen extends Component {
         {loader ? (
           <HudView />
         ) : (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
+            <Text style={Styles.titleStyle}>{translate("Filter")}</Text>
+
             <FlatList
-              style={{flex: 1}}
+              style={{ flex: 1 }}
               data={this.props.filterArray}
-              renderItem={({item, index}) => (
+              renderItem={({ item, index }) => (
                 <AccordionComponent
                   ref={accordionRef}
                   item={item}
@@ -605,9 +717,16 @@ class FilterScreen extends Component {
             />
             <TouchableOpacity
               onPress={this.applyFilters}
-              style={Styles.btn_touchable_style}>
-              <Text style={{color: Constants.APP_THEME_COLOR}}>
-                {translate('APPLY')}
+              style={Styles.btn_touchable_style}
+            >
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontFamily: Constants.Fonts.MEDIUM,
+                  color: Constants.APP_WHITE_COLOR,
+                }}
+              >
+                {translate("APPLY")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -616,57 +735,57 @@ class FilterScreen extends Component {
     );
   }
 
-  collectSelectedData = items => {
+  collectSelectedData = (items) => {
     let obj = {};
     let sizeKey = items.key;
-    const a = items.keys.filter(q => {
+    const a = items.keys.filter((q) => {
       return q.togglevalue;
     });
-    const result = a.map(i => {
+    const result = a.map((i) => {
       return parseInt(i.value);
     });
     obj[sizeKey] = result;
-    finalObj = {...finalObj, ...obj};
+    finalObj = { ...finalObj, ...obj };
   };
 
-  selectSortData = keyarray => {
-    console.log('=====####', keyarray);
+  selectSortData = (keyarray) => {
+    console.log("=====####", keyarray);
 
-    const a = keyarray.keys.filter(q => {
+    const a = keyarray.keys.filter((q) => {
       return q.togglevalue;
     });
-    const result = a.map(i => {
+    const result = a.map((i) => {
       return i.value;
     });
-    sortValue = result.length > 0 ? result[0] : '';
+    sortValue = result.length > 0 ? result[0] : "";
   };
 
   setPriceRange = (key, value) => {
     let obj = {};
     if (value) obj[key] = value;
-    finalObj = {...finalObj, ...obj};
+    finalObj = { ...finalObj, ...obj };
   };
 
-  didSelectDiscount = value => {
-    console.log('DISCOUNT VAL', value);
-    this.setState({isDiscountSelected: value});
+  didSelectDiscount = (value) => {
+    console.log("DISCOUNT VAL", value);
+    this.setState({ isDiscountSelected: value });
   };
 
   applyFilters = () => {
-    const {isDiscountSelected} = this.state;
+    const { isDiscountSelected } = this.state;
     if (isDiscountSelected) {
-      finalObj['sale'] = [1];
+      finalObj["sale"] = [1];
     }
     let filters = {
       // category_id: 38,
-      sort_field: 'name',
+      sort_field: "name",
       sort_orer: sortValue.toString(),
       page: 1,
       page_size: 50,
       filter_attributes: finalObj,
     };
 
-    console.log('--------filters-------', filters);
+    console.log("--------filters-------", filters);
 
     // if (
     //   Object.keys(filters.filter_attributes) == 0 &&

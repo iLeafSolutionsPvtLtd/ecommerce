@@ -121,8 +121,8 @@
   "Out of stock": "Out of Stock",
   "Checkout": "Checkout",
   "Color": "Color",
-  "Unit Price": "Unit Price",
-  "Gross Total": "Gross Total",
+  "Unit Price": "UNIT PRICE",
+  "Gross Total": "GROSS TOTAL",
   "Add Voucher code": "Add Voucher code",
   "Enter Voucher Code": "Enter Voucher Code",
   "Apply": "Apply",
@@ -204,5 +204,8 @@
   "Product maximum count is": "Product maximum count is",
 
   "NEW COLLECTIONS": "New Collections",
-  "BEST SELLING": "Best Selling"
+  "BEST SELLING": "Best Selling",
+  "Filter": "Filter",
+  "Your Cart": "Your Cart",
+  "TOTAL PRICE": "TOTAL PRICE"
 }

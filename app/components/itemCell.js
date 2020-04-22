@@ -11,55 +11,64 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-} from 'react-native';
-import React, {useState, Component} from 'react';
-import Constants from '../config/constants';
-import Images from '../config/images';
+} from "react-native";
+import React, { useState, Component } from "react";
+import Constants from "../config/constants";
+import Images from "../config/images";
 import {
   normalizedHeight,
   normalizedWidth,
   showSingleAlert,
   showSimpleSnackbar,
-} from '../config/common';
-import {translate} from '../config/languageSwitching/index';
+} from "../config/common";
+import { translate } from "../config/languageSwitching/index";
 
-import ImageLoader from 'react-native-image-progress';
+import ImageLoader from "react-native-image-progress";
 let colorName = [];
 let sizeName = [];
-const KeyText = ({itemKey, keylabel, currency}) => {
+const KeyText = ({ itemKey, itemValue, keylabel, currency }) => {
   let value =
-    itemKey === 'Gross Total' || itemKey === 'Unit Price'
-      ? keylabel + ' ' + currency
+    itemKey === "TOTAL PRICE" || itemKey === "Unit Price"
+      ? keylabel + " " + currency
       : keylabel;
   return (
     <View
       style={{
         marginTop: 10,
-        flexDirection: 'row',
+        flexDirection: "row",
         // justifyContent: 'flex-start',
-      }}>
-      <View style={{width: '40%'}}>
+      }}
+    >
+      <View style={{ width: "40%" }}>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 13,
             fontFamily: Constants.Fonts.REGULAR,
-            color: Constants.APP_GRAY_COLOR3,
-            textAlign: 'left',
-          }}>
-          {itemKey}
+            color:
+              itemKey === "TOTAL PRICE"
+                ? Constants.APP_BLACK_COLOR
+                : Constants.APP_GRAY_COLOR3,
+            textAlign: "left",
+          }}
+        >
+          {itemValue}
         </Text>
       </View>
-      <View style={{width: '40%', height: 20}}>
+      <View style={{ width: "50%", height: 20 }}>
         <Text
           style={{
-            fontSize: 14,
-            fontFamily: Constants.Fonts.REGULAR,
-            textAlign: 'left',
+            fontSize: 13,
+            fontFamily:
+              itemKey === "TOTAL PRICE"
+                ? Constants.Fonts.MEDIUM
+                : Constants.Fonts.REGULAR,
+            textAlign: "left",
             color:
-              itemKey === 'Gross Total'
-                ? Constants.APP_TEXT_PINK_COLOR
+              itemKey === "TOTAL PRICE"
+                ? Constants.APP_THEME_COLOR
                 : Constants.APP_GRAY_COLOR3,
-          }}>
+          }}
+        >
           {value}
         </Text>
       </View>
@@ -67,15 +76,15 @@ const KeyText = ({itemKey, keylabel, currency}) => {
   );
 };
 
-const QuantityControl = ({quantiryItem, getQuantity, updateCartProduct}) => {
+const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
   const [quantityValue, setQuantity] = useState(quantiryItem.qty);
 
   function incrementQuantity() {
     if (quantityValue >= Constants.MAX_PRODUCT_COUNT) {
       showSimpleSnackbar(
-        translate('Product maximum count is') +
-          ' ' +
-          Constants.MAX_PRODUCT_COUNT,
+        translate("Product maximum count is") +
+          " " +
+          Constants.MAX_PRODUCT_COUNT
       );
 
       // showSingleAlert(
@@ -98,7 +107,7 @@ const QuantityControl = ({quantiryItem, getQuantity, updateCartProduct}) => {
     }
   }
   return (
-    <View style={{flexDirection: 'row', marginTop: 15, alignItems: 'center'}}>
+    <View style={{ flexDirection: "row", marginTop: 15, alignItems: "center" }}>
       <TouchableOpacity
         onPress={decrementQuantity}
         style={{
@@ -106,14 +115,16 @@ const QuantityControl = ({quantiryItem, getQuantity, updateCartProduct}) => {
           borderColor: Constants.APP_GREY_TEXT_COLOR,
           width: 20,
           height: 20,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Text
           style={{
             color: Constants.APP_GREY_TEXT_COLOR,
             fontFamily: Constants.Fonts.REGULAR,
-          }}>
+          }}
+        >
           -
         </Text>
       </TouchableOpacity>
@@ -121,7 +132,7 @@ const QuantityControl = ({quantiryItem, getQuantity, updateCartProduct}) => {
         style={{
           marginHorizontal: 14,
           width: 30,
-          textAlign: 'center',
+          textAlign: "center",
           paddingVertical: 0,
           fontSize: 16,
           fontFamily: Constants.Fonts.MEDIUM,
@@ -138,14 +149,16 @@ const QuantityControl = ({quantiryItem, getQuantity, updateCartProduct}) => {
           borderColor: Constants.APP_GREY_TEXT_COLOR,
           width: 20,
           height: 20,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Text
           style={{
             color: Constants.APP_GREY_TEXT_COLOR,
             fontFamily: Constants.Fonts.REGULAR,
-          }}>
+          }}
+        >
           +
         </Text>
       </TouchableOpacity>
@@ -182,29 +195,29 @@ const ItemCell = React.memo(
     function getQuantity(quantityValue) {
       setTotalGross(quantityValue * item.price);
     }
-    console.log('item inside', item);
+    console.log("item inside", item);
 
     if (item.product_option && item.product_option.extension_attributes) {
       const attributesColor = item.product_option.extension_attributes.configurable_item_options.filter(
-        color => {
-          return color.option_id === '93';
-        },
+        (color) => {
+          return color.option_id === "93";
+        }
       );
       const attributesSize = item.product_option.extension_attributes.configurable_item_options.filter(
-        size => {
-          return size.option_id === '178';
-        },
+        (size) => {
+          return size.option_id === "178";
+        }
       );
       const colorID = attributesColor[0].option_value.toString();
       const sizeID = attributesSize[0].option_value.toString();
 
-      colorName = productsColors.filter(item => {
+      colorName = productsColors.filter((item) => {
         return colorID === item.value;
       });
-      sizeName = productsSizes.filter(item => {
+      sizeName = productsSizes.filter((item) => {
         return sizeID === item.value;
       });
-      console.log('colorName,sizename \n', colorName, sizeName);
+      console.log("colorName,sizename \n", colorName, sizeName);
     } else {
       colorName = [];
       sizeName = [];
@@ -212,7 +225,7 @@ const ItemCell = React.memo(
 
     const imageSource =
       item.extension_attributes && item.extension_attributes.image
-        ? {uri: Constants.APP_S3_BASE_URL + item.extension_attributes.image}
+        ? { uri: Constants.APP_S3_BASE_URL + item.extension_attributes.image }
         : Images.placeHolderProduct;
 
     let unitPrice = item.price;
@@ -229,23 +242,28 @@ const ItemCell = React.memo(
     }
 
     return (
-      <View style={{marginTop: 5, backgroundColor: Constants.APP_WHITE_COLOR}}>
+      <View
+        style={{ marginTop: 0, backgroundColor: Constants.APP_WHITE_COLOR }}
+      >
         <View
           style={{
             flex: 1,
-            flexDirection: 'row',
-            padding: 20,
-          }}>
+            flexDirection: "row",
+            padding: 10,
+          }}
+        >
           <Image
             source={imageSource}
             defaultSource={Images.placeHolderProduct}
             style={{
-              width: 102, //normalizedWidth(102),
-              height: 143, //normalizedWidth(143),
+              width: 83, //normalizedWidth(102),
+              height: 104, //normalizedWidth(143),
               borderRadius: 5,
+              borderWidth: 0.5,
+              borderColor: Constants.APP_GRAY_COLOR,
             }}
           />
-          <View style={{marginHorizontal: 20}}>
+          <View style={{ marginHorizontal: 20 }}>
             <Text
               multiline={true}
               numberOfLines={0}
@@ -254,57 +272,112 @@ const ItemCell = React.memo(
                 fontFamily: Constants.Fonts.MEDIUM,
                 fontSize: 15,
                 color: Constants.APP_BLACK_COLOR,
-                textAlign: 'left',
-              }}>
+                textAlign: "left",
+              }}
+            >
               {item.name}
             </Text>
 
-            <View style={{flex: 1}}>
-              {sizeName.length > 0 && (
-                <KeyText
-                  itemKey={translate('Size')}
-                  keylabel={sizeName[0].label}
-                  currency={currency}
-                />
-              )}
+            <View style={{ flex: 1 }}>
               {colorName.length > 0 && (
-                <KeyText
-                  itemKey={translate('Color')}
-                  keylabel={colorName[0].label}
-                  currency={currency}
-                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    height: 30,
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ width: 30 }}>
+                    <Image
+                      style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: 5,
+                      }}
+                      source={{
+                        uri:
+                          Constants.APP_S3_BASE_URL + colorName[0].image_code,
+                      }}
+                    />
+                  </View>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: Constants.Fonts.REGULAR,
+                      color: Constants.APP_GRAY_COLOR3,
+                      textAlign: "left",
+                      marginLeft: 10,
+                    }}
+                  >
+                    {colorName[0].label}
+                  </Text>
+                </View>
               )}
-              {showQuantity && (
+              {sizeName.length > 0 && (
+                // <KeyText
+                //   itemKey={translate("Size")}
+                //   keylabel={sizeName[0].label}
+                //   currency={currency}
+                // />
+                <View style={{ flexDirection: "row" }}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: Constants.Fonts.REGULAR,
+                      color: Constants.APP_THEME_COLOR,
+                      textAlign: "left",
+                      width: 30,
+                    }}
+                  >
+                    {sizeName[0].label}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontFamily: Constants.Fonts.REGULAR,
+                      textAlign: "left",
+                      color: Constants.APP_GRAY_COLOR3,
+                      marginLeft: 10,
+                    }}
+                  >
+                    {translate("Size")}
+                  </Text>
+                </View>
+              )}
+
+              {/* {showQuantity && (
                 <KeyText
-                  itemKey={translate('Quantity')}
+                  itemKey={translate("Quantity")}
                   keylabel={item.qty}
                   currency={currency}
                 />
-              )}
+              )} */}
               <KeyText
-                itemKey={translate('Unit Price')}
+                itemKey={"Unit Price"}
+                itemValue={translate("Unit Price")}
                 keylabel={unitPrice}
                 currency={currency}
               />
               <KeyText
-                itemKey={translate('Gross Total')}
+                itemKey={"TOTAL PRICE"}
+                itemValue={translate("TOTAL PRICE")}
                 keylabel={total.toFixed(2)}
                 currency={currency}
               />
             </View>
 
-            {allowAddOption && (
+            {/* {allowAddOption && (
               <QuantityControl
                 quantiryItem={item}
                 getQuantity={getQuantity}
                 updateCartProduct={updateCartProduct}
               />
-            )}
+            )} */}
           </View>
         </View>
       </View>
     );
-  },
+  }
 );
 
 const styles = StyleSheet.create({});
