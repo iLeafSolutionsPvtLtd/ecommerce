@@ -51,6 +51,46 @@ const styles = StyleSheet.create({
     color: Constants.APP_THEME_COLOR,
     fontFamily: Constants.Fonts.MEDIUM,
   },
+  returnPolicyView: {
+    height: 85,
+    borderRadius: 5,
+    marginHorizontal: 20,
+    // width: "100%",
+    // flex: 1,
+    backgroundColor: Constants.APP_WHITE_COLOR,
+    shadowOffset: { width: 0, height: 5 },
+    shadowColor: "rgba(46,69,187,0.56)",
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    borderRadius: 5,
+  },
+  sendBackText: {
+    fontSize: 12,
+    color: "rgb(142,142,142)",
+    fontFamily: Constants.Fonts.REGULAR,
+    marginVertical: 3,
+  },
+  sendBackTitleText: {
+    fontSize: 13,
+    color: Constants.APP_THEME_COLOR,
+    fontFamily: Constants.Fonts.MEDIUM,
+    marginVertical: 3,
+  },
+  moreinfo: {
+    fontSize: 12,
+    color: Constants.APP_THEME_COLOR,
+    fontFamily: Constants.Fonts.REGULAR,
+    textDecorationLine: "underline",
+    marginVertical: 3,
+  },
+  orderInfo: {
+    fontSize: 15,
+    color: Constants.APP_GRAY_COLOR,
+    fontFamily: Constants.Fonts.REGULAR,
+    marginLeft: 15,
+    marginTop: 15,
+    marginRight: 10,
+  },
 });
 
 export default styles;

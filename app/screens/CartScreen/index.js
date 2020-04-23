@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   Text,
+  Image,
   StatusBar,
   SafeAreaView,
   TextInput,
@@ -38,12 +39,6 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
           " " +
           Constants.MAX_PRODUCT_COUNT
       );
-
-      // showSingleAlert(
-      //   translate('Product maximum count is') +
-      //     ' ' +
-      //     Constants.MAX_PRODUCT_COUNT,
-      // );
       return;
     }
 
@@ -51,6 +46,7 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
     getQuantity(quantityValue + 1);
     updateCartProduct(quantityValue + 1);
   }
+
   function decrementQuantity() {
     if (quantityValue - 1 >= 1) {
       setQuantity(quantityValue - 1);
@@ -58,23 +54,37 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
       updateCartProduct(quantityValue - 1);
     }
   }
+
   return (
-    <View style={{ flexDirection: "row", marginTop: 15, alignItems: "center" }}>
+    <View
+      style={{
+        flexDirection: "row",
+        // marginVertical: 10,
+        height: 30,
+        width: 100,
+        alignItems: "center",
+        borderWidth: 1,
+        borderRadius: 5,
+        marginLeft: 10,
+        borderColor: Constants.APP_GRAY_COLOR,
+      }}
+    >
       <TouchableOpacity
         onPress={decrementQuantity}
         style={{
-          borderWidth: 1,
-          borderColor: Constants.APP_GREY_TEXT_COLOR,
-          width: 20,
-          height: 20,
+          width: 30,
+          height: 30,
           justifyContent: "center",
           alignItems: "center",
+          borderRightWidth: 1,
+          borderRightColor: Constants.APP_GRAY_COLOR,
         }}
       >
         <Text
           style={{
             color: Constants.APP_GREY_TEXT_COLOR,
             fontFamily: Constants.Fonts.REGULAR,
+            fontSize: 16,
           }}
         >
           -
@@ -82,11 +92,11 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
       </TouchableOpacity>
       <TextInput
         style={{
-          marginHorizontal: 14,
-          width: 30,
+          // marginHorizontal: 14,
+          width: 40,
           textAlign: "center",
-          paddingVertical: 0,
           fontSize: 16,
+          height: 30,
           fontFamily: Constants.Fonts.MEDIUM,
           color: Constants.APP_BLACK_COLOR,
         }}
@@ -96,19 +106,19 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
       <TouchableOpacity
         onPress={incrementQuantity}
         style={{
-          // marginLeft: 10,
-          borderWidth: 1,
-          borderColor: Constants.APP_GREY_TEXT_COLOR,
-          width: 20,
-          height: 20,
+          width: 30,
+          height: 30,
           justifyContent: "center",
           alignItems: "center",
+          borderLeftColor: Constants.APP_GRAY_COLOR,
+          borderLeftWidth: 1,
         }}
       >
         <Text
           style={{
             color: Constants.APP_GREY_TEXT_COLOR,
             fontFamily: Constants.Fonts.REGULAR,
+            fontSize: 16,
           }}
         >
           +
@@ -158,7 +168,7 @@ const CategoryCall = memo(
       setTotalGross(quantityValue * item.price);
     }
 
-    function updateCartProduct(qty, item, index) {
+    function updateCartProduct(qty) {
       updateCartProductContainer(qty, item, index);
     }
 
@@ -194,13 +204,42 @@ const CategoryCall = memo(
             height: 50,
             borderTopColor: Constants.APP_GRAY_COLOR,
             borderTopWidth: 0.5,
+            alignItems: "center",
           }}
         >
-          <QuantityControl
-            quantiryItem={item}
-            getQuantity={getQuantity}
-            updateCartProduct={updateCartProduct}
-          />
+          <View style={{ flex: 1 }}>
+            <QuantityControl
+              quantiryItem={item}
+              getQuantity={getQuantity}
+              updateCartProduct={updateCartProduct}
+            />
+          </View>
+          <TouchableOpacity
+            activeOpacity={Constants.ACTIVE_OPACITY}
+            onPress={removeFromCart}
+          >
+            <View
+              style={{
+                width: 36,
+                height: 30,
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: Constants.APP_GRAY_COLOR,
+                alignItems: "center",
+                justifyContent: "center",
+                marginRight: 10,
+              }}
+            >
+              <Image
+                source={Images.close}
+                style={{
+                  tintColor: Constants.APP_GRAY_COLOR,
+                  width: 10,
+                  height: 10,
+                }}
+              />
+            </View>
+          </TouchableOpacity>
           {/* <TouchableOpacity
             onPress={removeFromCart}
             style={{
@@ -276,6 +315,8 @@ export default function CartScreen(props) {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [totalCost, setTotalCost] = useState(false);
   const [finalPrice, setFinalPrice] = useState(0);
+  const [productTotal, setProductTotal] = useState(0);
+  const [shippingPrice, setShippingPrice] = useState(0);
 
   const arrLength =
     userToken.length > 0 ? cartList.length : guestcartList.length;
@@ -310,6 +351,8 @@ export default function CartScreen(props) {
       CartActions.getTotalCost((totalCostDict) => {
         if (totalCostDict) {
           setTotalCost(totalCostDict);
+          setProductTotal(totalCostDict.subtotal_with_discount);
+          setShippingPrice(totalCostDict.shipping_amount);
           setFinalPrice(
             totalCostDict.total_segments.length > 0
               ? totalCostDict.grand_total
@@ -436,51 +479,65 @@ export default function CartScreen(props) {
 
   const renderFooter = () => {
     return (
-      <View
-        style={{
-          paddingHorizontal: 10,
-          marginTop: 10,
-          marginBottom: 10,
-          flexDirection: "row",
-          jflex: 1,
-          backgroundColor: Constants.APP_WHITE_COLOR,
-          height: 60,
-          paddingHorizontal: 20,
-        }}
-      >
-        <View
-          style={{
-            width: "50%",
-            alignItems: "flex-start",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              fontFamily: Constants.Fonts.MEDIUM,
-              color: Constants.APP_BLACK_COLOR,
-            }}
+      <View>
+        <View style={styles.returnPolicyView}>
+          <View
+            style={{ flexDirection: "row", alignItems: "center", height: 85 }}
           >
-            {translate("TOTAL AMOUNT")}
-          </Text>
+            <Image
+              style={{ width: 25, height: 25, marginLeft: 15 }}
+              source={Images.refreshIcon}
+            />
+            <View style={{ marginHorizontal: 15 }}>
+              <Text style={styles.sendBackTitleText}>
+                {translate("FEE AND EASY  RETURNS")}
+              </Text>
+              <Text style={styles.sendBackText}>
+                {translate("Send_back_order")}
+              </Text>
+              <Text style={styles.moreinfo}>{translate("More info")}</Text>
+            </View>
+          </View>
         </View>
-        <View
-          style={{
-            width: "50%",
-            alignItems: "flex-end",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              fontFamily: Constants.Fonts.MEDIUM,
-              color: Constants.APP_BLACK_COLOR,
-            }}
-          >
-            {finalPrice} {currency}
-          </Text>
+
+        <View style={[styles.returnPolicyView, { marginTop: 20, height: 110 }]}>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={[styles.orderInfo, { flex: 1 }]}>Order subtotal</Text>
+            <Text style={styles.orderInfo}>
+              {productTotal} {currency}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={[styles.orderInfo, { flex: 1 }]}>Shipping </Text>
+            <Text style={styles.orderInfo}>
+              {shippingPrice} {currency}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={[
+                styles.orderInfo,
+                {
+                  flex: 1,
+                  color: Constants.APP_BLACK_COLOR,
+                  fontFamily: Constants.Fonts.MEDIUM,
+                },
+              ]}
+            >
+              TOTAL
+            </Text>
+            <Text
+              style={[
+                styles.orderInfo,
+                {
+                  color: Constants.APP_BLACK_COLOR,
+                  fontFamily: Constants.Fonts.MEDIUM,
+                },
+              ]}
+            >
+              {finalPrice} {currency}
+            </Text>
+          </View>
         </View>
       </View>
     );

@@ -78,9 +78,11 @@ const CategoryItem = React.memo(({ item, index, didTapOnItem }) => {
         <Image
           source={{ uri: Constants.APP_S3_BASE_URL + imageName }}
           style={{
-            width: normalizedWidth(82),
-            height: normalizedWidth(82),
-            borderRadius: normalizedWidth(82) / 2,
+            width: normalizedWidth(72),
+            height: normalizedWidth(72),
+            borderRadius: 5,
+            borderWidth: 0.5,
+            borderColor: Constants.APP_GRAY_COLOR,
           }}
         />
       </View>
@@ -393,7 +395,6 @@ class HomeScreen extends Component {
           // translucent={true}
         />
         <NavigationHeader2
-          hideSearch
           didTapOnFlag={this._didTapOnFlag}
           didTapOnSearch={this._didTapOnSearch}
           didTapOnCart={this._didTapOnCart}
@@ -464,7 +465,6 @@ class HomeScreen extends Component {
               </View>
 
               <View style={styles.categoryListContainer}>
-                <Text style={styles.sectionTitle}>{translate("CATEGORY")}</Text>
                 <FlatList
                   horizontal
                   showsVerticalScrollIndicator={false}
@@ -498,6 +498,8 @@ class HomeScreen extends Component {
                   )}
                 />
               </View>
+
+              <View style={styles.separatorView} />
 
               <View>
                 <Text style={styles.sectionTitle}>

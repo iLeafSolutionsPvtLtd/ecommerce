@@ -46,12 +46,12 @@ const styles = StyleSheet.create({
   categoryListContainer: {
     // height: normalizedHeight(162),
     width: "100%",
-    backgroundColor: Constants.APP_GRAY_COLOR2,
+    backgroundColor: Constants.APP_WHITE_COLOR,
     marginTop: 10,
   },
   categoryTitle: {
     marginVertical: 10,
-    fontFamily: Constants.Fonts.REGULAR,
+    fontFamily: Constants.Fonts.MEDIUM,
     fontSize: 14,
     textTransform: "uppercase",
     color: Constants.APP_GRAY_COLOR3,
@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
   separatorView: {
     height: 1,
     marginHorizontal: 15,
-    marginTop: 10,
+    // marginTop: 5,
+    marginBottom: 10,
     backgroundColor: Constants.APP_SEPARATOR_COLOR,
   },
   wishListContainer: {

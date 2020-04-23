@@ -53,6 +53,7 @@ const images = {
   message: require("../assets/icons/message.png"),
   tick: require("../assets/icons/tick.png"),
   whiteTick: require("../assets/icons/whiteTick.png"),
+  refreshIcon: require("../assets/icons/refreshIcon.png"),
 
   placeHolderProduct: require("../assets/images/placeHolderProduct.jpg"),
   filterIcons: {
