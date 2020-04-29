@@ -9,48 +9,51 @@ import {
   View,
   Image,
   FlatList,
+  TextInput,
   StatusBar,
   ScrollView,
   SafeAreaView,
   RefreshControl,
+  ImageBackground,
   TouchableOpacity,
-} from 'react-native';
-import styles from './styles';
-import Login from '../LoginScreen';
-import Image360 from '../image360';
-import Modal from 'react-native-modal';
-import React, {Component} from 'react';
-import Images from '../../config/images';
-import HTMLView from 'react-native-htmlview';
-import Constants from '../../config/constants';
-import HudView from '../../components/hudView';
-import ImageView from 'react-native-image-view';
-import {showSingleAlert} from '../../config/common';
-import ImageLoader from 'react-native-image-progress';
-import ProductCell2 from '../../components/productCell2';
-import {showAlertWithCallback, showSimpleSnackbar} from '../../config/common';
-import {translate} from '../../config/languageSwitching/index';
-import {normalizedHeight, normalizedWidth} from '../../config/common';
-import NavigationHeader2 from '../../components/NavigationHeaders/NavigationHeader2';
-import Share from 'react-native-share';
+} from "react-native";
+import styles from "./styles";
+import Login from "../LoginScreen";
+import Image360 from "../image360";
+import Modal from "react-native-modal";
+import React, { Component } from "react";
+import Images from "../../config/images";
+import HTMLView from "react-native-htmlview";
+import Constants from "../../config/constants";
+import HudView from "../../components/hudView";
+import ImageView from "react-native-image-view";
+import { showSingleAlert } from "../../config/common";
+import ImageLoader from "react-native-image-progress";
+import ProductCell2 from "../../components/productCell2";
+import { showAlertWithCallback, showSimpleSnackbar } from "../../config/common";
+import { translate } from "../../config/languageSwitching/index";
+import { normalizedHeight, normalizedWidth } from "../../config/common";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
+import Share from "react-native-share";
 
-import RefreshButtonView from '../../components/RefreshButtonView';
-import NetInfo from '@react-native-community/netinfo';
+import RefreshButtonView from "../../components/RefreshButtonView";
+import NetInfo from "@react-native-community/netinfo";
 
 /** Product Image Component */
-const ProductImageItem = React.memo(({item, index, didTapOnItem, props}) => {
-  let itemImage = {uri: Constants.APP_S3_BASE_URL + item};
+const ProductImageItem = React.memo(({ item, index, didTapOnItem, props }) => {
+  let itemImage = { uri: Constants.APP_S3_BASE_URL + item };
   return (
     <TouchableOpacity
       activeOpacity={Constants.ACTIVE_OPACITY}
       onPress={() => {
         didTapOnItem(item, index);
       }}
-      style={{alignItems: 'center'}}>
-      <View style={{backgroundColor: Constants.APP_WHITE_COLOR}}>
+      style={{ alignItems: "center" }}
+    >
+      <View style={{ backgroundColor: Constants.APP_WHITE_COLOR }}>
         <ImageLoader
           source={itemImage}
-          resizeMode={'contain'}
+          resizeMode={"contain"}
           style={{
             width: props.screenWidth,
             height: normalizedHeight(557),
@@ -76,7 +79,7 @@ const ColorItem = React.memo(
     let attributeValue = colorDicts.attribute_value;
 
     let productsColors = props.productsColors;
-    let filterdproductsColors = productsColors.filter(obj => {
+    let filterdproductsColors = productsColors.filter((obj) => {
       return obj.value === String(attributeValue);
     });
 
@@ -84,7 +87,7 @@ const ColorItem = React.memo(
       filterdproductsColors && filterdproductsColors.length > 0
         ? filterdproductsColors[0]
         : null;
-    let colorImage = colorDict ? colorDict.image_code : '';
+    let colorImage = colorDict ? colorDict.image_code : "";
     let colorImageUrl = Constants.APP_S3_BASE_URL + colorImage;
 
     return (
@@ -94,51 +97,49 @@ const ColorItem = React.memo(
           didTapOnItem(item, index);
         }}
         style={{
-          alignItems: 'center',
+          alignItems: "center",
           width: props.screenWidth / 5,
-        }}>
-        <View
-          style={{
-            marginVertical: 7,
-            width: 57, //normalizedWidth(57),
-            height: 57, //normalizedWidth(57),
-            borderRadius: 57 / 2, //normalizedWidth(57) / 2,
-            borderWidth: 3,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderColor:
-              selectedColorIndex == index
-                ? Constants.APP_THEME_COLOR
-                : Constants.APP_WHITE_COLOR,
-          }}>
-          <Image
-            source={{uri: colorImageUrl}}
+        }}
+      >
+        <View style={styles.child_color_view}>
+          <ImageBackground
+            source={{ uri: colorImageUrl }}
             style={{
-              width: 50, //normalizedWidth(50),
-              height: 50, //normalizedWidth(50),
-              borderRadius: 50 / 2, // normalizedWidth(50) / 2,
+              width: 40,
+              height: 40,
+              borderRadius: 20,
               borderWidth: 1,
-              borderColor:
-                selectedColorIndex == index
-                  ? 'rgba(110,110,110,0.0)'
-                  : 'rgba(110,110,110,0.3)',
+              borderColor: Constants.APP_GRAY_COLOR2,
+              overflow: "hidden",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-          />
+          >
+            {selectedColorIndex == index ? (
+              <Image
+                source={Images.whiteTick}
+                style={[
+                  styles.checkbox_icon,
+                  // { tintColor: Constants.APP_WHITE_COLOR },
+                ]}
+              />
+            ) : null}
+          </ImageBackground>
         </View>
       </TouchableOpacity>
     );
-  },
+  }
 );
 
 /** Product Size Item Component */
 const SizeItem = React.memo(
-  ({item, index, didTapOnItem, selectedSizeIndex, props}) => {
+  ({ item, index, didTapOnItem, selectedSizeIndex, props }) => {
     let attributeDict = item.attributes;
     let sizeDicts = attributeDict.size;
     let attributeValue = sizeDicts.attribute_value;
 
     let productsSizes = props.productsSizes;
-    let filterdproductsSizes = productsSizes.filter(obj => {
+    let filterdproductsSizes = productsSizes.filter((obj) => {
       return obj.value === String(attributeValue);
     });
 
@@ -147,7 +148,7 @@ const SizeItem = React.memo(
         ? filterdproductsSizes[0]
         : null;
 
-    let size = sizeDict ? sizeDict.label : '';
+    let size = sizeDict ? sizeDict.label : "";
 
     return (
       <TouchableOpacity
@@ -156,28 +157,47 @@ const SizeItem = React.memo(
           didTapOnItem(item, index);
         }}
         style={{
-          alignItems: 'center',
+          alignItems: "center",
           width: (props.screenWidth - 40) / 4,
-        }}>
+        }}
+      >
         <View
           style={{
             marginVertical: 7,
-            borderColor:
-              selectedSizeIndex == index
-                ? Constants.APP_THEME_COLOR
-                : 'rgba(112,112,112,0.3)',
-            borderRadius: 5,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderWidth: selectedSizeIndex == index ? 2 : 1,
+            // borderColor: "rgba(112,112,112,0.3)",
+            // selectedSizeIndex == index
+            //   ? Constants.APP_THEME_COLOR
+            //   : "rgba(112,112,112,0.3)",
+            borderRadius: 20,
+            alignItems: "center",
+            justifyContent: "center",
+            // borderWidth: selectedSizeIndex == index ? 2 : 1,
             height: 40,
             width: (props.screenWidth - 80) / 4,
-          }}>
-          <Text style={styles.sizeText}> {size}</Text>
+            backgroundColor:
+              selectedSizeIndex == index
+                ? Constants.APP_THEME_COLOR
+                : "rgb(233,241,249)",
+          }}
+        >
+          <Text
+            style={[
+              styles.sizeText,
+              {
+                color:
+                  selectedSizeIndex == index
+                    ? Constants.APP_WHITE_COLOR
+                    : Constants.APP_BLACK_COLOR,
+              },
+            ]}
+          >
+            {" "}
+            {size}
+          </Text>
         </View>
       </TouchableOpacity>
     );
-  },
+  }
 );
 
 class ProductDetailView extends Component {
@@ -211,19 +231,19 @@ class ProductDetailView extends Component {
   componentDidMount() {
     const sku = this.props.navigation.state.params
       ? this.props.navigation.state.params.sku
-      : '';
-    const {isNetworkAvailable} = this.props;
+      : "";
+    const { isNetworkAvailable } = this.props;
 
     if (sku) {
-      this.unsubscribe = NetInfo.addEventListener(state => {
+      this.unsubscribe = NetInfo.addEventListener((state) => {
         let networkStatus = state.isConnected;
         if (networkStatus) {
           this.props.getProductDetail(sku, this._productDetailsCallback);
-          this.setState({isProductGetAPICalling: true});
-          this.setState({noInterNetView: false});
+          this.setState({ isProductGetAPICalling: true });
+          this.setState({ noInterNetView: false });
         } else {
-          this.setState({noInterNetView: true});
-          this.setState({isProductGetAPICalling: false});
+          this.setState({ noInterNetView: true });
+          this.setState({ isProductGetAPICalling: false });
         }
       });
       // this.props.getProductDetail(sku, this._productDetailsCallback);
@@ -231,7 +251,7 @@ class ProductDetailView extends Component {
     }
   }
 
-  _productDetailsCallback = productDetails => {
+  _productDetailsCallback = (productDetails) => {
     if (productDetails) {
       let imageDict = productDetails.image;
       let imageGallery = imageDict ? imageDict.gallery : null;
@@ -242,9 +262,9 @@ class ProductDetailView extends Component {
         productImagesArray,
         isProductGetAPICalling: false,
       });
-      this.props.wishList.map(item => {
+      this.props.wishList.map((item) => {
         if (item.productId === productDetails.entity_id.toString()) {
-          this.setState({isLiked: true});
+          this.setState({ isLiked: true });
         }
       });
 
@@ -253,32 +273,32 @@ class ProductDetailView extends Component {
       if (children.length > 0) {
         const newSizeArray2 = [];
         const newColorArray2 = [];
-        children.forEach(obj => {
+        children.forEach((obj) => {
           if (
             !newSizeArray2.some(
-              o =>
+              (o) =>
                 o.attributes.size.attribute_value ===
-                obj.attributes.size.attribute_value,
+                obj.attributes.size.attribute_value
             )
             // && obj.attributes.size.attribute_value
           ) {
-            newSizeArray2.push({...obj});
+            newSizeArray2.push({ ...obj });
           }
 
           if (
             !newColorArray2.some(
-              o =>
+              (o) =>
                 o.attributes.color.attribute_value ===
-                obj.attributes.color.attribute_value,
+                obj.attributes.color.attribute_value
             )
           ) {
-            newColorArray2.push({...obj});
+            newColorArray2.push({ ...obj });
           }
         });
 
         let selectedProductDict = children[0];
 
-        console.log('SIZE ARRAY', newSizeArray2);
+        console.log("SIZE ARRAY", newSizeArray2);
 
         this.setState(
           {
@@ -288,36 +308,36 @@ class ProductDetailView extends Component {
           },
           () => {
             this._didSelectVarient(selectedProductDict, 0);
-          },
+          }
         );
       }
     }
   };
 
   _didPullToRefresh = () => {
-    const {isNetworkAvailable} = this.props;
-    this.setState({isRefreshing: true});
+    const { isNetworkAvailable } = this.props;
+    this.setState({ isRefreshing: true });
 
     setTimeout(() => {
-      this.setState({isRefreshing: false});
+      this.setState({ isRefreshing: false });
     }, 1000);
     if (!isNetworkAvailable) {
-      showSingleAlert(translate('No internet connection'));
+      showSingleAlert(translate("No internet connection"));
       return;
     }
 
     const sku = this.props.navigation.state.params
       ? this.props.navigation.state.params.sku
-      : '';
+      : "";
 
     if (sku) {
       this.props.getProductDetail(sku, this._productDetailsCallback);
-      this.setState({isProductGetAPICalling: true});
+      this.setState({ isProductGetAPICalling: true });
     }
   };
 
   _didTapOnCart = () => {
-    this.props.navigation.navigate('Cart');
+    this.props.navigation.navigate("Cart");
   };
 
   _didTapOnBackButton = () => {
@@ -325,26 +345,26 @@ class ProductDetailView extends Component {
   };
 
   _didTapOnShare = () => {
-    const url = '';
+    const url = "";
     const title = Constants.APP_NAME;
-    const message = 'Please check this out.';
+    const message = "Please check this out.";
     const options = Platform.select({
       ios: {
         activityItemSources: [
           {
-            placeholderItem: {type: 'url', content: url},
+            placeholderItem: { type: "url", content: url },
             item: {
-              default: {type: 'url', content: url},
+              default: { type: "url", content: url },
             },
             subject: {
               default: title,
             },
-            linkMetadata: {originalUrl: url, url, title},
+            linkMetadata: { originalUrl: url, url, title },
           },
           {
-            placeholderItem: {type: 'text', content: message},
+            placeholderItem: { type: "text", content: message },
             item: {
-              default: {type: 'text', content: message},
+              default: { type: "text", content: message },
               message: null, // Specify no text to share via Messages app.
             },
           },
@@ -359,7 +379,7 @@ class ProductDetailView extends Component {
     Share.open(options);
   };
 
-  _onViewableItemsChanged = ({viewableItems, changed}) => {
+  _onViewableItemsChanged = ({ viewableItems, changed }) => {
     if (viewableItems.length > 0)
       this.setState({
         visibleImageIndex: viewableItems[0].index,
@@ -367,23 +387,23 @@ class ProductDetailView extends Component {
   };
 
   _didTapOnDecrement = () => {
-    const {productCount} = this.state;
+    const { productCount } = this.state;
     if (productCount > 1) {
-      this.setState({productCount: productCount - 1});
+      this.setState({ productCount: productCount - 1 });
     }
   };
 
   _didTapOnIncrement = () => {
-    const {productCount} = this.state;
+    const { productCount } = this.state;
 
     if (productCount >= Constants.MAX_PRODUCT_COUNT) {
       return;
     }
-    this.setState({productCount: productCount + 1});
+    this.setState({ productCount: productCount + 1 });
   };
 
-  _didTapOnAddToCart = isBuyNow => {
-    const {userToken, guestToken, quoteID, cartArray} = this.props;
+  _didTapOnAddToCart = (isBuyNow) => {
+    const { userToken, guestToken, quoteID, cartArray } = this.props;
     const {
       productCount,
       productDetails,
@@ -394,9 +414,9 @@ class ProductDetailView extends Component {
 
     if (cartArray.length >= Constants.MAX_CART_SIZE) {
       showSingleAlert(
-        translate('cart count exceeds1') +
+        translate("cart count exceeds1") +
           Constants.MAX_CART_SIZE +
-          translate('cart count exceeds2'),
+          translate("cart count exceeds2")
       );
       return;
     }
@@ -415,14 +435,14 @@ class ProductDetailView extends Component {
 
     if (isOutOfStock) {
       showSingleAlert(
-        translate('Out of stock description') + ' ' + translate('Out of stock'),
+        translate("Out of stock description") + " " + translate("Out of stock")
       );
       return;
     }
 
     if (userToken) {
-      let colorId = '';
-      let sizeId = '';
+      let colorId = "";
+      let sizeId = "";
       let product_option = null;
 
       if (selectedProductDict && selectedProductDict.attributes) {
@@ -433,9 +453,9 @@ class ProductDetailView extends Component {
         product_option = {
           extension_attributes: {
             configurable_item_options: [
-              {option_id: '93', option_value: colorId},
+              { option_id: "93", option_value: colorId },
               {
-                option_id: '178',
+                option_id: "178",
                 option_value: sizeId,
               },
             ],
@@ -452,15 +472,15 @@ class ProductDetailView extends Component {
       };
 
       if (product_option) {
-        params.cart_item['product_option'] = product_option;
+        params.cart_item["product_option"] = product_option;
       }
 
-      this.props.addPtoCartForLoggedUser(params, status =>
-        this._userAddedPtoCartCallback(status, isBuyNow),
+      this.props.addPtoCartForLoggedUser(params, (status) =>
+        this._userAddedPtoCartCallback(status, isBuyNow)
       );
     } else if (guestToken) {
-      let colorId = '';
-      let sizeId = '';
+      let colorId = "";
+      let sizeId = "";
       let product_option = null;
 
       if (selectedProductDict && selectedProductDict.attributes) {
@@ -471,9 +491,9 @@ class ProductDetailView extends Component {
         product_option = {
           extension_attributes: {
             configurable_item_options: [
-              {option_id: '93', option_value: colorId},
+              { option_id: "93", option_value: colorId },
               {
-                option_id: '178',
+                option_id: "178",
                 option_value: sizeId,
               },
             ],
@@ -490,15 +510,15 @@ class ProductDetailView extends Component {
       };
 
       if (product_option) {
-        params.cart_item['product_option'] = product_option;
+        params.cart_item["product_option"] = product_option;
       }
 
-      this.props.guestAddToCart(params, status =>
-        this._guestAddToCartCallback(status, isBuyNow),
+      this.props.guestAddToCart(params, (status) =>
+        this._guestAddToCartCallback(status, isBuyNow)
       );
     } else {
-      this.props.createGuestCart(status =>
-        this._createGuestCartCallback(status, isBuyNow),
+      this.props.createGuestCart((status) =>
+        this._createGuestCartCallback(status, isBuyNow)
       );
     }
   };
@@ -511,13 +531,15 @@ class ProductDetailView extends Component {
 
   _userAddedPtoCartCallback = (status, isBuyNow) => {
     if (isBuyNow) {
-      this.props.getTotalCost(totalCostDict => {
-        console.log('totalCostDict', totalCostDict);
-        this.props.navigation.navigate('Checkout', {totalCost: totalCostDict});
+      this.props.getTotalCost((totalCostDict) => {
+        console.log("totalCostDict", totalCostDict);
+        this.props.navigation.navigate("Checkout", {
+          totalCost: totalCostDict,
+        });
       });
     } else {
       if (status) {
-        showSimpleSnackbar(translate('Product added to cart'));
+        showSimpleSnackbar(translate("Product added to cart"));
         // showSingleAlert(translate('Product added to cart'));
       }
     }
@@ -525,36 +547,38 @@ class ProductDetailView extends Component {
 
   _guestAddToCartCallback = (status, isBuyNow) => {
     if (isBuyNow) {
-      this.props.getTotalCost(totalCostDict => {
-        console.log('totalCostDict', totalCostDict);
+      this.props.getTotalCost((totalCostDict) => {
+        console.log("totalCostDict", totalCostDict);
 
-        this.props.navigation.navigate('Checkout', {totalCost: totalCostDict});
+        this.props.navigation.navigate("Checkout", {
+          totalCost: totalCostDict,
+        });
       });
     } else {
       if (status) {
-        showSimpleSnackbar(translate('Product added to cart'));
+        showSimpleSnackbar(translate("Product added to cart"));
         // showSingleAlert(translate('Product added to cart'));
       }
     }
   };
 
   _didTapOnBuyNow = () => {
-    const {selectedProductDict} = this.state;
-    const {userToken, guestInfo, cartArray} = this.props;
+    const { selectedProductDict } = this.state;
+    const { userToken, guestInfo, cartArray } = this.props;
     let isOutOfStock = !selectedProductDict.is_in_stock;
 
     if (isOutOfStock) {
       showSingleAlert(
-        translate('Out of stock description') + ' ' + translate('Out of stock'),
+        translate("Out of stock description") + " " + translate("Out of stock")
       );
       return;
     }
 
     if (cartArray.length >= Constants.MAX_CART_SIZE) {
       showSingleAlert(
-        translate('cart count exceeds1') +
+        translate("cart count exceeds1") +
           Constants.MAX_CART_SIZE +
-          translate('cart count exceeds2'),
+          translate("cart count exceeds2")
       );
       return;
     }
@@ -563,7 +587,7 @@ class ProductDetailView extends Component {
       this._didTapOnAddToCart(true);
     } else {
       if (!guestInfo) {
-        this.setState({modalVisible: true});
+        this.setState({ modalVisible: true });
       } else {
         this._didTapOnAddToCart(true);
       }
@@ -584,57 +608,57 @@ class ProductDetailView extends Component {
   //   }
   // };
 
-  _didTapOnLikeButton = productId => {
-    const {userToken, onLikeTap, onDislikeTap} = this.props;
+  _didTapOnLikeButton = (productId) => {
+    const { userToken, onLikeTap, onDislikeTap } = this.props;
     if (userToken.length > 0) {
       if (this.state.isLiked) {
-        onDislikeTap(productId, status => {
+        onDislikeTap(productId, (status) => {
           if (status) {
-            showSimpleSnackbar(translate('Item removed from wishlist'));
-            this.setState({isLiked: false});
+            showSimpleSnackbar(translate("Item removed from wishlist"));
+            this.setState({ isLiked: false });
           } else {
-            this.setState({isLiked: true});
+            this.setState({ isLiked: true });
           }
         });
 
-        this.setState({isLiked: false});
+        this.setState({ isLiked: false });
       } else {
-        onLikeTap(productId, status => {
+        onLikeTap(productId, (status) => {
           if (status) {
-            showSimpleSnackbar(translate('Item added to wishlist'));
-            this.setState({isLiked: true});
+            showSimpleSnackbar(translate("Item added to wishlist"));
+            this.setState({ isLiked: true });
           } else {
-            this.setState({isLiked: false});
+            this.setState({ isLiked: false });
           }
         });
-        this.setState({isLiked: true});
+        this.setState({ isLiked: true });
       }
     } else {
       showAlertWithCallback(
-        translate('user_not_login'),
-        translate('Login'),
-        translate('Cancel'),
+        translate("user_not_login"),
+        translate("Login"),
+        translate("Cancel"),
         () => {
-          this.setState({isLoginViewShow: true});
+          this.setState({ isLoginViewShow: true });
         },
-        null,
+        null
       );
     }
   };
 
-  _openVideoPlayer = item => {
-    this.props.navigation.navigate('VideoPlayer', {vimeoUrl: item});
+  _openVideoPlayer = (item) => {
+    this.props.navigation.navigate("VideoPlayer", { vimeoUrl: item });
   };
 
   _didTapOn360 = () => {
-    const {productDetails, imagesArray360} = this.state;
+    const { productDetails, imagesArray360 } = this.state;
     if (imagesArray360.length > 0) {
-      this.setState({is360ViewShow: true});
+      this.setState({ is360ViewShow: true });
     } else {
       //'WT01'  sku for getting sample 360 images
-      this.props.get360Images(productDetails.sku, imagesArray360 => {
-        this.setState({imagesArray360}, () => {
-          this.setState({is360ViewShow: true});
+      this.props.get360Images(productDetails.sku, (imagesArray360) => {
+        this.setState({ imagesArray360 }, () => {
+          this.setState({ is360ViewShow: true });
         });
       });
     }
@@ -678,13 +702,13 @@ class ProductDetailView extends Component {
   };
 
   _didTapOnSizeChart = () => {
-    this.setState({isSizeChartShow: true});
+    this.setState({ isSizeChartShow: true });
   };
 
   _didSelectProductImage = (item, index) => {
-    const {productImagesArray} = this.state;
+    const { productImagesArray } = this.state;
     let popUpImagearray = [];
-    productImagesArray.map(item => {
+    productImagesArray.map((item) => {
       let dict = {
         source: {
           uri: Constants.APP_S3_BASE_URL + item,
@@ -733,18 +757,18 @@ class ProductDetailView extends Component {
 
     let numberOfColumnsOfColorsCell = 5;
     let relatedProducts = [];
-    let productdescription = '';
+    let productdescription = "";
     let hasVideo = false;
-    let productName = '';
-    let productFinalPrice = '';
-    let productActualPrice = '';
-    let productId = '';
+    let productName = "";
+    let productFinalPrice = "";
+    let productActualPrice = "";
+    let productId = "";
     let percentage = 0;
     let videoDict = null;
-    let shortDescription = '';
+    let shortDescription = "";
     let isProductHas360Image = false;
     let outOfStock = false;
-    let sizeChartImage = '';
+    let sizeChartImage = "";
 
     if (productDetails) {
       productId = productDetails.entity_id;
@@ -753,11 +777,11 @@ class ProductDetailView extends Component {
       productActualPrice = productDetails.regularPrice;
       relatedProducts = productDetails.related ? productDetails.related : [];
       shortDescription = productDetails.short_description;
-      isProductHas360Image = productDetails['360View'];
+      isProductHas360Image = productDetails["360View"];
       sizeChartImage = productDetails.chart;
 
       percentage = Math.floor(
-        ((productActualPrice - productFinalPrice) / productActualPrice) * 100,
+        ((productActualPrice - productFinalPrice) / productActualPrice) * 100
       );
 
       productdescription = productDetails.description;
@@ -776,10 +800,15 @@ class ProductDetailView extends Component {
       productActualPrice = selectedProductDict.price;
 
       percentage = Math.floor(
-        ((productActualPrice - productFinalPrice) / productActualPrice) * 100,
+        ((productActualPrice - productFinalPrice) / productActualPrice) * 100
       );
       outOfStock = !selectedProductDict.is_in_stock;
     }
+
+    // outOfStock = true;
+    // percentage = "12";
+    // isProductHas360Image = true;
+    // shortDescription = "wfewfwfwf wefwfwfw fwefewfwef wefwefwfwf ewfewfewfwef ";
 
     return (
       <SafeAreaView style={styles.safeContainer}>
@@ -790,6 +819,7 @@ class ProductDetailView extends Component {
           // translucent={true}
         />
         <NavigationHeader2
+          hideBottomLine
           didTapOnCart={this._didTapOnCart}
           showBackButton={true}
           didTapOnBackButton={this._didTapOnBackButton}
@@ -801,19 +831,19 @@ class ProductDetailView extends Component {
           cartItemsCount={cartArray.length}
         />
         {noInterNetView ? (
-          <View style={{flex: 1, backgroundColor: Constants.APP_WHITE_COLOR}}>
+          <View style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}>
             {!isNetworkAvailable && (
               <RefreshButtonView
                 didTapOnRefresh={() => {
                   if (!isNetworkAvailable) {
-                    showSingleAlert(translate('No internet connection'));
+                    showSingleAlert(translate("No internet connection"));
                   }
                 }}
               />
             )}
           </View>
         ) : (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <ScrollView
               showsVerticalScrollIndicator={false}
               refreshControl={
@@ -821,7 +851,8 @@ class ProductDetailView extends Component {
                   refreshing={isRefreshing}
                   onRefresh={this._didPullToRefresh}
                 />
-              }>
+              }
+            >
               {isProductGetAPICalling ? (
                 <View />
               ) : (
@@ -837,7 +868,7 @@ class ProductDetailView extends Component {
                       viewabilityConfig={{
                         itemVisiblePercentThreshold: 50,
                       }}
-                      renderItem={({item, index}) => (
+                      renderItem={({ item, index }) => (
                         <ProductImageItem
                           item={item}
                           index={index}
@@ -853,8 +884,11 @@ class ProductDetailView extends Component {
                       <View
                         style={[
                           styles.pagerContainer,
-                          {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                        ]}>
+                          {
+                            transform: [{ rotate: isRTL ? "180deg" : "0deg" }],
+                          },
+                        ]}
+                      >
                         {productImagesArray.map((item, index) => (
                           <View
                             style={[
@@ -871,33 +905,16 @@ class ProductDetailView extends Component {
                         ))}
                       </View>
                     )}
-                    <TouchableOpacity
-                      onPress={() => {
-                        this._didTapOnLikeButton(productId);
-                      }}
-                      hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
-                      style={styles.wishListContainer}>
-                      <Image
-                        source={Images.likeImage}
-                        resizeMode={'contain'}
-                        style={[
-                          styles.likeButtonImage,
-                          {
-                            tintColor: this.state.isLiked
-                              ? Constants.APP_RED_COLOR
-                              : null,
-                          },
-                        ]}
-                      />
-                    </TouchableOpacity>
+
                     {isProductHas360Image && (
                       <TouchableOpacity
                         onPress={this._didTapOn360}
-                        hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
-                        style={styles.imageRottationContainer}>
+                        hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}
+                        style={styles.imageRottationContainer}
+                      >
                         <Image
                           source={Images.image360}
-                          resizeMode={'contain'}
+                          resizeMode={"contain"}
                           style={styles.likeButtonImage}
                         />
                       </TouchableOpacity>
@@ -907,60 +924,119 @@ class ProductDetailView extends Component {
                     <TouchableOpacity
                       activeOpacity={Constants.ACTIVE_OPACITY}
                       style={styles.watchVideoContainer}
-                      onPress={() => this._openVideoPlayer(videoDict.url)}>
+                      onPress={() => this._openVideoPlayer(videoDict.url)}
+                    >
                       <Image
                         source={Images.videoPlay}
-                        style={{width: 15, height: 15}}
+                        style={{ width: 15, height: 15 }}
                       />
                       <Text style={styles.videoText}>
-                        {translate('WATCH VIDEO')}
+                        {translate("WATCH VIDEO")}
                       </Text>
                     </TouchableOpacity>
                   )}
                   <View style={styles.productInfoContainer}>
+                    <View style={styles.curveView} />
                     {outOfStock && (
-                      <Text style={[styles.productInfoText, {fontSize: 16}]}>
-                        {translate('Out of stock description')}
-                        <Text style={{color: '#B51818'}}>
-                          {' ' + translate('Out of stock')}
+                      <Text
+                        style={[
+                          styles.productInfoText,
+                          { fontSize: 16, marginTop: 20, marginBottom: 0 },
+                        ]}
+                      >
+                        {translate("Out of stock description")}
+                        <Text style={{ color: "#B51818" }}>
+                          {" " + translate("Out of stock")}
                         </Text>
                       </Text>
                     )}
-                    <Text style={styles.productInfoText}>{productName}</Text>
-                    {shortDescription && shortDescription !== '' ? (
-                      <Text style={[styles.productInfoText, {marginTop: 5}]}>
+                    <View style={styles.productCostContainer}>
+                      <View style={{ flexDirection: "row", flex: 1 }}>
+                        <Text style={styles.productCost}>
+                          {productFinalPrice + " " + currency}
+                        </Text>
+                        {percentage !== 0 && (
+                          <Text style={styles.productCostOffer}>
+                            {productActualPrice + " " + currency}
+                          </Text>
+                        )}
+                        {percentage !== 0 && (
+                          <Text style={styles.productCostOfferPercantage}>
+                            {percentage + "% OFF"}
+                          </Text>
+                        )}
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => {
+                          this._didTapOnLikeButton(productId);
+                        }}
+                        hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}
+                        style={styles.wishListContainer}
+                      >
+                        <Image
+                          source={
+                            this.state.isLiked
+                              ? Images.likeButtonWithShade
+                              : Images.unLikeImageWithShade
+                          }
+                          resizeMode={"contain"}
+                          style={[styles.likeButtonImage]}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <Text style={[styles.productInfoText, { marginTop: 0 }]}>
+                      {productName}
+                    </Text>
+                    {shortDescription && shortDescription !== "" ? (
+                      <Text
+                        style={[
+                          styles.productInfoText,
+                          { color: Constants.APP_GRAY_COLOR },
+                        ]}
+                      >
                         {shortDescription}
                       </Text>
                     ) : null}
 
-                    <View style={styles.productCostContainer}>
-                      <Text style={styles.productCost}>
-                        {productFinalPrice + ' ' + currency}
-                      </Text>
-                      {percentage !== 0 && (
-                        <Text style={styles.productCostOffer}>
-                          {productActualPrice + ' ' + currency}
-                        </Text>
-                      )}
-                      {percentage !== 0 && (
-                        <Text style={styles.productCostOfferPercantage}>
-                          {percentage + '% OFF'}
-                        </Text>
-                      )}
+                    <View style={styles.quantityControlContainer}>
+                      <TouchableOpacity
+                        onPress={this._didTapOnDecrement}
+                        style={styles.incrementButton}
+                      >
+                        <Text style={styles.quantityButtonTitle}>-</Text>
+                      </TouchableOpacity>
+                      <TextInput
+                        style={styles.quantityText}
+                        value={productCount.toString()}
+                      />
+                      <TouchableOpacity
+                        onPress={this._didTapOnIncrement}
+                        style={{
+                          width: 30,
+                          height: 30,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderLeftColor: Constants.APP_GRAY_COLOR,
+                          borderLeftWidth: 1,
+                        }}
+                      >
+                        <Text style={styles.quantityButtonTitle}>+</Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
+
                   {colorArray.length > 0 && (
                     <View style={styles.chooseColorContainer}>
                       <Text style={styles.sectionTitle}>
-                        {translate('Choose Color')}
+                        {translate("COLORS")}
                       </Text>
                       <FlatList
-                        style={{marginVertical: 15}}
+                        style={{ marginVertical: 15 }}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                         numColumns={numberOfColumnsOfColorsCell}
                         data={colorArray}
-                        renderItem={({item, index}) => (
+                        renderItem={({ item, index }) => (
                           <ColorItem
                             item={item}
                             index={index}
@@ -970,9 +1046,12 @@ class ProductDetailView extends Component {
                             }
                             selectedColorIndex={selectedColorIndex}
                             didTapOnItem={(item, index) => {
-                              this.setState({selectedColorIndex: index}, () => {
-                                this._didSelectVarient(item, index);
-                              });
+                              this.setState(
+                                { selectedColorIndex: index },
+                                () => {
+                                  this._didSelectVarient(item, index);
+                                }
+                              );
                             }}
                           />
                         )}
@@ -982,30 +1061,30 @@ class ProductDetailView extends Component {
                   <View style={styles.chooseColorContainer}>
                     {sizeArray.length > 0 && (
                       <View>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: "row" }}>
                           <Text style={styles.sectionTitle}>
-                            {translate('Size')}
+                            {translate("Sizes")}
                           </Text>
                           {sizeChartImage.length > 0 && (
                             <TouchableOpacity onPress={this._didTapOnSizeChart}>
                               <Text style={styles.sizeChart}>
-                                {translate('Size Chart')}
+                                {translate("Size Chart")}
                               </Text>
                             </TouchableOpacity>
                           )}
                         </View>
 
                         <FlatList
-                          style={{marginTop: 15, marginHorizontal: 20}}
+                          style={{ marginTop: 15, marginHorizontal: 20 }}
                           contentContainerStyle={{
                             // alignItems: 'center',
-                            justifyContent: 'center',
+                            justifyContent: "center",
                           }}
                           showsVerticalScrollIndicator={false}
                           showsHorizontalScrollIndicator={false}
                           numColumns={4}
                           data={sizeArray}
-                          renderItem={({item, index}) => (
+                          renderItem={({ item, index }) => (
                             <SizeItem
                               item={item}
                               index={index}
@@ -1013,10 +1092,10 @@ class ProductDetailView extends Component {
                               selectedSizeIndex={selectedSizeIndex}
                               didTapOnItem={(item, index) => {
                                 this.setState(
-                                  {selectedSizeIndex: index},
+                                  { selectedSizeIndex: index },
                                   () => {
                                     this._didSelectVarient(item, index);
-                                  },
+                                  }
                                 );
                               }}
                             />
@@ -1024,28 +1103,10 @@ class ProductDetailView extends Component {
                         />
                       </View>
                     )}
-                    <Text style={styles.sectionTitle}>
-                      {translate('Quantity')}
-                    </Text>
-                    <View style={styles.quantityContainer}>
-                      <TouchableOpacity
-                        onPress={this._didTapOnDecrement}
-                        style={styles.quantityButton}
-                        hitSlop={{top: 20, left: 20, bottom: 20, right: 20}}>
-                        <Text style={styles.quantityButtonText}>{'-'}</Text>
-                      </TouchableOpacity>
-                      <Text style={styles.countText}>{productCount}</Text>
-                      <TouchableOpacity
-                        onPress={this._didTapOnIncrement}
-                        style={styles.quantityButton}
-                        hitSlop={{top: 20, left: 20, bottom: 20, right: 20}}>
-                        <Text style={styles.quantityButtonText}>{'+'}</Text>
-                      </TouchableOpacity>
-                    </View>
                   </View>
                   <View style={styles.chooseColorContainer}>
                     <Text style={styles.sectionTitle}>
-                      {translate('Product Details')}
+                      {translate("Product Details")}
                     </Text>
                     <HTMLView
                       value={productdescription}
@@ -1054,22 +1115,22 @@ class ProductDetailView extends Component {
                     {relatedProducts.length > 0 && (
                       <View>
                         <Text style={styles.sectionTitle}>
-                          {translate('Similar Products')}
+                          {translate("Similar Products")}
                         </Text>
                         <FlatList
                           horizontal
-                          contentContainerStyle={{alignSelf: 'flex-start'}}
+                          contentContainerStyle={{ alignSelf: "flex-start" }}
                           showsVerticalScrollIndicator={false}
                           showsHorizontalScrollIndicator={false}
                           data={relatedProducts}
-                          renderItem={({item, index}) => (
+                          renderItem={({ item, index }) => (
                             <ProductCell2
                               item={item}
                               index={index}
                               isFromProductDetail={true}
                               currency={currency}
-                              didTapOnItem={item => {
-                                this.props.navigation.push('ProductDetail', {
+                              didTapOnItem={(item) => {
+                                this.props.navigation.push("ProductDetail", {
                                   sku: item.sku,
                                 });
                               }}
@@ -1089,34 +1150,37 @@ class ProductDetailView extends Component {
                 <TouchableOpacity
                   style={styles.addTocartButton}
                   activeOpacity={Constants.activeOpacity}
-                  onPress={() => this._didTapOnAddToCart(false)}>
+                  onPress={() => this._didTapOnAddToCart(false)}
+                >
                   <Text style={styles.addToCartText}>
-                    {translate('ADD TO CART')}
+                    {translate("ADD TO CART")}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.buyNowButton}
                   activeOpacity={Constants.activeOpacity}
-                  onPress={this._didTapOnBuyNow}>
-                  <Text style={styles.buyNowText}>{translate('BUY NOW')}</Text>
+                  onPress={this._didTapOnBuyNow}
+                >
+                  <Text style={styles.buyNowText}>{translate("BUY NOW")}</Text>
                 </TouchableOpacity>
               </View>
             )}
           </View>
         )}
         <Modal
-          onBackButtonPress={() => this.setState({isLoginViewShow: false})}
-          isVisible={isLoginViewShow}>
-          <View style={{flex: 1}}>
+          onBackButtonPress={() => this.setState({ isLoginViewShow: false })}
+          isVisible={isLoginViewShow}
+        >
+          <View style={{ flex: 1 }}>
             <Login
-              didTapOnclose={() => this.setState({isLoginViewShow: false})}
+              didTapOnclose={() => this.setState({ isLoginViewShow: false })}
             />
           </View>
         </Modal>
         <Modal
           isVisible={is360ViewShow}
-          onBackdropPress={() => this.setState({is360ViewShow: false})}
-          onBackButtonPress={() => this.setState({is360ViewShow: false})}
+          onBackdropPress={() => this.setState({ is360ViewShow: false })}
+          onBackButtonPress={() => this.setState({ is360ViewShow: false })}
           animationIn="zoomInDown"
           animationOut="zoomOutUp"
           animationInTiming={600}
@@ -1125,23 +1189,25 @@ class ProductDetailView extends Component {
           backdropTransitionOutTiming={600}
           style={{
             flex: 1,
-          }}>
+          }}
+        >
           <View
             style={{
               flex: 1,
               backgroundColor: Constants.APP_TRANSPARENT_COLOR,
-            }}>
+            }}
+          >
             <Image360
               imagesArray360={imagesArray360}
-              didTapOnclose={() => this.setState({is360ViewShow: false})}
+              didTapOnclose={() => this.setState({ is360ViewShow: false })}
             />
           </View>
         </Modal>
 
         <Modal
           isVisible={isSizeChartShow}
-          onBackdropPress={() => this.setState({isSizeChartShow: false})}
-          onBackButtonPress={() => this.setState({isSizeChartShow: false})}
+          onBackdropPress={() => this.setState({ isSizeChartShow: false })}
+          onBackButtonPress={() => this.setState({ isSizeChartShow: false })}
           animationIn="zoomInDown"
           animationOut="zoomOutUp"
           animationInTiming={600}
@@ -1150,31 +1216,34 @@ class ProductDetailView extends Component {
           backdropTransitionOutTiming={600}
           style={{
             flex: 1,
-          }}>
+          }}
+        >
           <View style={styles.sizeChartContainerView}>
             <Image
               style={styles.sizeChartImageView}
-              source={{uri: Constants.APP_S3_BASE_URL + sizeChartImage}}
+              source={{ uri: Constants.APP_S3_BASE_URL + sizeChartImage }}
             />
             <TouchableOpacity
               onPress={() => {
-                this.setState({isSizeChartShow: false});
+                this.setState({ isSizeChartShow: false });
               }}
-              style={styles.sizeChartView}>
-              <Image source={Images.close} style={{width: 15, height: 15}} />
+              style={styles.sizeChartView}
+            >
+              <Image source={Images.close} style={{ width: 15, height: 15 }} />
             </TouchableOpacity>
           </View>
         </Modal>
 
         <Modal
-          onBackButtonPress={() => this.setState({modalVisible: false})}
-          isVisible={modalVisible}>
-          <View style={{flex: 1}}>
+          onBackButtonPress={() => this.setState({ modalVisible: false })}
+          isVisible={modalVisible}
+        >
+          <View style={{ flex: 1 }}>
             <Login
               isGuestLogin={true}
-              didTapOnclose={() => this.setState({modalVisible: false})}
+              didTapOnclose={() => this.setState({ modalVisible: false })}
               guestInfoAddedCallback={() => {
-                this.setState({modalVisible: false});
+                this.setState({ modalVisible: false });
                 this._didTapOnAddToCart(true);
               }}
             />
@@ -1188,8 +1257,8 @@ class ProductDetailView extends Component {
           animationType="fade"
           isVisible={isImageViewVisible}
           // renderFooter={this.renderFooter}
-          onClose={() => this.setState({isImageViewVisible: false})}
-          onImageChange={index => {
+          onClose={() => this.setState({ isImageViewVisible: false })}
+          onImageChange={(index) => {
             console.log(index);
           }}
         />

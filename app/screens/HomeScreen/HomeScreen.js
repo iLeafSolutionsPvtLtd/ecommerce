@@ -403,6 +403,7 @@ class HomeScreen extends Component {
           showCart={true}
           countryFlag={countryFlagg}
           cartItemsCount={cartArray.length}
+          // navigationBackgroundColor={"red"}
         />
         {loader ? (
           <HudView />

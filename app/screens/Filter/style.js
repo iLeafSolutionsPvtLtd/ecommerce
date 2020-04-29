@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   checkbox_icon: {
     // width: 20,
     // height: 20,
-    tintColor: Constants.APP_THEME_COLOR,
+    // tintColor: Constants.APP_THEME_COLOR,
   },
   view_textinputs: {
     borderWidth: 1,

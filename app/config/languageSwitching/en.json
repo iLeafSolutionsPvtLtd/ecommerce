@@ -20,7 +20,7 @@
   "Facebook": "Facebook",
   "Apple": "Apple",
   "Home": "HOME",
-  "Categories": "CATEGORIES",
+  "Categories": "Categories",
   "Wishlist": "WishList",
   "My Account": "My Account",
   "Account": "Account",
@@ -53,7 +53,7 @@
   "NEW ARRIVAL": "NEW ARRIVAL",
   "INTERNATIONAL": "INTERNATIONAL",
   "Add Address": "ADD ADDRESS",
-  "Edit": "EDIT",
+  "Edit": "Edit",
   "Remove": "REMOVE",
   "Set as default": "SET AS DEFAULT",
   "More": "MORE",
@@ -210,5 +210,8 @@
   "TOTAL PRICE": "TOTAL PRICE",
   "FEE AND EASY  RETURNS": "FEE AND EASY  RETURNS",
   "Send_back_order": "Send it back within 30 days of reciving your order.",
-  "More info": "More info"
+  "More info": "More info",
+  "COLORS": "COLORS",
+  "Sizes": "SIZES",
+  "ADD NEW ADDRESS": "ADD NEW ADDRESS"
 }

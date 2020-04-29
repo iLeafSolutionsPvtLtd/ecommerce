@@ -9,7 +9,13 @@ import {
   setI18nConfig,
   setI18nConfigSecondTime,
 } from "./../config/languageSwitching";
-import { View, Dimensions, Animated, ActivityIndicator } from "react-native";
+import {
+  View,
+  Dimensions,
+  Animated,
+  SafeAreaView,
+  ImageBackground,
+} from "react-native";
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import NetInfo from "@react-native-community/netinfo";
@@ -35,7 +41,7 @@ class PreLoaderScreen extends Component {
     super(props);
     this.state = {
       isAPICalled: false,
-      animationValue: new Animated.Value(180),
+      animationValue: new Animated.Value(150),
       isLoginViewShow: false,
     };
   }
@@ -66,14 +72,14 @@ class PreLoaderScreen extends Component {
     setInterval(() => {
       if (this.state.viewState == true) {
         Animated.timing(this.state.animationValue, {
-          toValue: 220,
+          toValue: 150,
           useNativeDriver: false,
         }).start(() => {
           this.setState({ viewState: false });
         });
       } else {
         Animated.timing(this.state.animationValue, {
-          toValue: 180,
+          toValue: 100,
           useNativeDriver: false,
         }).start(this.setState({ viewState: true }));
       }
@@ -189,31 +195,40 @@ class PreLoaderScreen extends Component {
     };
     const { isLoginViewShow } = this.state;
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: Constants.APP_BLACK_COLOR,
-        }}
-      >
-        <Animated.Image
-          style={[{ width: 250, height: 250 }, animatedStyle]}
-          source={Images.logoLarge}
-          resizeMode={"contain"}
-        />
-
-        <Modal isVisible={isLoginViewShow}>
-          <View style={{ flex: 1 }}>
-            <Login
-              didTapOnclose={() => {
-                this.setState({ isLoginViewShow: false });
-                this.props.navigation.navigate("Tab");
-              }}
+      <SafeAreaView style={{ flex: 1 }}>
+        <ImageBackground
+          source={Images.splash}
+          style={{
+            width: Constants.screenWidth,
+            height: Constants.SCREEN_HEIGHT,
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              // backgroundColor: Constants.APP_THEME_COLOR,
+            }}
+          >
+            <Animated.Image
+              style={[{ width: 100, height: 100 }, animatedStyle]}
+              source={Images.logoLarge}
+              resizeMode={"contain"}
             />
           </View>
-        </Modal>
-      </View>
+          <Modal isVisible={isLoginViewShow}>
+            <View style={{ flex: 1 }}>
+              <Login
+                didTapOnclose={() => {
+                  this.setState({ isLoginViewShow: false });
+                  this.props.navigation.navigate("Tab");
+                }}
+              />
+            </View>
+          </Modal>
+        </ImageBackground>
+      </SafeAreaView>
     );
     // return (
     //   <View

@@ -39,6 +39,7 @@ class NavigationHeader1 extends Component {
       countryFlag,
       cartItemsCount,
       isFilterApplied,
+      navigationBackgroundColor,
     } = this.props;
     return (
       <View>
@@ -46,8 +47,8 @@ class NavigationHeader1 extends Component {
           style={[
             styles.container,
             {
-              backgroundColor: isDark
-                ? Constants.APP_BLACK_COLOR
+              backgroundColor: navigationBackgroundColor
+                ? navigationBackgroundColor
                 : Constants.APP_WHITE_COLOR,
               borderBottomWidth: hideBottomLine ? 0 : 1,
             },
@@ -251,7 +252,7 @@ class NavigationHeader1 extends Component {
                     style={{
                       fontFamily: Constants.Fonts.BOLD,
                       fontSize: 12,
-                      color: Constants.APP_BLACK_COLOR,
+                      color: Constants.APP_WHITE_COLOR,
                     }}
                   >
                     {cartItemsCount}

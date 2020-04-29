@@ -4,30 +4,38 @@
  * Categories styles -
  */
 
-import {StyleSheet} from 'react-native';
-import AppStyles from '../../config/styles';
-import Constants from '../../config/constants';
+import { StyleSheet } from "react-native";
+import AppStyles from "../../config/styles";
+import Constants from "../../config/constants";
 
 const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
-     backgroundColor: Constants.APP_BLACK_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR,
   },
   container: {
     backgroundColor: AppStyles.color.COLOR_WHITE,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  categorySelectedTitle:{
+  categorySelectedTitle: {
     fontSize: 14,
-    fontFamily:Constants.Fonts.BOLD,
-    textTransform:'uppercase'
+    fontFamily: Constants.Fonts.BOLD,
+    textTransform: "uppercase",
+    color: Constants.APP_THEME_COLOR,
   },
-  categoryTitle:{
+  categoryTitle: {
     fontSize: 14,
-    textTransform:'uppercase',
-    fontFamily:Constants.Fonts.REGULAR,
+    textTransform: "uppercase",
+    fontFamily: Constants.Fonts.REGULAR,
+  },
+  titleStyle: {
+    marginTop: 20,
+    marginLeft: 20,
+    fontSize: 18,
+    color: Constants.APP_THEME_COLOR,
+    fontFamily: Constants.Fonts.MEDIUM,
   },
 });
 

@@ -299,6 +299,7 @@ class WishListView extends Component {
         <View style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}>
           <NavigationHeader2
             hideSearch
+            hideBottomLine
             // title={translate("WishList")}
             didTapOnSearch={this._didTapOnSearch}
             didTapOnCart={this._didTapOnCart}

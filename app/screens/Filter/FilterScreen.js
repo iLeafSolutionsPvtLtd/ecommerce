@@ -572,7 +572,7 @@ const ChildComponent2 = memo(
                     source={Images.whiteTick}
                     style={[
                       Styles.checkbox_icon,
-                      { tintColor: Constants.APP_WHITE_COLOR },
+                      // { tintColor: Constants.APP_WHITE_COLOR },
                     ]}
                   />
                 )}

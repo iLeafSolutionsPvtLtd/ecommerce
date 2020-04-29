@@ -54,7 +54,10 @@ const images = {
   tick: require("../assets/icons/tick.png"),
   whiteTick: require("../assets/icons/whiteTick.png"),
   refreshIcon: require("../assets/icons/refreshIcon.png"),
+  likeButtonWithShade: require("../assets/icons/likeButtonWithShade.png"),
+  unLikeImageWithShade: require("../assets/icons/unLikeImageWithShade.png"),
 
+  splash: require("../assets/images/splash.png"),
   placeHolderProduct: require("../assets/images/placeHolderProduct.jpg"),
   filterIcons: {
     check_tick: require("../assets/icons/check_box_white.png"),

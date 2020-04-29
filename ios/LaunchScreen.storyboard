@@ -21,26 +21,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="©2020, Saloonaat.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="obG-Y5-kRd">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash" translatesAutoresizingMaskIntoConstraints="NO" id="R0k-mz-gYw">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="©2020, iLeafSolutions.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="obG-Y5-kRd">
                                 <rect key="frame" x="0.0" y="864" width="414" height="12"/>
                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="10"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Atg-bz-MXZ">
-                                <rect key="frame" x="20" y="383" width="374" height="60"/>
+                                <rect key="frame" x="20" y="338" width="374" height="150"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="KRy-5t-BVE"/>
+                                    <constraint firstAttribute="height" constant="150" id="KRy-5t-BVE"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.16470588235294117" green="0.16470588235294117" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Atg-bz-MXZ" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" constant="-40" id="1c9-lb-F0w"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="R0k-mz-gYw" secondAttribute="trailing" id="1e2-oZ-Axj"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
                             <constraint firstItem="Atg-bz-MXZ" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="20" id="X1F-Oj-Hdv"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
+                            <constraint firstItem="R0k-mz-gYw" firstAttribute="bottom" secondItem="Bcu-3y-fUS" secondAttribute="bottom" constant="34" id="dMx-Bn-Ddd"/>
+                            <constraint firstItem="R0k-mz-gYw" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="kSL-Bp-Qra"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="top" secondItem="R0k-mz-gYw" secondAttribute="top" constant="44" id="nXE-VC-lc6"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="Atg-bz-MXZ" secondAttribute="trailing" constant="20" id="tae-3l-9C2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
@@ -52,6 +59,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo" width="198" height="39"/>
+        <image name="Splash" width="1024" height="1024"/>
+        <image name="logo" width="62" height="145"/>
     </resources>
 </document>
