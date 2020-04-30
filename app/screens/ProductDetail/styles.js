@@ -190,8 +190,8 @@ const styles = StyleSheet.create({
   },
   addTocartButton: {
     flex: 1,
-    borderRadius: normalizedHeight(30),
-    height: normalizedHeight(60),
+    borderRadius: normalizedHeight(54 / 2),
+    height: normalizedHeight(54),
     borderWidth: 1,
     marginLeft: 20,
     marginRight: 10,
@@ -201,8 +201,8 @@ const styles = StyleSheet.create({
   },
   buyNowButton: {
     flex: 1,
-    borderRadius: normalizedHeight(30),
-    height: normalizedHeight(60),
+    borderRadius: normalizedHeight(54 / 2),
+    height: normalizedHeight(54),
     marginRight: 20,
     marginLeft: 10,
     backgroundColor: Constants.APP_THEME_COLOR,

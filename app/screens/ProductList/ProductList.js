@@ -43,7 +43,7 @@ const renderTabBar = (props) => (
   <TabBar
     {...props}
     scrollEnabled
-    indicatorStyle={{ backgroundColor: "rgb(167,106,28)" }}
+    indicatorStyle={{ backgroundColor: Constants.APP_THEME_COLOR }}
     style={{ backgroundColor: Constants.APP_WHITE_COLOR, height: 42 }}
     renderLabel={({ route, focused, color }) => (
       <Text
@@ -748,7 +748,6 @@ class ProductList extends React.Component {
           // translucent={true}
         />
         <NavigationHeader2
-          title={categoryName}
           didTapOnSearch={this._didTapOnSearch}
           didTapOnCart={this._didTapOnCart}
           showBackButton={true}
@@ -761,6 +760,7 @@ class ProductList extends React.Component {
           cartItemsCount={cartArray.length}
           isFilterApplied={selectedFilters}
         />
+        <Text style={styles.titleStyle}>{categoryName}</Text>
         <View style={{ flex: 1, backgroundColor: Constants.APP_GRAY_COLOR2 }}>
           {routes.length > 0 ? (
             <TabView

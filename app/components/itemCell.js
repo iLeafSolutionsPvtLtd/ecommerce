@@ -178,6 +178,7 @@ const ItemCell = React.memo(
     currency,
     updateCartProductToParent,
     totalCost,
+    itemTotalCost,
   }) => {
     function removeFromCart() {}
 
@@ -239,6 +240,10 @@ const ItemCell = React.memo(
           total = dataItem.row_total;
         }
       });
+    }
+
+    if (itemTotalCost) {
+      total = itemTotalCost;
     }
 
     return (

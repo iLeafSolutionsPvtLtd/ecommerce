@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
-import AppStyles from '../../config/styles';
-import Constants from '../../config/constants';
+import { StyleSheet } from "react-native";
+import AppStyles from "../../config/styles";
+import Constants from "../../config/constants";
 
 const styles = StyleSheet.create({
   safeContainer: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     // marginEnd: 18,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   underLineStyle: {
     borderBottomWidth: 1,
@@ -22,16 +22,24 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   orderNumberText: {
-    fontSize: 16,
+    fontSize: 14,
     color: Constants.APP_BLACK_COLOR,
     fontFamily: Constants.Fonts.MEDIUM,
-    textAlign: 'left',
+    textAlign: "left",
+    width: 110,
   },
   deliveryStatusText: {
     fontSize: 14,
-    marginVertical: 5,
     fontFamily: Constants.Fonts.REGULAR,
-    textAlign: 'left',
+    textAlign: "left",
+  },
+  titleStyle: {
+    // marginTop: 20,
+    marginLeft: 20,
+    marginBottom: 10,
+    fontSize: 18,
+    color: Constants.APP_THEME_COLOR,
+    fontFamily: Constants.Fonts.MEDIUM,
   },
 });
 

@@ -13,6 +13,7 @@ import {
   View,
   Dimensions,
   Animated,
+  StatusBar,
   SafeAreaView,
   ImageBackground,
 } from "react-native";
@@ -195,7 +196,15 @@ class PreLoaderScreen extends Component {
     };
     const { isLoginViewShow } = this.state;
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: Constants.APP_THEME_COLOR }}
+      >
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent={true}
+        />
+
         <ImageBackground
           source={Images.splash}
           style={{
@@ -212,7 +221,7 @@ class PreLoaderScreen extends Component {
             }}
           >
             <Animated.Image
-              style={[{ width: 100, height: 100 }, animatedStyle]}
+              style={[{ marginBottom: 100 }, animatedStyle]}
               source={Images.logoLarge}
               resizeMode={"contain"}
             />

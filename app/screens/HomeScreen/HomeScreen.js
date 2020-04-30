@@ -389,7 +389,7 @@ class HomeScreen extends Component {
     return (
       <SafeAreaView style={styles.safeContainer}>
         <StatusBar
-          // barStyle="light-content"
+          barStyle="dark-content"
           hidden={false}
           backgroundColor={Constants.APP_WHITE_COLOR}
           // translucent={true}

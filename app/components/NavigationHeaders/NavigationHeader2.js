@@ -65,8 +65,8 @@ class NavigationHeader1 extends Component {
                   resizeMode={"contain"}
                   style={{
                     marginLeft: 20,
-                    width: 17,
-                    height: 17,
+                    width: 24,
+                    height: 24,
                     transform: [{ rotate: isRTL ? "180deg" : "0deg" }],
                   }}
                 />

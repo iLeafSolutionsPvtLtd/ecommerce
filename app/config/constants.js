@@ -10,7 +10,7 @@ const { width, height } = Dimensions.get("window");
 const isProduction = false; //Change here  for converting 'PRODUCTION' or 'STAGING'
 
 export default (constants = {
-  APP_NAME: "Saloonaat",
+  APP_NAME: "iLeaf E Commerce",
 
   APP_BASE_URL: isProduction
     ? "https://staging.saloonaat.com"

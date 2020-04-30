@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import Constants from "../../config/constants";
+import { normalizedHeight, normalizedWidth } from "../../config/common";
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Constants.APP_WHITE_COLOR },
@@ -21,14 +22,14 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   btn_touchable_style: {
-    height: 50,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Constants.APP_THEME_COLOR,
-    borderRadius: 25,
     alignSelf: "center",
     width: "80%",
     marginBottom: 10,
+    borderRadius: normalizedHeight(54 / 2),
+    height: normalizedHeight(54),
   },
   card_name_row: { flexDirection: "row" },
   checkmark: { width: 10, height: 7 },

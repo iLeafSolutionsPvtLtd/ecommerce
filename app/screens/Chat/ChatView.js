@@ -4,14 +4,14 @@
  * ChatView -
  */
 
-import {View, StatusBar, SafeAreaView} from 'react-native';
-import styles from './styles';
-import React, {Component} from 'react';
-import Constants from '../../config/constants';
-import {WebView} from 'react-native-webview';
-import HudView from '../../components/hudView';
-import {translate} from '../../config/languageSwitching/index';
-import NavigationHeader1 from '../../components/NavigationHeaders/NavigationHeader1';
+import { View, StatusBar, SafeAreaView, Text } from "react-native";
+import styles from "./styles";
+import React, { Component } from "react";
+import Constants from "../../config/constants";
+import { WebView } from "react-native-webview";
+import HudView from "../../components/hudView";
+import { translate } from "../../config/languageSwitching/index";
+import NavigationHeader1 from "../../components/NavigationHeaders/NavigationHeader1";
 
 class ChatView extends Component {
   constructor(props) {
@@ -24,25 +24,22 @@ class ChatView extends Component {
   componentDidMount() {}
 
   render() {
-    const {isRTL} = this.props;
+    const { isRTL } = this.props;
     return (
       <SafeAreaView style={styles.safeContainer}>
-        <StatusBar
-          barStyle="dark-content"
-          hidden={false}
-          backgroundColor={Constants.APP_WHITE_COLOR}
-        />
+        <StatusBar hidden={false} backgroundColor={Constants.APP_WHITE_COLOR} />
         <NavigationHeader1
-          title={translate('Chat')}
+          hideBottomLine
           didTapOnLeftButton={() => this.props.navigation.goBack()}
         />
+        <Text style={styles.titleStyle}>{translate("Chat")}</Text>
         <View style={styles.safeContainer}>
           <WebView
             source={{
-              uri: 'https://tawk.to/chat/5e562c20298c395d1ce9db01/default',
+              uri: "https://tawk.to/chat/5e562c20298c395d1ce9db01/default",
             }}
-            onLoadStart={() => this.setState({loaderVisible: true})}
-            onLoadEnd={() => this.setState({loaderVisible: false})}
+            onLoadStart={() => this.setState({ loaderVisible: true })}
+            onLoadEnd={() => this.setState({ loaderVisible: false })}
           />
         </View>
         {this.state.loaderVisible && <HudView />}

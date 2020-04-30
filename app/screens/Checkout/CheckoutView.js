@@ -13,20 +13,20 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
-} from 'react-native';
-import styles from './styles';
-import Modal from 'react-native-modal';
-import Images from '../../config/images';
-import {format, addHours} from 'date-fns';
-import HudView from '../../components/hudView';
-import Constants from '../../config/constants';
-import ItemCell from '../../components/itemCell';
-import DatePicker from 'react-native-date-picker';
-import {showSingleAlert} from '../../config/common';
-import React, {Component, memo, useState} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
-import {translate} from '../../config/languageSwitching/index';
-import NavigationHeader1 from '../../components/NavigationHeaders/NavigationHeader1';
+} from "react-native";
+import styles from "./styles";
+import Modal from "react-native-modal";
+import Images from "../../config/images";
+import { format, addHours } from "date-fns";
+import HudView from "../../components/hudView";
+import Constants from "../../config/constants";
+import ItemCell from "../../components/itemCell";
+import DatePicker from "react-native-date-picker";
+import { showSingleAlert } from "../../config/common";
+import React, { Component, memo, useState } from "react";
+import { ScrollView } from "react-native-gesture-handler";
+import { translate } from "../../config/languageSwitching/index";
+import NavigationHeader1 from "../../components/NavigationHeaders/NavigationHeader1";
 
 const CategoryCall = memo(
   ({
@@ -47,28 +47,38 @@ const CategoryCall = memo(
     const [totalGross, setTotalGross] = useState(totalProductGross);
 
     function getQuantity(quantityValue) {
-      console.log('quantityValue', quantityValue);
+      console.log("quantityValue", quantityValue);
       setTotalGross(quantityValue * item.price);
     }
 
     return (
-      <View style={{marginTop: 5, backgroundColor: Constants.APP_WHITE_COLOR}}>
-        <View style={{marginHorizontal: 0}}>
-          <ItemCell
-            item={item}
-            addProductToWishList={addProductToWishList}
-            index={index}
-            productsSizes={productsSizes}
-            productsColors={productsColors}
-            allowAddOption={false}
-            showQuantity={true}
-            currency={currency}
-            totalCost={totalCost}
-          />
-        </View>
+      <View
+        style={{
+          backgroundColor: Constants.APP_WHITE_COLOR,
+          margin: 20,
+          shadowOffset: { width: 0, height: 5 },
+          shadowColor: "rgba(46,69,187,0.56)",
+          shadowOpacity: 0.3,
+          shadowRadius: 5,
+          borderRadius: 5,
+          paddingBottom: 5,
+          paddingTop: 5,
+        }}
+      >
+        <ItemCell
+          item={item}
+          addProductToWishList={addProductToWishList}
+          index={index}
+          productsSizes={productsSizes}
+          productsColors={productsColors}
+          allowAddOption={false}
+          showQuantity={true}
+          currency={currency}
+          totalCost={totalCost}
+        />
       </View>
     );
-  },
+  }
 );
 
 class CheckoutView extends Component {
@@ -81,25 +91,25 @@ class CheckoutView extends Component {
       totalCostDict,
       nowDate: new Date(),
       newDate: new Date(),
-      nowTime: '10:00 am - 11:00 am',
-      newTime: '10:00 am - 11:00 am',
+      nowTime: "10:00 am - 11:00 am",
+      newTime: "10:00 am - 11:00 am",
       showDatePicker: false,
       showTimePicker: false,
       selectedAddressIndex: -1,
-      voucherCode: '',
+      voucherCode: "",
       isVoucherApplied: false,
-      mCartList: '',
-      mGuestcartList: '',
+      mCartList: "",
+      mGuestcartList: "",
       paymentMethods: [],
       shipmentMethods: [],
     };
   }
 
   componentDidMount() {
-    const {addressList, cartList, userToken, guestcartList} = this.props;
+    const { addressList, cartList, userToken, guestcartList } = this.props;
     let defaultAddress = null;
     if (addressList && addressList.length > 0) {
-      addressList.map(item => {
+      addressList.map((item) => {
         if (item.default_billing) {
           defaultAddress = item;
         }
@@ -107,22 +117,22 @@ class CheckoutView extends Component {
     }
 
     if (defaultAddress) {
-      this.setState({addressDict: defaultAddress}, () => {
+      this.setState({ addressDict: defaultAddress }, () => {
         if (userToken && userToken.length > 0) {
           this._setShippingAddress();
-          console.log('defaultAddress', defaultAddress);
+          console.log("defaultAddress", defaultAddress);
         }
       });
     }
-    this.setState({mCartList: cartList});
-    this.setState({mGuestcartList: guestcartList});
+    this.setState({ mCartList: cartList });
+    this.setState({ mGuestcartList: guestcartList });
   }
 
   componentWillUnmount() {}
 
   _getPaymentAndShippingMethodsCallback = (
     paymentMethodsArray,
-    shipmentMethodsArray,
+    shipmentMethodsArray
   ) => {
     if (paymentMethodsArray.length > 0 && shipmentMethodsArray.length > 0) {
       this.setState({
@@ -130,21 +140,21 @@ class CheckoutView extends Component {
         shipmentMethods: shipmentMethodsArray,
       });
     } else {
-      showSingleAlert(translate('API_Failed'), translate('Ok'), () => {
+      showSingleAlert(translate("API_Failed"), translate("Ok"), () => {
         this.props.navigation.goBack();
       });
     }
   };
 
   _didTapOnAddAddress = () => {
-    const {userToken} = this.props;
+    const { userToken } = this.props;
     if (userToken.length > 0) {
-      this.props.navigation.navigate('AddressListScreen', {
+      this.props.navigation.navigate("AddressListScreen", {
         selectedAddressIndex: this.state.selectedAddressIndex,
         didSelectUserAddress: this._didSelectUserAddress,
       });
     } else {
-      this.props.navigation.navigate('AddAddressScreen', {
+      this.props.navigation.navigate("AddAddressScreen", {
         details: this.state.addressDict,
         isFromGuestCheckout: true,
         addAddressCallback: this._addAddressCallback,
@@ -152,23 +162,23 @@ class CheckoutView extends Component {
     }
   };
 
-  _addAddressCallback = addressDict => {
-    this.setState({addressDict}, () => {
-      console.log('ADDRESS==>', addressDict);
+  _addAddressCallback = (addressDict) => {
+    this.setState({ addressDict }, () => {
+      console.log("ADDRESS==>", addressDict);
       this._setShippingAddress();
     });
   };
 
   _didSelectUserAddress = (addressDict, selectedAddressIndex) => {
-    console.log('ADDRESS====', addressDict);
-    this.setState({addressDict, selectedAddressIndex}, () => {
+    console.log("ADDRESS====", addressDict);
+    this.setState({ addressDict, selectedAddressIndex }, () => {
       this._setShippingAddress();
     });
   };
 
   _setShippingAddress = () => {
-    const {addressDict} = this.state;
-    const {userToken, guestInfo, userInfo} = this.props;
+    const { addressDict } = this.state;
+    const { userToken, guestInfo, userInfo } = this.props;
 
     let email = userToken.length > 0 ? userInfo.email : guestInfo.email;
 
@@ -197,37 +207,42 @@ class CheckoutView extends Component {
           lastname: addressDict.lastname,
           email: email,
         },
-        shipping_method_code: 'flatrate',
-        shipping_carrier_code: 'flatrate',
+        shipping_method_code: "flatrate",
+        shipping_carrier_code: "flatrate",
       },
     };
     this.props.setShipmentInfo(params, false, this._setShippingAddressCallback);
   };
 
-  _setShippingAddressCallback = status => {
+  _setShippingAddressCallback = (status) => {
     if (status) {
       this.props.getPaymentAndShippingMethods(
-        this._getPaymentAndShippingMethodsCallback,
+        this._getPaymentAndShippingMethodsCallback
       );
     } else {
-      showSingleAlert(translate('shipping address error'));
+      showSingleAlert(translate("shipping address error"));
     }
   };
 
-  _didTapOnShipmentMethod = item => {
+  _didTapOnShipmentMethod = (item) => {
     //TODO: shipment tap
   };
 
-  _didTapOnPaymentMethod = item => {
+  _didTapOnPaymentMethod = (item) => {
     //TODO: payment tap
   };
 
   _didOpenCompletionPage = () => {
-    const {addressDict, totalCostDict, mCartList, mGuestcartList} = this.state;
-    const {userToken} = this.props;
+    const {
+      addressDict,
+      totalCostDict,
+      mCartList,
+      mGuestcartList,
+    } = this.state;
+    const { userToken } = this.props;
     let itemArray = userToken.length > 0 ? mCartList : mGuestcartList;
 
-    this.props.navigation.navigate('OrderCompletion', {
+    this.props.navigation.navigate("OrderCompletion", {
       addressDict: addressDict,
       totalCostDict: totalCostDict,
       itemArray: itemArray,
@@ -235,11 +250,11 @@ class CheckoutView extends Component {
   };
 
   _didTapOnPlaceOrder = () => {
-    const {addressDict} = this.state;
-    const {userToken, guestInfo, userInfo} = this.props;
+    const { addressDict } = this.state;
+    const { userToken, guestInfo, userInfo } = this.props;
 
     if (!addressDict.firstname) {
-      showSingleAlert(translate('Please add your address'));
+      showSingleAlert(translate("Please add your address"));
       return;
     }
 
@@ -270,14 +285,14 @@ class CheckoutView extends Component {
           lastname: addressDict.lastname,
           email: email,
         },
-        shipping_method_code: 'flatrate',
-        shipping_carrier_code: 'flatrate',
+        shipping_method_code: "flatrate",
+        shipping_carrier_code: "flatrate",
       },
     };
     this.props.setShipmentInfo(params, true, this._orderPlacedCallback);
   };
 
-  _orderPlacedCallback = status => {
+  _orderPlacedCallback = (status) => {
     if (status) {
       // showSingleAlert(
       //   translate('Order placed Successfully'),
@@ -295,18 +310,18 @@ class CheckoutView extends Component {
   };
 
   _didTapOnApplyVoucher = () => {
-    const {voucherCode} = this.state;
-    if (voucherCode === '') {
-      showSingleAlert(translate('voucher code empty'));
+    const { voucherCode } = this.state;
+    if (voucherCode === "") {
+      showSingleAlert(translate("voucher code empty"));
       return;
     }
-    this.props.applyVoucher(voucherCode, status => {
+    this.props.applyVoucher(voucherCode, (status) => {
       if (status) {
-        showSingleAlert(translate('Voucher applied successfully'));
-        this.setState({isVoucherApplied: true});
+        showSingleAlert(translate("Voucher applied successfully"));
+        this.setState({ isVoucherApplied: true });
       } else {
-        showSingleAlert(translate('Invalid Voucher'));
-        this.setState({voucherCode: '', isVoucherApplied: false});
+        showSingleAlert(translate("Invalid Voucher"));
+        this.setState({ voucherCode: "", isVoucherApplied: false });
       }
     });
   };
@@ -338,31 +353,31 @@ class CheckoutView extends Component {
     // let paymentMethods = ['KENT', 'Credit Card', 'Cash on Delivery'];
     let shipmentMethods = [
       {
-        name: 'Fedex',
-        delivery: 'Expected Delivery 2 days',
+        name: "Fedex",
+        delivery: "Delivery in 2 days",
         price: 10,
         isSelected: false,
       },
       {
-        name: 'Aramex',
-        delivery: 'Expected Delivery 3 days',
+        name: "Aramex",
+        delivery: "Delivery in 3 days",
         price: 8,
         isSelected: true,
       },
       {
-        name: 'Bluedart',
-        delivery: 'Expected Delivery 4 days',
+        name: "Bluedart",
+        delivery: "Delivery in 4 days",
         price: 5,
         isSelected: false,
       },
     ];
 
     let itemArray = userToken.length > 0 ? cartList : guestcartList;
-    let newStreetAddress = '';
+    let newStreetAddress = "";
     let isAddressAvailable = false;
     if (addressDict && addressDict.firstname) {
       newStreetAddress =
-        addressDict.street.length > 0 ? addressDict.street[0] : '';
+        addressDict.street.length > 0 ? addressDict.street[0] : "";
       isAddressAvailable = true;
     }
 
@@ -372,18 +387,20 @@ class CheckoutView extends Component {
     return (
       <SafeAreaView style={styles.safeContainer}>
         <NavigationHeader1
+          hideBottomLine
           isRTL={isRTL}
-          title={translate('Checkout')}
+          // title={translate('Checkout')}
           didTapOnLeftButton={() => this.props.navigation.goBack()}
         />
         <ScrollView
-          styl={{flex: 1, backgroundColor: Constants.APP_GRAY_COLOR2}}>
-          <View style={{flex: 1, backgroundColor: Constants.APP_GRAY_COLOR2}}>
+          styl={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}
+        >
+          <View style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}>
             <FlatList
-              style={{flex: 1, backgroundColor: Constants.APP_GRAY_COLOR2}}
+              style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}
               data={itemArray}
               extraData={itemArray}
-              renderItem={({item, index}) => (
+              renderItem={({ item, index }) => (
                 <CategoryCall
                   item={item}
                   index={index}
@@ -395,19 +412,23 @@ class CheckoutView extends Component {
               )}
             />
 
-            {(storeCode === 'kwstoreen' || storeCode === 'kwstorear') && (
+            {(storeCode === "kwstoreen" || storeCode === "kwstorear") && (
               <View style={styles.itemCellContainer}>
                 <View
                   style={{
-                    flexDirection: 'row',
+                    flexDirection: "row",
                     marginHorizontal: 20,
-                  }}>
+                  }}
+                >
                   <TouchableOpacity
                     hitSlop={{}}
                     onPress={() => {
-                      this.setState({isSameDayDelivery: !isSameDayDelivery});
-                    }}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      this.setState({ isSameDayDelivery: !isSameDayDelivery });
+                    }}
+                  >
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
                       <Image
                         source={
                           !isSameDayDelivery
@@ -416,8 +437,8 @@ class CheckoutView extends Component {
                         }
                         style={styles.tickSwitch}
                       />
-                      <Text style={[styles.addVoucherCode, {marginLeft: 10}]}>
-                        {translate('Sameday Delivery')}
+                      <Text style={[styles.addVoucherCode, { marginLeft: 10 }]}>
+                        {translate("Sameday Delivery")}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -431,38 +452,44 @@ class CheckoutView extends Component {
                       }}
                     />
 
-                    <View style={{flexDirection: 'row', marginHorizontal: 20}}>
+                    <View
+                      style={{ flexDirection: "row", marginHorizontal: 20 }}
+                    >
                       <View
                         style={[
                           styles.sameDayDeliveryPickerContainer,
-                          {marginRight: 10},
-                        ]}>
+                          { marginRight: 10 },
+                        ]}
+                      >
                         <Text style={styles.deliveryDateText}>
-                          {translate('Delivery Date')}
+                          {translate("Delivery Date")}
                         </Text>
                         <TouchableOpacity
                           onPress={() => {
-                            this.setState({showDatePicker: true});
+                            this.setState({ showDatePicker: true });
                           }}
-                          style={styles.pickerButton}>
+                          style={styles.pickerButton}
+                        >
                           <Text style={styles.dateText}>
-                            {format(this.state.newDate, 'dd-MM-yyyy')}
+                            {format(this.state.newDate, "dd-MM-yyyy")}
                           </Text>
                         </TouchableOpacity>
                       </View>
                       <View
                         style={[
                           styles.sameDayDeliveryPickerContainer,
-                          {marginLeft: 10},
-                        ]}>
+                          { marginLeft: 10 },
+                        ]}
+                      >
                         <Text style={styles.deliveryDateText}>
-                          {translate('Delivery Time')}
+                          {translate("Delivery Time")}
                         </Text>
                         <TouchableOpacity
                           onPress={() => {
-                            this.setState({showTimePicker: true});
+                            this.setState({ showTimePicker: true });
                           }}
-                          style={styles.pickerButton}>
+                          style={styles.pickerButton}
+                        >
                           <Text style={styles.dateText}>{nowTime}</Text>
                         </TouchableOpacity>
                       </View>
@@ -473,325 +500,340 @@ class CheckoutView extends Component {
             )}
 
             <View style={styles.itemCellContainer}>
-              <View style={{marginHorizontal: 20}}>
-                <Text style={styles.addVoucherCode}>
-                  {translate('Add Voucher code')}
-                </Text>
-                <View style={{flexDirection: 'row', marginBottom: 25}}>
+              <View style={{ marginHorizontal: 20 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 25,
+                    marginTop: 10,
+                  }}
+                >
                   <TextInput
                     style={[
                       styles.voucherInput,
-                      {textAlign: isRTL ? 'right' : 'left'},
+                      { textAlign: isRTL ? "right" : "left" },
                     ]}
                     value={voucherCode}
-                    onChangeText={text => this.setState({voucherCode: text})}
-                    placeholder={translate('Enter Voucher Code')}
+                    onChangeText={(text) =>
+                      this.setState({ voucherCode: text })
+                    }
+                    placeholder={translate("APPLY PROMO CODE HERE")}
                   />
                   <TouchableOpacity
                     style={[
                       styles.applyButton,
                       {
                         backgroundColor: isVoucherApplied
-                          ? 'green'
-                          : Constants.APP_THEME_COLOR,
+                          ? "green"
+                          : Constants.APP_BLACK_COLOR,
                       },
                     ]}
-                    onPress={this._didTapOnApplyVoucher}>
+                    onPress={this._didTapOnApplyVoucher}
+                  >
                     {isVoucherApplied ? (
                       <Text
                         style={[
                           styles.applyText,
-                          {color: Constants.APP_WHITE_COLOR},
-                        ]}>
-                        {translate('Applied')}
+                          { color: Constants.APP_WHITE_COLOR },
+                        ]}
+                      >
+                        {translate("Applied")}
                       </Text>
                     ) : (
-                      <Text style={styles.applyText}>{translate('Apply')}</Text>
+                      <Text style={styles.applyText}>{translate("Apply")}</Text>
                     )}
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
 
-            <View style={styles.itemCellContainer}>
-              <View style={{marginHorizontal: 20}}>
-                <Text style={styles.addVoucherCode}>
-                  {translate('Payment Methods')}
-                </Text>
-                {paymentMethods.map(item => (
-                  <TouchableOpacity
-                    onPress={() => this._didTapOnPaymentMethod(item)}
-                    style={styles.paymentMethodButton}
-                    activeOpacity={Constants.ACTIVE_OPACITY}>
-                    <View style={styles.paymentOption}>
-                      <View
-                        style={[
-                          styles.paymentOption2,
-                          {
-                            backgroundColor:
-                              item === 'Cash on Delivery'
-                                ? Constants.APP_THEME_COLOR
-                                : 'white',
-                          },
-                        ]}
-                      />
-                    </View>
-                    <Text style={styles.paymentText}>{item.title}</Text>
-                  </TouchableOpacity>
-                ))}
-                <View style={{height: 10}} />
-              </View>
-            </View>
-
-            <View style={styles.itemCellContainer}>
-              <View style={{marginHorizontal: 20}}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={[styles.addVoucherCode, {flex: 1}]}>
-                    {translate('Delivery and Billing Address')}
+            {paymentMethods.length > 0 && (
+              <View style={styles.itemCellContainer}>
+                <View style={{ marginHorizontal: 20 }}>
+                  <Text style={styles.addVoucherCode}>
+                    {translate("CHOOSE YOUR PAYMENT METHOD")}
                   </Text>
-                  {isAddressAvailable && (
+                  {paymentMethods.map((item) => (
+                    <TouchableOpacity
+                      onPress={() => this._didTapOnPaymentMethod(item)}
+                      style={styles.paymentMethodButton}
+                      activeOpacity={Constants.ACTIVE_OPACITY}
+                    >
+                      <View style={styles.paymentOption}>
+                        <View
+                          style={[
+                            styles.paymentOption2,
+                            {
+                              backgroundColor:
+                                item === "Cash on Delivery"
+                                  ? Constants.APP_THEME_COLOR
+                                  : "rgb(167,174,194)",
+                            },
+                          ]}
+                        />
+                      </View>
+                      <Text style={styles.paymentText}>{item.title}</Text>
+                    </TouchableOpacity>
+                  ))}
+                  <View style={{ height: 10 }} />
+                </View>
+              </View>
+            )}
+            <View style={styles.shippingAndTotal}>
+              <View style={styles.itemCellContainer}>
+                <View style={{ marginHorizontal: 20 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={[styles.addVoucherCode, { flex: 1 }]}>
+                      {translate("SHIPPING ADDRESS")}
+                    </Text>
+                  </View>
+
+                  {isAddressAvailable ? (
+                    <View>
+                      <Text style={styles.addressText}>
+                        {addressDict.firstname + " " + addressDict.lastname}
+                      </Text>
+                      <Text style={styles.addressText}>{newStreetAddress}</Text>
+                      <Text style={styles.addressText}>
+                        {addressDict.city + " " + addressDict.postcode}
+                      </Text>
+                      <Text style={styles.addressText}>
+                        {addressDict.telephone}
+                      </Text>
+                      {isAddressAvailable && (
+                        <TouchableOpacity
+                          onPress={this._didTapOnAddAddress}
+                          hitSlop={{ left: 10, right: 10, top: 10, bottom: 10 }}
+                          style={{
+                            marginVertical: 10,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontFamily: Constants.Fonts.REGULAR,
+                              color: Constants.APP_THEME_COLOR,
+                              fontSize: 13,
+                            }}
+                          >
+                            {translate("Change")}
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  ) : (
                     <TouchableOpacity
                       onPress={this._didTapOnAddAddress}
                       style={{
                         height: 26,
                         width: 126,
                         borderRadius: 13,
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        alignItems: "center",
+                        justifyContent: "center",
                         borderWidth: 1,
                         borderColor: Constants.APP_GRAY_COLOR2,
-                      }}>
+                        marginBottom: 10,
+                      }}
+                    >
                       <Text
                         style={{
                           fontFamily: Constants.Fonts.REGULAR,
                           color: Constants.APP_GREY_TEXT_COLOR,
                           fontSize: 13,
-                        }}>
-                        {translate('Change Address')}
+                        }}
+                      >
+                        {translate("Add Address")}
                       </Text>
                     </TouchableOpacity>
                   )}
                 </View>
-
-                {isAddressAvailable ? (
-                  <View>
-                    <Text style={styles.addressText}>
-                      {addressDict.firstname + ' ' + addressDict.lastname}
-                    </Text>
-                    <Text style={styles.addressText}>{newStreetAddress}</Text>
-                    <Text style={styles.addressText}>
-                      {addressDict.city + ' ' + addressDict.postcode}
-                    </Text>
-                    <Text style={styles.addressText}>
-                      {addressDict.telephone}
-                    </Text>
-                  </View>
-                ) : (
-                  <TouchableOpacity
-                    onPress={this._didTapOnAddAddress}
-                    style={{
-                      height: 26,
-                      width: 126,
-                      borderRadius: 13,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderWidth: 1,
-                      borderColor: Constants.APP_GRAY_COLOR2,
-                      marginBottom: 10,
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: Constants.Fonts.REGULAR,
-                        color: Constants.APP_GREY_TEXT_COLOR,
-                        fontSize: 13,
-                      }}>
-                      {translate('Add Address')}
-                    </Text>
-                  </TouchableOpacity>
-                )}
               </View>
-            </View>
 
-            {storeCode !== 'kwstoreen' && storeCode !== 'kwstorear' && (
-              <View style={styles.itemCellContainer}>
-                <View style={{marginHorizontal: 20}}>
-                  <Text style={styles.addVoucherCode}>
-                    {translate('Shipment Methods')}
-                  </Text>
-                  {shipmentMethods.map(item => (
-                    <TouchableOpacity
-                      onPress={() => this._didTapOnShipmentMethod(item)}
-                      style={[
-                        styles.paymentMethodButton,
-                        {backgroundColor: Constants.APP_WHITE_COLOR},
-                      ]}
-                      activeOpacity={Constants.ACTIVE_OPACITY}>
-                      <View style={styles.paymentOption}>
-                        <View
-                          style={[
-                            styles.paymentOption2,
-                            {
-                              backgroundColor: item.isSelected
-                                ? Constants.APP_THEME_COLOR
-                                : Constants.APP_WHITE_COLOR,
-                            },
-                          ]}
-                        />
-                      </View>
-                      <Text style={styles.paymentText}>{item.name}</Text>
-                      <Text style={[styles.paymentText, {flex: 1}]}>
-                        {item.delivery}
-                      </Text>
-                      <Text style={styles.paymentText}>
-                        {item.price + ' ' + currency}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                  <View style={{height: 10}} />
-                </View>
-              </View>
-            )}
-
-            <View style={styles.itemCellContainer}>
-              <View style={{marginHorizontal: 20}}>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.titleLabel}>
-                    {translate('Cart Total')}
-                  </Text>
-                  <Text style={styles.titleValueLabel}>
-                    {totalCostDict.subtotal + ' ' + currency}
-                  </Text>
-                </View>
-
-                {totalCostDict.items.map((data, index) => (
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.titleLabel}>
-                      {translate('item') + (index + 1) + translate('Discount')}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.titleValueLabel,
-                        {color: 'rgb(249,91,91)'},
-                      ]}>
-                      {'-' + data.discount_amount + ' ' + currency}
-                    </Text>
-                  </View>
-                ))}
-
-                {storeCode !== 'kwstoreen' && storeCode !== 'kwstorear' && (
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.titleLabel}>
-                      {translate('Shipping Charges')}
-                    </Text>
-                    <Text style={styles.titleValueLabel}>
-                      {'8' + ' ' + currency}
-                    </Text>
-                  </View>
-                )}
-
-                <View style={{flexDirection: 'row', marginBottom: 10}}>
-                  <Text style={styles.titleLabel}>
-                    {translate('Cart Total (After Discounts)')}
-                  </Text>
-                  <Text style={styles.titleValueLabel}>
-                    {totalCostDict.grand_total + ' ' + currency}
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    height: 1,
-                    backgroundColor: Constants.APP_GRAY_COLOR,
-                  }}
-                />
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginBottom: 10,
-                    marginTop: 5,
-                  }}>
-                  <Text
-                    style={[
-                      styles.titleLabel,
-                      {
-                        flex: 1,
-                        fontFamily: Constants.Fonts.BOLD,
-                        color: Constants.APP_BLACK_COLOR,
-                      },
-                    ]}>
-                    {translate('TOTAL PAYMENT')}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.titleLabel,
-                      {
-                        fontFamily: Constants.Fonts.BOLD,
-                        color: Constants.APP_BLACK_COLOR,
-                      },
-                    ]}>
-                    {parseFloat(totalCostDict.grand_total + 8) + ' ' + currency}
-                  </Text>
-                </View>
-              </View>
               <View
                 style={{
-                  height: 5,
-                  width: '100%',
-                  backgroundColor: Constants.APP_GRAY_COLOR2,
+                  height: 1,
+                  backgroundColor: Constants.APP_SEPARATOR_COLOR,
                 }}
               />
+
+              {storeCode !== "kwstoreen" && storeCode !== "kwstorear" && (
+                <View style={styles.itemCellContainer}>
+                  <View style={{ marginHorizontal: 20 }}>
+                    <Text style={styles.addVoucherCode}>
+                      {translate("Shipment Methods")}
+                    </Text>
+                    {shipmentMethods.map((item) => (
+                      <TouchableOpacity
+                        onPress={() => this._didTapOnShipmentMethod(item)}
+                        style={[
+                          styles.paymentMethodButton,
+                          { backgroundColor: Constants.APP_WHITE_COLOR },
+                        ]}
+                        activeOpacity={Constants.ACTIVE_OPACITY}
+                      >
+                        <View style={styles.paymentOption}>
+                          <View
+                            style={[
+                              styles.paymentOption2,
+                              {
+                                backgroundColor: item.isSelected
+                                  ? Constants.APP_THEME_COLOR
+                                  : Constants.APP_WHITE_COLOR,
+                              },
+                            ]}
+                          />
+                        </View>
+                        <Text style={styles.paymentText}>{item.name}</Text>
+                        <Text style={[styles.paymentText, { flex: 1 }]}>
+                          {item.delivery}
+                        </Text>
+                        <Text style={styles.paymentText}>
+                          {item.price + " " + currency}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                    <View style={{ height: 10 }} />
+                  </View>
+                </View>
+              )}
+
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: Constants.APP_SEPARATOR_COLOR,
+                }}
+              />
+
+              <View style={styles.itemCellContainer}>
+                <View style={{ marginHorizontal: 20 }}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.titleLabel}>
+                      {translate("Order subtotal")}
+                    </Text>
+                    <Text style={styles.titleValueLabel}>
+                      {totalCostDict.subtotal + " " + currency}
+                    </Text>
+                  </View>
+
+                  {totalCostDict.items.map((data, index) => (
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={styles.titleLabel}>
+                        {translate("item") +
+                          (index + 1) +
+                          translate("Discount")}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.titleValueLabel,
+                          { color: "rgb(249,91,91)" },
+                        ]}
+                      >
+                        {"-" + data.discount_amount + " " + currency}
+                      </Text>
+                    </View>
+                  ))}
+
+                  {storeCode !== "kwstoreen" && storeCode !== "kwstorear" && (
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={styles.titleLabel}>
+                        {translate("Shipping")}
+                      </Text>
+                      <Text style={styles.titleValueLabel}>
+                        {"8" + " " + currency}
+                      </Text>
+                    </View>
+                  )}
+
+                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                    <Text style={styles.titleLabel}>
+                      {translate("Cart Total (After Discounts)")}
+                    </Text>
+                    <Text style={styles.titleValueLabel}>
+                      {totalCostDict.grand_total + " " + currency}
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.titleLabel,
+                        {
+                          flex: 1,
+                          fontFamily: Constants.Fonts.BOLD,
+                          color: Constants.APP_BLACK_COLOR,
+                        },
+                      ]}
+                    >
+                      {translate("TOTAL")}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.titleLabel,
+                        {
+                          fontFamily: Constants.Fonts.BOLD,
+                          color: Constants.APP_BLACK_COLOR,
+                        },
+                      ]}
+                    >
+                      {parseFloat(totalCostDict.grand_total + 8) +
+                        " " +
+                        currency}
+                    </Text>
+                  </View>
+                </View>
+              </View>
             </View>
           </View>
         </ScrollView>
 
         <View style={styles.bottomButtonContainer}>
           <TouchableOpacity
-            style={styles.addTocartButton}
-            activeOpacity={Constants.activeOpacity}
-            onPress={this._didTapOnEditOrderContent}>
-            <Text style={styles.addToCartText}>
-              {translate('EDIT ORDER CONTRNT')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
             style={styles.buyNowButton}
             activeOpacity={Constants.activeOpacity}
-            onPress={this._didTapOnPlaceOrder}>
+            onPress={this._didTapOnPlaceOrder}
+          >
             {/* onPress={this._didOpenCompletionPage}> */}
-            <Text style={styles.buyNowText}>{translate('PLACE ORDER')}</Text>
+            <Text style={styles.buyNowText}>{translate("PLACE ORDER")}</Text>
           </TouchableOpacity>
         </View>
         {isLoading && <HudView />}
 
         <Modal
           isVisible={this.state.showDatePicker}
-          onBackdropPress={() => this.setState({showDatePicker: false})}
-          onBackButtonPress={() => this.setState({showDatePicker: false})}>
+          onBackdropPress={() => this.setState({ showDatePicker: false })}
+          onBackButtonPress={() => this.setState({ showDatePicker: false })}
+        >
           <View
             style={{
-              alignSelf: 'center',
-              backgroundColor: 'rgb(255,255,255)',
-            }}>
+              alignSelf: "center",
+              backgroundColor: "rgb(255,255,255)",
+            }}
+          >
             <DatePicker
               mode="date"
               minimumDate={this.state.nowDate}
               maximumDate={maxDate}
               date={this.state.newDate}
-              onDateChange={date => this.setState({newDate: date})}
+              onDateChange={(date) => this.setState({ newDate: date })}
             />
           </View>
         </Modal>
 
         <Modal
           isVisible={this.state.showTimePicker}
-          onBackdropPress={() => this.setState({showTimePicker: false})}
-          onBackButtonPress={() => this.setState({showTimePicker: false})}>
+          onBackdropPress={() => this.setState({ showTimePicker: false })}
+          onBackButtonPress={() => this.setState({ showTimePicker: false })}
+        >
           <View
             style={{
-              alignSelf: 'center',
-              backgroundColor: 'rgb(255,255,255)',
-            }}>
+              alignSelf: "center",
+              backgroundColor: "rgb(255,255,255)",
+            }}
+          >
             {/* <DatePicker
               mode="time"
               minuteInterval={60}
@@ -806,8 +848,9 @@ class CheckoutView extends Component {
                 width: Constants.SCREEN_WIDTH - 100,
               }}
               onValueChange={(itemValue, itemIndex) =>
-                this.setState({nowTime: itemValue})
-              }>
+                this.setState({ nowTime: itemValue })
+              }
+            >
               <Picker.Item
                 label="10:00 am - 11:00 am"
                 value="10:00 am - 11:00 am"

@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
   },
   buyNowButton: {
     flex: 1,
-    borderRadius: normalizedHeight(30),
-    height: normalizedHeight(60),
+    borderRadius: normalizedHeight(54 / 2),
+    height: normalizedHeight(54),
     marginRight: 10,
     marginLeft: 8,
     backgroundColor: Constants.APP_THEME_COLOR,

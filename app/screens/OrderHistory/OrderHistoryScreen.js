@@ -2,11 +2,11 @@ import {
   translate,
   changeLanguage,
   setI18nConfigSecondTime,
-} from '../../config/languageSwitching/index';
-import styles from './styles';
-import React, {Component} from 'react';
-import Images from '../../config/images';
-import Constants from '../../config/constants';
+} from "../../config/languageSwitching/index";
+import styles from "./styles";
+import React, { Component } from "react";
+import Images from "../../config/images";
+import Constants from "../../config/constants";
 import {
   View,
   SafeAreaView,
@@ -16,12 +16,13 @@ import {
   ScrollView,
   Image,
   FlatList,
-} from 'react-native';
-import HudView from '../../components/hudView';
-import EmptyDataPlaceholder from '../../components/emptyDataPlaceholder';
-import NavigationHeader2 from '../../components/NavigationHeaders/NavigationHeader2';
-import OrderHistoryCell from '../../components/orderHistoryCell';
-import {isEmpty} from '../../config/common';
+} from "react-native";
+import HudView from "../../components/hudView";
+import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
+import OrderHistoryCell from "../../components/orderHistoryCell";
+import { isEmpty } from "../../config/common";
+import ItemCell from "../../components/itemCell";
 
 const ListItem = React.memo(
   ({
@@ -33,41 +34,22 @@ const ListItem = React.memo(
     didTapOnItem,
     props,
   }) => {
-    // function removeFromCart() {}
-    // function addToWishList() {
-    //   addProductToWishList(item);
-    // }
-
-    // function getQuantity(quantityValue) {
-    //   console.log('quantityValue', quantityValue);
-    //   setTotalGross(quantityValue * item.price);
-    // }
-
-    // const attributesColor = item.product_option.extension_attributes.configurable_item_options.filter(
-    //   color => {
-    //     return color.option_id === '93';
-    //   },
-    // );
-    // const attributesSize = item.product_option.extension_attributes.configurable_item_options.filter(
-    //   size => {
-    //     return size.option_id === '178';
-    //   },
-    // );
-    // const colorID = attributesColor[0].option_value.toString();
-    // const sizeID = attributesSize[0].option_value.toString();
-
-    // const colorName = productsColors.filter(item => {
-    //   return colorID === item.value;
-    // });
-    // const sizeName = productsSizes.filter(item => {
-    //   return sizeID === item.value;
-    // });
-
-    const orderCell = item.items.map(orderedItem => {
+    const orderCell = item.items.map((orderedItem) => {
       if (orderedItem.parent_item) {
         return (
-          <View style={{marginHorizontal: 0}}>
-            <OrderHistoryCell
+          <View
+            style={{
+              backgroundColor: Constants.APP_WHITE_COLOR,
+              margin: 20,
+              shadowOffset: { width: 0, height: 5 },
+              shadowColor: "rgba(46,69,187,0.56)",
+              shadowOpacity: 0.3,
+              shadowRadius: 5,
+              borderRadius: 5,
+              paddingBottom: 5,
+            }}
+          >
+            {/* <OrderHistoryCell
               item={orderedItem.parent_item}
               addProductToWishList={addProductToWishList}
               index={index}
@@ -76,6 +58,17 @@ const ListItem = React.memo(
               allowAddOption={false}
               showQuantity={false}
               currency={props.currency}
+            /> */}
+            <ItemCell
+              item={orderedItem.parent_item}
+              addProductToWishList={addProductToWishList}
+              index={index}
+              productsSizes={productsSizes}
+              productsColors={productsColors}
+              allowAddOption={true}
+              showQuantity={false}
+              currency={props.currency}
+              itemTotalCost={orderedItem.parent_item.row_total}
             />
           </View>
         );
@@ -92,59 +85,70 @@ const ListItem = React.memo(
           marginTop: 3,
           backgroundColor: Constants.APP_WHITE_COLOR,
           marginBottom: 10,
-        }}>
-        <View style={{marginHorizontal: 20, marginTop: 10}}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={{flexDirection: 'row'}}>
+        }}
+      >
+        <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <View style={{ flexDirection: "row" }}>
               <Text style={styles.orderNumberText}>
-                {translate('Order Number :') + ' '}
+                {translate("Order Number")}
               </Text>
+              <Text>{" : "}</Text>
               <Text style={styles.orderNumberText}>{item.increment_id}</Text>
             </View>
-            <Image
+            {/* <Image
               source={Images.arrowRight}
-              resizeMode={'contain'}
+              resizeMode={"contain"}
               style={[
                 styles.itemImage,
-                {transform: [{rotate: props.isRTL ? '180deg' : '0deg'}]},
+                { transform: [{ rotate: props.isRTL ? "180deg" : "0deg" }] },
               ]}
-            />
+            /> */}
           </View>
-          <Text
-            style={[
-              styles.deliveryStatusText,
-              {color: item.status === 'pending' ? 'green' : 'red'},
-            ]}>
-            {item.status}
-          </Text>
-          <View style={styles.underLineStyle} />
+
+          <View style={{ flexDirection: "row", marginTop: 10 }}>
+            <Text style={styles.orderNumberText}>{translate("Status")}</Text>
+            <Text>{" : "}</Text>
+            <Text
+              style={[
+                styles.deliveryStatusText,
+                {
+                  color: item.status === "pending" ? "green" : "red",
+                },
+              ]}
+            >
+              {item.status}
+            </Text>
+          </View>
         </View>
         {orderCell}
       </TouchableOpacity>
     );
-  },
+  }
 );
 
 class OrderHistoryScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orderList: '',
+      orderList: "",
     };
   }
 
   componentDidMount() {
-    this.props.getOrderHistory(response => {
-      response.items.map(orderedItem => {
+    this.props.getOrderHistory((response) => {
+      response.items.map((orderedItem) => {
         let arr = [];
-        arr = orderedItem.items.filter(subItem => {
-          return subItem.product_type === 'simple';
+        arr = orderedItem.items.filter((subItem) => {
+          return subItem.product_type === "simple";
         });
         orderedItem.items = arr;
       });
-      console.log('order history after ', response);
+      console.log("order history after ", response);
 
-      this.setState({orderList: response.items});
+      this.setState({ orderList: response.items });
     });
   }
 
@@ -153,7 +157,7 @@ class OrderHistoryScreen extends Component {
   };
 
   _didTapOnListItem = (item, index) => {
-    this.props.navigation.navigate('OrderHistoryDetail', {orderItem: item});
+    this.props.navigation.navigate("OrderHistoryDetail", { orderItem: item });
   };
 
   render() {
@@ -168,7 +172,7 @@ class OrderHistoryScreen extends Component {
       isRTL,
       currency,
     } = this.props;
-    const {orderList} = this.state;
+    const { orderList } = this.state;
     const isUserLoggedIn = isEmpty(userToken);
     return (
       <SafeAreaView style={styles.safeContainer}>
@@ -178,23 +182,24 @@ class OrderHistoryScreen extends Component {
           backgroundColor={Constants.APP_WHITE_COLOR}
         />
         <NavigationHeader2
-          title={'Order History'}
+          hideBottomLine
           showBackButton={true}
           didTapOnBackButton={this._didTapOnBackButton}
-          hideBottomLine={false}
-          isRTL={selectedLanguage === 'ar' ? true : false}
+          isRTL={selectedLanguage === "ar" ? true : false}
           hideSearch={true}
         />
+
+        <Text style={styles.titleStyle}>{translate("Order History")}</Text>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{backgroundColor: Constants.APP_GRAY_COLOR2}}>
+          style={{ backgroundColor: Constants.APP_WHITE_COLOR }}
+        >
           <View style={styles.scrollContainer}>
             {orderList.length > 0 && (
               <FlatList
-                //data={isUserLoggedIn ? guestCartArray : cartArray}
                 data={orderList}
                 extraData={this.props}
-                renderItem={({item, index}) => (
+                renderItem={({ item, index }) => (
                   <ListItem
                     item={item}
                     index={index}
@@ -209,10 +214,10 @@ class OrderHistoryScreen extends Component {
           </View>
         </ScrollView>
         {!isLoading && orderList.length == 0 && (
-          <View style={{alignSelf: 'center'}}>
+          <View style={{ alignSelf: "center" }}>
             <EmptyDataPlaceholder
-              titleText={translate('Your order history is empty')}
-              descriptionText={translate('order_history_empty_placeholder')}
+              titleText={translate("Your order history is empty")}
+              descriptionText={translate("order_history_empty_placeholder")}
               placeHolderImage={Images.noWishlist}
             />
           </View>

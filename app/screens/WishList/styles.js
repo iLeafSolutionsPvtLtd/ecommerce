@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   buttonLogin: {
     borderRadius: 14,
     width: "65%",
-    backgroundColor: "rgb(219, 184, 90)",
+    backgroundColor: Constants.APP_THEME_COLOR,
     height: normalizedHeight(44),
     marginVertical: normalizedHeight(20),
     alignItems: "center",
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   socialName: {
-    fontSize: 16,
-    color: "rgb(42,42,42)",
+    fontSize: 15,
+    color: Constants.APP_WHITE_COLOR,
     fontFamily: Constants.Fonts.MEDIUM,
   },
   loginContentText: {
