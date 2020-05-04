@@ -390,19 +390,27 @@ export default function CartScreen(props) {
   }
 
   function removeItemFromCartContainer(item, index) {
-    if (userToken === "") {
-      dispatch(
-        CartActions.removeGuestCart(
-          item.item_id,
-          removeGuestCartCallback,
-          index
-        )
-      );
-    } else {
-      dispatch(
-        CartActions.removeUserCart(item.item_id, removeUserCartCallback)
-      );
-    }
+    showAlertWithCallback(
+      translate("product remove confirmation"),
+      translate("Yes"),
+      translate("No"),
+      () => {
+        if (userToken === "") {
+          dispatch(
+            CartActions.removeGuestCart(
+              item.item_id,
+              removeGuestCartCallback,
+              index
+            )
+          );
+        } else {
+          dispatch(
+            CartActions.removeUserCart(item.item_id, removeUserCartCallback)
+          );
+        }
+      },
+      null
+    );
   }
 
   function updateGuestCartCallback(status) {

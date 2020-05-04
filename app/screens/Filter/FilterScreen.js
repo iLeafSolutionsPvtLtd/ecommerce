@@ -19,6 +19,12 @@ import Styles from "./style";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 import { translate } from "../../config/languageSwitching/index";
 import { showSingleAlert } from "../../config/common";
+// import RangeSlider from "rn-range-slider";
+
+import CustomLabel from "./PriceRangeLabel";
+
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
+
 const { width } = Dimensions.get("window");
 
 /** Accordion Component */
@@ -46,12 +52,12 @@ const AccordionComponent = memo(
     const [minimumAmt, setminimumAmt] = useState(
       props.selectedFilters.filter_attributes
         ? props.selectedFilters.filter_attributes.price_from
-        : ""
+        : 10
     );
     const [maximumAmt, setmaximumAmt] = useState(
       props.selectedFilters.filter_attributes
         ? props.selectedFilters.filter_attributes.price_to
-        : ""
+        : 10000
     );
     const { title } = item;
     const numCol = title === "Grade" || item.title === "Size" ? 4 : 1;
@@ -128,7 +134,7 @@ const AccordionComponent = memo(
               onPress={toggleExpand}
             >
               <Text style={{ fontFamily: Constants.Fonts.MEDIUM }}>
-                {item.title}
+                {item.title.toUpperCase()}
               </Text>
               <Icon
                 name={expanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
@@ -166,7 +172,7 @@ const AccordionComponent = memo(
               onPress={toggleExpand}
             >
               <Text style={{ fontFamily: Constants.Fonts.MEDIUM }}>
-                {item.title}
+                {"COLORS"}
               </Text>
               <Icon
                 name={expanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
@@ -206,7 +212,7 @@ const AccordionComponent = memo(
           >
             <View style={Styles.discount_conatiner_view}>
               <Text style={{ fontFamily: Constants.Fonts.MEDIUM }}>
-                {item.title}
+                {"DISCOUNT"}
               </Text>
 
               <Image
@@ -240,7 +246,7 @@ const AccordionComponent = memo(
               onPress={toggleExpand}
             >
               <Text style={{ fontFamily: Constants.Fonts.MEDIUM }}>
-                {item.title}
+                {"PRICE RANGE"}
               </Text>
               <Icon
                 name={expanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
@@ -251,52 +257,156 @@ const AccordionComponent = memo(
             {expanded && (
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  marginBottom: 20,
+                  height: 80,
+                  alignItems: "center",
+                  justifyContent: "flex-end",
                 }}
               >
-                <View style={Styles.view_textinputs}>
-                  <TextInput
-                    placeholder={"Minimum"}
-                    keyboardType={"decimal-pad"}
-                    style={{ width: 80 }}
-                    onChangeText={(minimumAmt) => {
-                      setminimumAmt(minimumAmt);
-                    }}
-                    value={minimumAmt}
-                    onBlur={getPrice("price_from", minimumAmt)}
-                  />
-                  <Text
-                    style={{
-                      marginLeft: 8,
-                      color: Constants.APP_GREY_TEXT_COLOR,
-                    }}
-                  >
-                    {currency}
-                  </Text>
-                </View>
-                <View style={Styles.view_textinputs}>
-                  <TextInput
-                    placeholder={"Maximum"}
-                    style={{ width: 80 }}
-                    keyboardType={"decimal-pad"}
-                    onChangeText={(maximumAmt) => {
-                      setmaximumAmt(maximumAmt);
-                    }}
-                    value={maximumAmt}
-                    onBlur={getPrice("price_to", maximumAmt)}
-                  />
-                  <Text
-                    style={{
-                      marginLeft: 8,
-                      color: Constants.APP_GREY_TEXT_COLOR,
-                    }}
-                  >
-                    {currency}
-                  </Text>
-                </View>
+                {/* <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <View style={Styles.view_textinputs}>
+                    <TextInput
+                      placeholder={"Minimum"}
+                      keyboardType={"decimal-pad"}
+                      style={{ width: 80 }}
+                      onChangeText={(minimumAmt) => {
+                        setminimumAmt(minimumAmt);
+                      }}
+                      value={minimumAmt}
+                      onBlur={getPrice("price_from", minimumAmt)}
+                    />
+                    <Text
+                      style={{
+                        marginLeft: 8,
+                        color: Constants.APP_GREY_TEXT_COLOR,
+                      }}
+                    >
+                      {currency}
+                    </Text>
+                  </View>
+                  <View style={Styles.view_textinputs}>
+                    <TextInput
+                      placeholder={"Maximum"}
+                      style={{ width: 80 }}
+                      keyboardType={"decimal-pad"}
+                      onChangeText={(maximumAmt) => {
+                        setmaximumAmt(maximumAmt);
+                      }}
+                      value={maximumAmt}
+                      onBlur={getPrice("price_to", maximumAmt)}
+                    />
+                    <Text
+                      style={{
+                        marginLeft: 8,
+                        color: Constants.APP_GREY_TEXT_COLOR,
+                      }}
+                    >
+                      {currency}
+                    </Text>
+                  </View>
+                </View> */}
+                {/* <RangeSlider
+                  style={{ width: Constants.SCREEN_WIDTH - 60, height: 80 }}
+                  gravity={"center"}
+                  min={10}
+                  max={10000}
+                  initialLowValue={minimumAmt}
+                  initialHighValue={maximumAmt}
+                  step={10}
+                  selectionColor="#F14935"
+                  blankColor="#b1b1b1"
+                  thumbBorderWidth={3}
+                  thumbBorderColor="#F14935"
+                  thumbColor="#ffffff"
+                  labelBorderRadius={5}
+                  labelBackgroundColor="#ffffff"
+                  labelBorderColor={"#ffffff"}
+                  labelTextColor={"#F14935"}
+                  onValueChanged={(low, high, fromUser) => {
+                    // this.setState({ rangeLow: low, rangeHigh: high });
+                    setminimumAmt(low);
+                    setmaximumAmt(high);
+                  }}
+                /> */}
+
+                <MultiSlider
+                  values={[minimumAmt, maximumAmt]}
+                  step={10}
+                  allowOverlap={false}
+                  minMarkerOverlapDistance={20}
+                  enabledTwo={true}
+                  isMarkersSeparated
+                  sliderLength={Constants.SCREEN_WIDTH - 100}
+                  enableLabel
+                  customLabel={(props) => {
+                    let data = { ...props, ...{ currency } };
+                    return CustomLabel(data);
+                  }}
+                  onValuesChange={(sliderValue) => {
+                    let minValue = sliderValue[0];
+                    let maxValue = sliderValue[1];
+                    setminimumAmt(minValue);
+                    setmaximumAmt(maxValue);
+                    getPrice("price_to", maxValue);
+                    getPrice("price_from", minValue);
+                  }}
+                  valueSuffix={"$"}
+                  selectedStyle={{ backgroundColor: Constants.APP_THEME_COLOR }}
+                  customMarkerLeft={() => (
+                    <View
+                      style={{
+                        width: 25,
+                        height: 25,
+                        borderRadius: 25 / 2,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: Constants.APP_THEME_COLOR,
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: 15,
+                          height: 15,
+                          borderRadius: 15 / 2,
+                          borderWidth: 4,
+                          borderColor: "white",
+                          backgroundColor: Constants.APP_THEME_COLOR,
+                        }}
+                      />
+                    </View>
+                  )}
+                  customMarkerRight={() => (
+                    <View
+                      style={{
+                        width: 25,
+                        height: 25,
+                        borderRadius: 25 / 2,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: Constants.APP_THEME_COLOR,
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: 15,
+                          height: 15,
+                          borderRadius: 15 / 2,
+                          borderWidth: 4,
+                          borderColor: "white",
+                          backgroundColor: Constants.APP_THEME_COLOR,
+                        }}
+                      />
+                    </View>
+                  )}
+                  min={10}
+                  max={10000}
+                />
               </View>
             )}
           </View>
@@ -433,23 +543,30 @@ const ChildComponent = memo(
             <TouchableOpacity
               onPress={multiSelect}
               style={{
-                height: 40,
+                height: 30,
                 width: width / 4 - 15,
-                borderWidth: 1,
-                borderRadius: 5,
-                borderColor: childItem.togglevalue
-                  ? Constants.APP_THEME_COLOR
-                  : Constants.APP_BOX_BACKGROUND_GREY,
+                // borderWidth: 1,
+                borderRadius: 15,
+                alignItems: "center",
+                justifyContent: "center",
+                // borderColor: childItem.togglevalue
+                //   ? Constants.APP_THEME_COLOR
+                //   : Constants.APP_BOX_BACKGROUND_GREY,
                 margin: 5,
+                backgroundColor: childItem.togglevalue
+                  ? Constants.APP_THEME_COLOR
+                  : "rgb(233,241,249)",
               }}
             >
               <Text
                 style={{
-                  flex: 1,
-                  fontSize: 16,
+                  // flex: 1,
+                  fontSize: 13,
                   textAlign: "center",
-                  paddingVertical: 10,
-                  color: Constants.APP_GREY_TEXT_COLOR,
+                  // paddingVertical: 10,
+                  color: childItem.togglevalue
+                    ? Constants.APP_WHITE_COLOR
+                    : Constants.APP_BLACK_COLOR,
                 }}
               >
                 {childItem.label}

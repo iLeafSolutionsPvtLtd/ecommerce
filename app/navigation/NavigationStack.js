@@ -174,6 +174,9 @@ const TabStack = createCompatNavigatorFactory(createStackNavigator)(
   },
   {
     headerMode: "none",
+    navigationOptions: {
+      // swipeEnabled: false,
+    },
   }
 );
 

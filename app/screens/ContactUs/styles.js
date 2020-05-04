@@ -93,7 +93,9 @@ const styles = StyleSheet.create({
   },
   buttonOutlineContainer: {
     marginVertical: 12,
-    marginHorizontal: 14,
+    // marginHorizontal: 14,
+    width: "80%",
+    alignSelf: "center",
     borderRadius: normalizedHeight(54 / 2),
     height: normalizedHeight(54),
     backgroundColor: Constants.APP_THEME_COLOR,

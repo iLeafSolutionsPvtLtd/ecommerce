@@ -228,5 +228,6 @@
   "Please enter your phone number": "Please enter your phone number",
   "Please enter a valid email address": "Please enter a valid email address",
   "Please enter your comment": "Please enter your comment",
-  "Order Completed": "Order Completed"
+  "Order Completed": "Order Completed",
+  "product remove confirmation": "Are you sure you want to remove this product from your cart?"
 }
