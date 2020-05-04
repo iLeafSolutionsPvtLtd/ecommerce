@@ -7,9 +7,9 @@
 import {
   translate,
   changeLanguage,
-  setI18nConfigSecondTime,
-} from '../../config/languageSwitching/index';
-import {I18nManager} from 'react-native';
+  setI18nConfigSecondTime
+} from "../../config/languageSwitching/index";
+import { I18nManager } from "react-native";
 
 import {
   Text,
@@ -18,26 +18,26 @@ import {
   StatusBar,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
-import styles from './styles';
-import Login from '../LoginScreen';
-import Modal from 'react-native-modal';
-import React, {Component} from 'react';
-import Images from '../../config/images';
-import RNRestart from 'react-native-restart';
-import Constants from '../../config/constants';
-import ActionSheet from 'react-native-actionsheet';
-import SignUp from '../../screens/RegistrationScreen';
-import {showAlertWithCallback} from '../../config/common';
-import NavigationHeader2 from '../../components/NavigationHeaders/NavigationHeader2';
+  TouchableOpacity
+} from "react-native";
+import styles from "./styles";
+import Login from "../LoginScreen";
+import Modal from "react-native-modal";
+import React, { Component } from "react";
+import Images from "../../config/images";
+import RNRestart from "react-native-restart";
+import Constants from "../../config/constants";
+import ActionSheet from "react-native-actionsheet";
+import SignUp from "../../screens/RegistrationScreen";
+import { showAlertWithCallback } from "../../config/common";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 class AccountScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoginViewShow: false,
-      isRegisterViewShow: false,
+      isRegisterViewShow: false
     };
   }
 
@@ -47,14 +47,14 @@ class AccountScreen extends Component {
       didChangeLAnguage,
       storesView,
       storeCode,
-      storeConfiguration,
+      storeConfiguration
     } = this.props;
     if (selectedLanguage === lang) {
       return;
     }
 
     let groupId = -1;
-    let newStoreCode = '';
+    let newStoreCode = "";
     if (storesView && storesView.length > 0) {
       storesView.map(item => {
         if (item.code === storeCode) {
@@ -62,7 +62,7 @@ class AccountScreen extends Component {
         }
       });
       let savedLang = storeCode.slice(-2);
-      const newLang = savedLang === 'en' ? 'Arabic' : 'English';
+      const newLang = savedLang === "en" ? "Arabic" : "English";
       storesView.map(item => {
         if (
           item.name.toUpperCase() === newLang.toUpperCase() &&
@@ -75,14 +75,14 @@ class AccountScreen extends Component {
       storeConfiguration.map(storeConfigItem => {
         if (storeConfigItem.code === newStoreCode) {
           this.props.updateCurrency(
-            storeConfigItem.default_display_currency_code,
+            storeConfigItem.default_display_currency_code
           );
         }
       });
     }
-    didChangeLAnguage(selectedLanguage === 'ar' ? 'en' : 'ar');
+    didChangeLAnguage(selectedLanguage === "ar" ? "en" : "ar");
 
-    if (lang === 'ar') {
+    if (lang === "ar") {
       I18nManager.forceRTL(true);
     } else {
       I18nManager.forceRTL(false);
@@ -95,7 +95,7 @@ class AccountScreen extends Component {
   };
 
   _didTapOnCart = () => {
-    this.props.navigation.navigate('Cart');
+    this.props.navigation.navigate("Cart");
   };
 
   _showActionSheet = () => {
@@ -104,14 +104,14 @@ class AccountScreen extends Component {
 
   _didTapOnLogOut = () => {
     showAlertWithCallback(
-      translate('Are you sure you want to logout?'),
-      translate('Yes'),
-      translate('No'),
+      translate("Are you sure you want to logout?"),
+      translate("Yes"),
+      translate("No"),
       () => {
         this.props.userDidLogOut();
-        this.props.navigation.navigate('LoginScreen');
+        this.props.navigation.navigate("LoginScreen");
       },
-      null,
+      null
     );
   };
 
@@ -122,126 +122,131 @@ class AccountScreen extends Component {
       userToken,
       userInfo,
       cartArray,
-      storeCode,
+      storeCode
     } = this.props;
-    const {isLoginViewShow, isRegisterViewShow} = this.state;
+    const { isLoginViewShow, isRegisterViewShow } = this.state;
     return (
       <SafeAreaView style={styles.safeContainer}>
         <StatusBar
-          barStyle="light-content"
+          barStyle="dark-content"
           hidden={false}
-          backgroundColor={Constants.APP_BLACK_COLOR}
+          backgroundColor={Constants.APP_WHITE_COLOR}
           // translucent={true}
         />
         <NavigationHeader2
           didTapOnFlag={this._didTapOnFlag}
           didTapOnCart={this._didTapOnCart}
           isShowFlag={false}
-          isDark={true}
+          isDark={false}
           isRTL={isRTL}
           showCart={true}
           hideSearch={true}
           cartItemsCount={cartArray.length}
         />
         <ScrollView
-          style={{flex: 1, backgroundColor: Constants.APP_WHITE_COLOR}}
-          showsVerticalScrollIndicator={false}>
+          style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.scrollContainer}>
             {userToken && userToken.length > 0 && userInfo ? (
               <View style={styles.userInfoContainer}>
                 <Text style={styles.userNameText}>
-                  {userInfo.firstname + ' ' + userInfo.lastname}
+                  {userInfo.firstname + " " + userInfo.lastname}
                 </Text>
                 <Text style={styles.userEmailText}>{userInfo.email}</Text>
                 <TouchableOpacity
                   style={styles.editIconContainer}
-                  hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}
+                  hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}
                   onPress={() =>
-                    this.props.navigation.navigate('ProfileDetails')
-                  }>
-                  <Image
+                    this.props.navigation.navigate("ProfileDetails")
+                  }
+                >
+                  <Text style={styles.editProfileText}>
+                    {translate("Edit your profile")}
+                  </Text>
+                  {/* <Image
                     source={Images.edit}
-                    resizeMode={'contain'}
+                    resizeMode={"contain"}
                     style={styles.editImage}
-                  />
+                  /> */}
                 </TouchableOpacity>
               </View>
             ) : (
               <View style={styles.noUserContainer}>
                 <TouchableOpacity
-                  onPress={() => this.setState({isLoginViewShow: true})}
-                  style={styles.buttonLogin}>
-                  <Text style={styles.socialName}>{translate('Login')}</Text>
+                  onPress={() => this.setState({ isLoginViewShow: true })}
+                  style={styles.buttonLogin}
+                >
+                  <Text style={styles.socialName}>{translate("SIGN IN")}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => this.setState({isRegisterViewShow: true})}
-                  style={styles.buttonSignup}>
-                  <Text style={styles.socialName}>{translate('Signup')}</Text>
+                  onPress={() => this.setState({ isRegisterViewShow: true })}
+                  style={styles.buttonSignup}
+                >
+                  <Text
+                    style={[styles.socialName, { color: "rgb(241, 73, 53)" }]}
+                  >
+                    {translate("SIGN UP")}
+                  </Text>
                 </TouchableOpacity>
               </View>
             )}
 
+            <View style={[styles.line, { height: 20 }]} />
             {userInfo && (
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate('AddressListScreen');
+                  this.props.navigation.navigate("AddressListScreen");
                 }}
-                style={styles.itemContainer}>
-                <Text style={styles.itemText}>{translate('Address Book')}</Text>
+                style={styles.itemContainer}
+              >
                 <Image
-                  source={Images.arrowRight}
-                  resizeMode={'contain'}
-                  style={[
-                    styles.itemImage,
-                    {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                  ]}
+                  source={Images.bookmark}
+                  resizeMode={"contain"}
+                  tintColor={"rgb(142, 142, 142)"}
+                  style={styles.itemImage}
                 />
+                <Text style={styles.itemText}>{translate("Address Book")}</Text>
               </TouchableOpacity>
             )}
 
             {userInfo && (
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('OrderHistory')}
-                style={styles.itemContainer}>
-                <Text style={styles.itemText}>
-                  {translate('Order History')}
-                </Text>
+                onPress={() => this.props.navigation.navigate("OrderHistory")}
+                style={styles.itemContainer}
+              >
                 <Image
-                  source={Images.arrowRight}
-                  resizeMode={'contain'}
-                  style={[
-                    styles.itemImage,
-                    {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                  ]}
+                  source={Images.orderHistory}
+                  resizeMode={"contain"}
+                  style={styles.itemImage}
                 />
+                <Text style={styles.itemText}>
+                  {translate("Order History")}
+                </Text>
               </TouchableOpacity>
             )}
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('CountrySelection')}
-              style={styles.itemContainer}>
-              <Text style={styles.itemText}>{translate('Country')}</Text>
+              onPress={() => this.props.navigation.navigate("CountrySelection")}
+              style={styles.itemContainer}
+            >
               <Image
-                source={Images.arrowRight}
-                resizeMode={'contain'}
-                style={[
-                  styles.itemImage,
-                  {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                ]}
+                source={Images.flag}
+                resizeMode={"contain"}
+                style={styles.itemImage}
               />
+              <Text style={styles.itemText}>{translate("Country")}</Text>
             </TouchableOpacity>
-            {storeCode !== 'intstoreen' && (
+            {storeCode !== "intstoreen" && (
               <TouchableOpacity
                 onPress={() => this._showActionSheet()}
-                style={styles.itemContainer}>
-                <Text style={styles.itemText}>{translate('Language')}</Text>
+                style={styles.itemContainer}
+              >
                 <Image
-                  source={Images.arrowRight}
-                  resizeMode={'contain'}
-                  style={[
-                    styles.itemImage,
-                    {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                  ]}
+                  source={Images.switchLanguage}
+                  resizeMode={"contain"}
+                  style={styles.itemImage}
                 />
+                <Text style={styles.itemText}>{translate("Language")}</Text>
               </TouchableOpacity>
             )}
             {/* <TouchableOpacity style={styles.itemContainer}>
@@ -256,49 +261,42 @@ class AccountScreen extends Component {
               />
             </TouchableOpacity> */}
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('ContactUs')}
-              style={styles.itemContainer}>
-              <Text style={styles.itemText}>{translate('Contact Us')}</Text>
+              onPress={() => this.props.navigation.navigate("ContactUs")}
+              style={styles.itemContainer}
+            >
               <Image
-                source={Images.arrowRight}
-                resizeMode={'contain'}
-                style={[
-                  styles.itemImage,
-                  {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                ]}
+                source={Images.phoneSolid}
+                resizeMode={"contain"}
+                style={styles.itemImage}
               />
+              <Text style={styles.itemText}>{translate("Contact Us")}</Text>
             </TouchableOpacity>
             {userInfo && (
               <TouchableOpacity style={styles.itemContainer}>
+                <Image
+                  source={Images.alarm}
+                  resizeMode={"contain"}
+                  style={styles.itemImage}
+                />
                 <Text style={styles.itemText}>
-                  {translate('Notifications')}
+                  {translate("Notifications")}
                 </Text>
-                <Image
-                  source={Images.arrowRight}
-                  resizeMode={'contain'}
-                  style={[
-                    styles.itemImage,
-                    {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                  ]}
-                />
-              </TouchableOpacity>
-            )}
-            {userInfo && (
-              <TouchableOpacity
-                style={styles.itemContainer}
-                onPress={this._didTapOnLogOut}>
-                <Text style={styles.itemText}>{translate('Logout')}</Text>
-                <Image
-                  source={Images.arrowRight}
-                  resizeMode={'contain'}
-                  style={[
-                    styles.itemImage,
-                    {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                  ]}
-                />
               </TouchableOpacity>
             )}
             <View style={styles.line} />
+            {userInfo && (
+              <TouchableOpacity
+                style={styles.itemContainer}
+                onPress={this._didTapOnLogOut}
+              >
+                <Image
+                  source={Images.logout}
+                  resizeMode={"contain"}
+                  style={styles.itemImage}
+                />
+                <Text style={styles.itemText}>{translate("Logout")}</Text>
+              </TouchableOpacity>
+            )}
             {/* <TouchableOpacity
               style={{margin: 12, width: '100%', alignItems: 'center'}}
               onPress={this._didLanguageChange}>
@@ -310,62 +308,42 @@ class AccountScreen extends Component {
           </View>
         </ScrollView>
         <Modal
-          onBackButtonPress={() => this.setState({isLoginViewShow: false})}
-          isVisible={isLoginViewShow}>
-          <View style={{flex: 1}}>
+          onBackButtonPress={() => this.setState({ isLoginViewShow: false })}
+          isVisible={isLoginViewShow}
+        >
+          <View style={{ flex: 1 }}>
             <Login
-              didTapOnclose={() => this.setState({isLoginViewShow: false})}
+              didTapOnclose={() => this.setState({ isLoginViewShow: false })}
             />
           </View>
         </Modal>
         <Modal
-          onBackButtonPress={() => this.setState({isRegisterViewShow: false})}
-          isVisible={isRegisterViewShow}>
-          <View style={{flex: 1}}>
+          onBackButtonPress={() => this.setState({ isRegisterViewShow: false })}
+          isVisible={isRegisterViewShow}
+        >
+          <View style={{ flex: 1 }}>
             <SignUp
-              didTapOnclose={() => this.setState({isRegisterViewShow: false})}
+              didTapOnclose={() => this.setState({ isRegisterViewShow: false })}
               showLogin={false}
             />
           </View>
         </Modal>
-        {/* <ActionSheet
-          ref={o => (this.ActionSheet = o)}
-          title={
-            <Text style={styles.actionSheetTitle}>
-              {translate('Select your language')}
-            </Text>
-          }
-          options={['English', 'Arabic', translate('Cancel')]}
-          cancelButtonIndex={2}
-          tintColor="rgb(185,128,43)"
-          onPress={index => {
-            switch (index) {
-              case 0: {
-                this._didLanguageChange('en');
-                break;
-              }
-              case 1: {
-                this._didLanguageChange('ar');
-                break;
-              }
-            }
-          }}
-        /> */}
+
         <ActionSheet
           ref={o => (this.ActionSheet = o)}
-          title={translate('Select your language')}
-          options={['English', translate('ARABIC'), translate('Cancel')]}
+          title={translate("Select your language")}
+          options={["English", translate("ARABIC"), translate("Cancel")]}
           cancelButtonIndex={2}
           // destructiveButtonIndex={2}
           tintColor={Constants.APP_THEME_COLOR}
           onPress={index => {
             switch (index) {
               case 0: {
-                this._didLanguageChange('en');
+                this._didLanguageChange("en");
                 break;
               }
               case 1: {
-                this._didLanguageChange('ar');
+                this._didLanguageChange("ar");
                 break;
               }
             }

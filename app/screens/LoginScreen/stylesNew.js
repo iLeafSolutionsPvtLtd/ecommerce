@@ -1,7 +1,7 @@
 /**
- * Created by Tinoy for iLeaf Solutions Pvt.Ltd
- * on February 19, 2020
- * RegistrationScreen - RegistrationScreen Styles
+ * Created by Jebin for iLeaf Solutions Pvt.Ltd
+ * on February 12, 2020
+ * LoginScreen - LoginScreen Styles
  */
 
 import { StyleSheet, I18nManager } from "react-native";
@@ -10,14 +10,12 @@ import { normalizedHeight, normalizedWidth } from "../../config/common";
 
 const styles = StyleSheet.create({
   container: {
+    // flex: 1,
     height: Constants.SCREEN_HEIGHT + 20,
     backgroundColor: "rgb(255,255,255)"
   },
-  safeContainer: {
-    flex: 1
-  },
   container2: {
-    height: "55%",
+    height: "53%",
     position: "absolute",
     backgroundColor: "#FCFAF9",
     paddingTop: 24,
@@ -62,7 +60,7 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     marginHorizontal: 12,
-    marginTop: 4
+    marginTop: 8
   },
   inpuLabelTextStyle: {
     textAlign: "left",
@@ -121,14 +119,109 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
 
+  safeContainer: {
+    flex: 1
+  },
+  title: {
+    fontSize: 22,
+    marginBottom: 34,
+    marginStart: 32,
+    fontWeight: "bold",
+    color: "#1c385c"
+  },
+
+  errorText: {
+    marginHorizontal: 24,
+    height: normalizedHeight(20),
+    fontSize: 12,
+    marginTop: 4,
+    textAlign: "left",
+    color: "red"
+  },
   closeButtonView: {
     position: "absolute",
-    top: normalizedHeight(10),
+    top: 10,
     left: 10,
     width: 40,
     height: 40,
     alignItems: "center",
     justifyContent: "center"
+  },
+  passwordModalWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  passwordCardWrapper: {
+    backgroundColor: "rgb(255,255,255)",
+    borderRadius: 15,
+    width: "94%"
+  },
+  forgotPwdTxt: {
+    margin: 22,
+    fontFamily: Constants.Fonts.MEDIUM,
+    alignSelf: "center",
+    color: "rgb(42,42,42)",
+    fontSize: 17
+  },
+  pwdSubmitWrapper: {
+    flexDirection: "row",
+    width: "91%",
+    alignSelf: "center",
+    justifyContent: "space-evenly",
+    marginTop: 32,
+    marginBottom: 26
+  },
+  pwdCancelWrapper: {
+    height: normalizedHeight(40),
+    width: "45%",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 13,
+    borderWidth: 1,
+    borderColor: "rgb(112,112,112)"
+  },
+  pwdCancelTxt: {
+    fontFamily: Constants.Fonts.MEDIUM,
+    color: "rgb(42,42,42)"
+  },
+  pwdSubmitBtnWrapper: {
+    height: normalizedHeight(40),
+    width: "45%",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 13,
+    backgroundColor: "rgb(241,73,53)"
+  },
+  pwdSubmitTxt: {
+    fontFamily: Constants.Fonts.MEDIUM,
+    color: "rgb(255,255,255)"
+  },
+  termsWrapper: {
+    flexDirection: "row",
+    marginTop: 36,
+    alignItems: "center",
+    marginStart: normalizedWidth(30)
+  },
+  termsTick: {
+    width: 18,
+    height: 18,
+    alignSelf: "center"
+  },
+  termsText: {
+    marginStart: 12,
+    fontSize: 13,
+    textAlign: "left",
+    color: "rgb(120, 120, 120)",
+    fontFamily: Constants.Fonts.REGULAR
+  },
+  termsTextColored: {
+    fontSize: 13,
+    textAlign: "left",
+    color: "rgb(100, 171, 235)",
+    fontFamily: Constants.Fonts.REGULAR
   }
 });
 

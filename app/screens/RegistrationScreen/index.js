@@ -4,11 +4,11 @@
  * RegistrationScreen - RegistrationScreen Container
  */
 
-import React, {Component} from 'react';
-import RegistrationScreen from './RegistrationScreen';
-import {connect} from 'react-redux';
-import * as navigationActions from '../../actions/navigationActions';
-import * as loginActions from '../../actions/loginActions';
+import React, { Component } from "react";
+import RegistrationScreen from "./RegistrationScreenNew";
+import { connect } from "react-redux";
+import * as navigationActions from "../../actions/navigationActions";
+import * as loginActions from "../../actions/loginActions";
 
 class RegistrationContainer extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class RegistrationContainer extends Component {
 function mapStateToProps(state) {
   return {
     registerResponse: state.loginReducer.response,
-    isLoading: state.loadingReducer.isLoading,
+    isLoading: state.loadingReducer.isLoading
   };
 }
 
@@ -36,7 +36,7 @@ function mapDispatchToProps(dispatch) {
       lastName,
       email,
       password,
-      registerCallback,
+      registerCallback
     ) => {
       dispatch(
         loginActions.requestRegister(
@@ -44,14 +44,14 @@ function mapDispatchToProps(dispatch) {
           lastName,
           email,
           password,
-          registerCallback,
-        ),
+          registerCallback
+        )
       );
-    },
+    }
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(RegistrationContainer);

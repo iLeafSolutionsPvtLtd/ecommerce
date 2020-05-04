@@ -4,117 +4,124 @@
  * Account - Account Styles
  */
 
-import {StyleSheet} from 'react-native';
-import AppStyles from '../../config/styles';
-import Constants from '../../config/constants';
-import {normalizedHeight, normalizedWidth} from '../../config/common';
+import { StyleSheet } from "react-native";
+import AppStyles from "../../config/styles";
+import Constants from "../../config/constants";
+import { normalizedHeight, normalizedWidth } from "../../config/common";
 
 const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
-    backgroundColor: Constants.APP_BLACK_COLOR,
+    backgroundColor: Constants.APP_BLACK_COLOR
   },
   scrollContainer: {
-    backgroundColor: Constants.APP_GRAY_COLOR2,
+    backgroundColor: Constants.APP_GRAY_COLOR2
     //height: Constants.SCREEN_HEIGHT
   },
   userInfoContainer: {
-    marginTop: 7,
-    marginBottom: 9,
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    marginTop: 5,
+    marginBottom: 4,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   noUserContainer: {
-    flexDirection: 'row',
-    marginTop: 7,
-    marginBottom: 9,
-    width: '100%',
-    alignSelf: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    flexDirection: "row",
+    marginTop: 5,
+    marginBottom: 4,
+    width: "100%",
+    alignSelf: "center",
+    justifyContent: "space-evenly",
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   buttonSignup: {
     borderWidth: 1,
-    borderColor: 'rgba(120, 120, 120, 0.5)',
-    borderRadius: 12,
-    width: '43%',
-    height: normalizedHeight(48),
-    marginVertical: normalizedHeight(25),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: "rgb(241, 73, 53)",
+    borderRadius: 25,
+    width: "43%",
+    height: normalizedHeight(46),
+    marginVertical: normalizedHeight(32),
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
   buttonLogin: {
-    borderRadius: 12,
-    width: '43%',
-    backgroundColor: 'rgb(219, 184, 90)',
-    height: normalizedHeight(48),
-    marginVertical: normalizedHeight(25),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius: 25,
+    width: "43%",
+    backgroundColor: "rgb(241, 73, 53)",
+    height: normalizedHeight(46),
+    marginVertical: normalizedHeight(32),
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
   socialName: {
-    fontSize: 16,
-    color: 'rgb(42,42,42)',
-    fontFamily: Constants.Fonts.MEDIUM,
+    fontSize: 15,
+    color: Constants.APP_WHITE_COLOR,
+    fontFamily: Constants.Fonts.MEDIUM
   },
   userNameText: {
-    fontSize: 22,
+    fontSize: 18,
     fontFamily: Constants.Fonts.BOLD,
-    color: 'rgb(42,42,42)',
+    color: "rgb(40,40,40)",
     marginHorizontal: 20,
     marginTop: 16,
-    textAlign: 'left',
+    textAlign: "left"
   },
   userEmailText: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: Constants.Fonts.REGULAR,
-    color: 'rgb(154,154,154)',
+    color: "rgb(142,142,142)",
     marginHorizontal: 20,
     marginTop: 4,
-    marginBottom: 19,
-    textAlign: 'left',
+    marginBottom: 20,
+    textAlign: "left"
   },
   editIconContainer: {
-    position: 'absolute',
-    top: normalizedWidth(15),
-    right: normalizedWidth(20),
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 120,
+    height: 30,
+    borderRadius: 5,
+    backgroundColor: "rgb(241, 73, 53)",
+    marginStart: 20,
+    marginBottom: 22,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  editProfileText: {
+    fontSize: 13,
+    fontFamily: Constants.Fonts.REGULAR,
+    color: "rgb(255,255,255)"
   },
   editImage: {
     width: 20,
-    height: 20,
+    height: 20
   },
   itemContainer: {
-    marginTop: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    flexDirection: "row",
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: Constants.Fonts.REGULAR,
-    color: 'rgb(42,42,42)',
-    margin: 18,
-    textAlign: 'left',
+    color: "rgb(142,142,142)",
+    margin: 17,
+    textAlign: "left"
   },
   itemImage: {
-    width: 14,
-    height: 14,
+    width: 16,
+    height: 16,
     marginEnd: 18,
-    alignSelf: 'center',
+    marginStart: 40,
+    alignSelf: "center"
   },
   line: {
-    height: 1.5,
-    width: '100%',
-    backgroundColor: Constants.APP_GRAY_COLOR2,
+    height: 36,
+    width: "100%",
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   actionSheetTitle: {
-    color: 'rgb(154,154,154)',
+    color: "rgb(154,154,154)",
     fontSize: 18,
-    fontFamily: Constants.Fonts.REGULAR,
-  },
+    fontFamily: Constants.Fonts.REGULAR
+  }
 });
 
 export default styles;

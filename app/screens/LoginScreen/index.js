@@ -5,7 +5,7 @@
  */
 
 import React, {Component} from 'react';
-import LoginScreen from './LoginScreen';
+import LoginScreen from './LoginScreenNew';
 import {connect} from 'react-redux';
 import * as loginActions from '../../actions/loginActions';
 import * as navigationActions from '../../actions/navigationActions';

@@ -1,4 +1,4 @@
-package com.ileaf.ecom;
+package com.ileaf.ecommerce;
 
 import android.os.Bundle;
 import android.content.Intent;

@@ -13,10 +13,10 @@ const images = {
     uae: require("../assets/flags/uae.png"),
     qatar: require("../assets/flags/qatar.png"),
     international: require("../assets/flags/international.png"),
-    globe: require("../assets/flags/globe.png"),
+    globe: require("../assets/flags/globe.png")
   },
   check: {
-    checkmark: require("../assets/check.png"),
+    checkmark: require("../assets/check.png")
   },
   logo: require("../assets/images/logo.png"),
   logoLarge: require("../assets/images/logo_large.png"),
@@ -71,9 +71,17 @@ const images = {
     check_outline: require("../assets/icons/outline_check_box.png"),
     toggle_outline: require("../assets/icons/outline_toggle.png"),
     toggle_selected: require("../assets/icons/selected_toggle.png"),
-    hair_image: require("../assets/icons/e.jpg"),
+    hair_image: require("../assets/icons/e.jpg")
   },
   videoPlay: require("../assets/icons/videoPlay.png"),
+  womenShopping: require("../assets/images/women-shopping-36.png"),
+  bookmark: require("../assets/icons/bookmark.png"),
+  orderHistory: require("../assets/icons/order_history.png"),
+  flag: require("../assets/icons/flag.png"),
+  switchLanguage: require("../assets/icons/switch_language.png"),
+  phoneSolid: require("../assets/icons/phone_solid.png"),
+  alarm: require("../assets/icons/alarm.png"),
+  logout: require("../assets/icons/logout.png")
 };
 
 export default images;
