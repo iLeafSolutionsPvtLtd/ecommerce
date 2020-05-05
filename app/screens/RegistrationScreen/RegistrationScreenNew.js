@@ -14,7 +14,7 @@ import {
   Text,
   Keyboard,
   ScrollView,
-  Image
+  Image,
 } from "react-native";
 import styles from "./styles";
 import { TextField } from "react-native-material-textfield";
@@ -25,7 +25,7 @@ import Constants from "../../config/constants";
 import {
   isEmpty,
   checkEMailValidation,
-  checkPasswordValid
+  checkPasswordValid,
 } from "../../config/common";
 import Images from "../../config/images";
 import HudView from "../../components/hudView";
@@ -48,7 +48,7 @@ class RegistrationScreen extends Component {
       passwordError: "",
       passwordMismatchError: "",
       showClose: true,
-      secureTextEntry: true
+      secureTextEntry: true,
     };
 
     this.onFocus = this.onFocus.bind(this);
@@ -102,7 +102,7 @@ class RegistrationScreen extends Component {
 
   onChangeText(text) {
     ["email", "password", "lastname", "firstname"]
-      .map(name => ({ name, ref: this[name] }))
+      .map((name) => ({ name, ref: this[name] }))
       .forEach(({ name, ref }) => {
         if (ref && ref.isFocused()) {
           this.setState({ [name]: text });
@@ -134,7 +134,7 @@ class RegistrationScreen extends Component {
     const { onRegisterUser } = this.props;
     let errors = {};
     let isValid = true;
-    ["firstname", "lastname", "email", "password"].forEach(name => {
+    ["firstname", "lastname", "email", "password"].forEach((name) => {
       let value = this[name].value();
       if ("firstname" === name && !value) {
         errors[name] = "First name required";
@@ -176,7 +176,7 @@ class RegistrationScreen extends Component {
     }
   }
 
-  _registerCallback = status => {
+  _registerCallback = (status) => {
     if (status) {
       showSingleAlert(
         translate("registration_complete_success"),
@@ -190,7 +190,7 @@ class RegistrationScreen extends Component {
 
   onAccessoryPress() {
     this.setState(({ secureTextEntry }) => ({
-      secureTextEntry: !secureTextEntry
+      secureTextEntry: !secureTextEntry,
     }));
   }
 
@@ -216,7 +216,7 @@ class RegistrationScreen extends Component {
         <StatusBar backgroundColor={Constants.APP_THEME_DARK_GRAY} />
         <ScrollView
           scrollEventThrottle={16}
-          onScroll={event => {
+          onScroll={(event) => {
             if (event.nativeEvent.contentOffset.y > 100) {
               this.setState({ showClose: false });
             } else {
@@ -352,7 +352,7 @@ class RegistrationScreen extends Component {
             <Image
               source={Images.close}
               style={{ width: 15, height: 15, tintColor: "rgb(0,0,0)" }}
-            ></Image>
+            />
           </TouchableOpacity>
         )}
         {isLoading && <HudView />}

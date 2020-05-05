@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     fontFamily: Constants.Fonts.REGULAR,
   },
   titleStyle: {
+    textAlign: "left",
     marginTop: 20,
     marginLeft: 20,
     fontSize: 18,

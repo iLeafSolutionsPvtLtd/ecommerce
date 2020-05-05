@@ -7,7 +7,7 @@
 import {
   translate,
   changeLanguage,
-  setI18nConfigSecondTime
+  setI18nConfigSecondTime,
 } from "../../config/languageSwitching/index";
 import { I18nManager } from "react-native";
 
@@ -18,7 +18,7 @@ import {
   StatusBar,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import styles from "./styles";
 import Login from "../LoginScreen";
@@ -37,17 +37,17 @@ class AccountScreen extends Component {
     super(props);
     this.state = {
       isLoginViewShow: false,
-      isRegisterViewShow: false
+      isRegisterViewShow: false,
     };
   }
 
-  _didLanguageChange = lang => {
+  _didLanguageChange = (lang) => {
     const {
       selectedLanguage,
       didChangeLAnguage,
       storesView,
       storeCode,
-      storeConfiguration
+      storeConfiguration,
     } = this.props;
     if (selectedLanguage === lang) {
       return;
@@ -56,14 +56,14 @@ class AccountScreen extends Component {
     let groupId = -1;
     let newStoreCode = "";
     if (storesView && storesView.length > 0) {
-      storesView.map(item => {
+      storesView.map((item) => {
         if (item.code === storeCode) {
           groupId = item.store_group_id;
         }
       });
       let savedLang = storeCode.slice(-2);
       const newLang = savedLang === "en" ? "Arabic" : "English";
-      storesView.map(item => {
+      storesView.map((item) => {
         if (
           item.name.toUpperCase() === newLang.toUpperCase() &&
           item.store_group_id === groupId
@@ -72,7 +72,7 @@ class AccountScreen extends Component {
         }
       });
       this.props.storeCodeUpdated(newStoreCode);
-      storeConfiguration.map(storeConfigItem => {
+      storeConfiguration.map((storeConfigItem) => {
         if (storeConfigItem.code === newStoreCode) {
           this.props.updateCurrency(
             storeConfigItem.default_display_currency_code
@@ -122,18 +122,19 @@ class AccountScreen extends Component {
       userToken,
       userInfo,
       cartArray,
-      storeCode
+      storeCode,
     } = this.props;
     const { isLoginViewShow, isRegisterViewShow } = this.state;
     return (
       <SafeAreaView style={styles.safeContainer}>
         <StatusBar
-          barStyle="dark-content"
+          // barStyle="dark-content"
           hidden={false}
           backgroundColor={Constants.APP_WHITE_COLOR}
           // translucent={true}
         />
         <NavigationHeader2
+          hideBottomLine
           didTapOnFlag={this._didTapOnFlag}
           didTapOnCart={this._didTapOnCart}
           isShowFlag={false}
@@ -286,7 +287,7 @@ class AccountScreen extends Component {
             <View style={styles.line} />
             {userInfo && (
               <TouchableOpacity
-                style={styles.itemContainer}
+                style={[styles.itemContainer, { paddingBottom: 30 }]}
                 onPress={this._didTapOnLogOut}
               >
                 <Image
@@ -330,13 +331,13 @@ class AccountScreen extends Component {
         </Modal>
 
         <ActionSheet
-          ref={o => (this.ActionSheet = o)}
+          ref={(o) => (this.ActionSheet = o)}
           title={translate("Select your language")}
           options={["English", translate("ARABIC"), translate("Cancel")]}
           cancelButtonIndex={2}
           // destructiveButtonIndex={2}
           tintColor={Constants.APP_THEME_COLOR}
-          onPress={index => {
+          onPress={(index) => {
             switch (index) {
               case 0: {
                 this._didLanguageChange("en");

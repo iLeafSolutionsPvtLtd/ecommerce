@@ -445,6 +445,7 @@ const ChildComponent = memo(
                 style={{
                   flex: 1,
                   fontSize: 15,
+                  textAlign: "left",
                   fontFamily: Constants.Fonts.REGULAR,
                   color: Constants.APP_GREY_TEXT_COLOR,
                 }}

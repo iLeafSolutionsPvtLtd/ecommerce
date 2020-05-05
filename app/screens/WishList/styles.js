@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   titleStyle: {
+    textAlign: "left",
     marginTop: 20,
     marginLeft: 20,
     fontSize: 18,

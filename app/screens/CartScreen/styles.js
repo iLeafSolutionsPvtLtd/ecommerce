@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     color: Constants.APP_WHITE_COLOR,
   },
   titleStyle: {
+    textAlign: "left",
     marginTop: 10,
     marginLeft: 20,
     fontSize: 18,

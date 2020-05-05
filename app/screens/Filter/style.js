@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     borderColor: Constants.APP_BOX_BACKGROUND_GREY,
   },
   titleStyle: {
+    textAlign: "left",
     marginTop: 10,
     marginLeft: 20,
     fontSize: 18,

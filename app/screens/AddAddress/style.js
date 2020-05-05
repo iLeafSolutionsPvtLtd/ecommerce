@@ -74,6 +74,7 @@ const Styles = StyleSheet.create({
   },
   titleStyle: {
     // marginTop: 20,
+    textAlign: "left",
     marginLeft: 20,
     marginBottom: 10,
     fontSize: 18,

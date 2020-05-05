@@ -106,14 +106,14 @@ function Tab() {
             case translate("Home"):
               iconName = Images.home;
               break;
-            case translate("Categories"):
+            case translate("CATEGORIES"):
               iconName = Images.categories;
               break;
-            case translate("Wishlist"):
+            case translate("WISHLIST"):
               iconName = Images.wishlist;
               break;
             default:
-              iconName = Images.more;
+              iconName = Images.addressUser;
               break;
           }
           return (
@@ -141,12 +141,12 @@ function Tab() {
     >
       <TabNavigator.Screen name={translate("Home")} component={HomeStack} />
       <TabNavigator.Screen
-        name={translate("Categories")}
+        name={translate("CATEGORIES")}
         // component={AddressStack}
         component={CategoriesStack}
       />
       <TabNavigator.Screen
-        name={translate("Wishlist")}
+        name={translate("WISHLIST")}
         component={WishListStack}
       />
       <TabNavigator.Screen name={translate("More")} component={Account} />
