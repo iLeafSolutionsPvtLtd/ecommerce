@@ -5,13 +5,6 @@
  */
 
 import {
-  translate,
-  changeLanguage,
-  setI18nConfigSecondTime,
-} from "../../config/languageSwitching/index";
-import { I18nManager } from "react-native";
-
-import {
   Text,
   View,
   Image,
@@ -25,11 +18,13 @@ import Login from "../LoginScreen";
 import Modal from "react-native-modal";
 import React, { Component } from "react";
 import Images from "../../config/images";
+import { I18nManager } from "react-native";
 import RNRestart from "react-native-restart";
 import Constants from "../../config/constants";
 import ActionSheet from "react-native-actionsheet";
 import SignUp from "../../screens/RegistrationScreen";
 import { showAlertWithCallback } from "../../config/common";
+import { translate } from "../../config/languageSwitching/index";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 class AccountScreen extends Component {
@@ -89,7 +84,6 @@ class AccountScreen extends Component {
     }
 
     setTimeout(() => {
-      // setI18nConfigSecondTime(selectedLanguage);
       RNRestart.Restart();
     }, 100);
   };
@@ -165,11 +159,6 @@ class AccountScreen extends Component {
                   <Text style={styles.editProfileText}>
                     {translate("Edit your profile")}
                   </Text>
-                  {/* <Image
-                    source={Images.edit}
-                    resizeMode={"contain"}
-                    style={styles.editImage}
-                  /> */}
                 </TouchableOpacity>
               </View>
             ) : (
@@ -204,7 +193,6 @@ class AccountScreen extends Component {
                 <Image
                   source={Images.bookmark}
                   resizeMode={"contain"}
-                  tintColor={"rgb(142, 142, 142)"}
                   style={styles.itemImage}
                 />
                 <Text style={styles.itemText}>{translate("Address Book")}</Text>
@@ -250,17 +238,7 @@ class AccountScreen extends Component {
                 <Text style={styles.itemText}>{translate("Language")}</Text>
               </TouchableOpacity>
             )}
-            {/* <TouchableOpacity style={styles.itemContainer}>
-              <Text style={styles.itemText}>{translate('About Us')}</Text>
-              <Image
-                source={Images.arrowRight}
-                resizeMode={'contain'}
-                style={[
-                  styles.itemImage,
-                  {transform: [{rotate: isRTL ? '180deg' : '0deg'}]},
-                ]}
-              />
-            </TouchableOpacity> */}
+
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate("ContactUs")}
               style={styles.itemContainer}
@@ -293,19 +271,14 @@ class AccountScreen extends Component {
                 <Image
                   source={Images.logout}
                   resizeMode={"contain"}
-                  style={styles.itemImage}
+                  style={[
+                    styles.itemImage,
+                    { tintColor: Constants.APP_THEME_COLOR },
+                  ]}
                 />
                 <Text style={styles.itemText}>{translate("Logout")}</Text>
               </TouchableOpacity>
             )}
-            {/* <TouchableOpacity
-              style={{margin: 12, width: '100%', alignItems: 'center'}}
-              onPress={this._didLanguageChange}>
-              <Text>
-                {'Change to ' +
-                  (selectedLanguage == 'en' ? 'Arabic' : 'English')}
-              </Text>
-            </TouchableOpacity> */}
           </View>
         </ScrollView>
         <Modal

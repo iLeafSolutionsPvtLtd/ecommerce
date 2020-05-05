@@ -1,17 +1,16 @@
-import React, {Component} from 'react';
-
 import {
-  Dimensions,
-  StyleSheet,
   Text,
   View,
   Image,
+  Dimensions,
+  StyleSheet,
   PanResponder,
-} from 'react-native';
-import Constants from '../../config/constants';
+} from "react-native";
+import React, { Component } from "react";
+import Constants from "../../config/constants";
 
-var SCREEN_WIDTH = Dimensions.get('window').width;
-var SCREEN_HEIGHT = Dimensions.get('window').height;
+var SCREEN_WIDTH = Dimensions.get("window").width;
+var SCREEN_HEIGHT = Dimensions.get("window").height;
 
 var styles = StyleSheet.create({
   container: {
@@ -21,32 +20,32 @@ var styles = StyleSheet.create({
     flex: 1,
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
 
   btnPrev: {
-    position: 'absolute',
+    position: "absolute",
     top: SCREEN_HEIGHT / 2,
     left: 10,
     width: 50,
     height: 50,
   },
   btnNext: {
-    position: 'absolute',
+    position: "absolute",
     top: SCREEN_HEIGHT / 2,
     right: 10,
     width: 50,
     height: 50,
   },
   btnClose: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 10,
     width: 32,
     height: 32,
   },
   btnZoom: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     left: 10,
     width: 32,
@@ -54,14 +53,14 @@ var styles = StyleSheet.create({
   },
   caption: {
     flex: 1,
-    alignSelf: 'center',
-    position: 'absolute',
+    alignSelf: "center",
+    position: "absolute",
     width: 50,
-    textAlign: 'center',
+    textAlign: "center",
     bottom: 10,
     left: SCREEN_WIDTH / 2,
     marginLeft: -25,
-    color: 'black',
+    color: "black",
     fontSize: 10,
   },
 });
@@ -76,7 +75,7 @@ class Voodoo360 extends Component {
     this.state = {
       index: 0,
       imagesLoaded: [],
-      mode: '360',
+      mode: "360",
       ready: false,
     };
     // this.touchX = null;
@@ -160,8 +159,8 @@ class Voodoo360 extends Component {
     }, 25);
   };
 
-  step = step => {
-    console.log('test step', step);
+  step = (step) => {
+    console.log("test step", step);
     let index = this._getNextStep(step);
     this.setState({
       index: index,
@@ -169,7 +168,7 @@ class Voodoo360 extends Component {
   };
 
   zoom() {
-    let newMode = this.state.mode === 'zoom' ? '360' : 'zoom';
+    let newMode = this.state.mode === "zoom" ? "360" : "zoom";
     this.setState({
       mode: newMode,
     });
@@ -187,7 +186,7 @@ class Voodoo360 extends Component {
     }
   }
 
-  _getNextStep = step => {
+  _getNextStep = (step) => {
     let currentStep = this.state.index;
     let total = (this.props.images && this.props.images.length) || 0;
     let nextStep =
@@ -206,7 +205,7 @@ class Voodoo360 extends Component {
   }
 
   _generateCssBackgroundImageUrls(images) {
-    let str = '';
+    let str = "";
     let activeImage = images[this.state.index];
     str = `url("${activeImage}")`;
     return str;
@@ -214,7 +213,7 @@ class Voodoo360 extends Component {
 
   _generateCssBackgroundImageProp(images) {
     let value = this._generateCssBackgroundImageUrls(images);
-    return value ? {backgroundImage: value} : {};
+    return value ? { backgroundImage: value } : {};
   }
 
   _handleImageLoaded(data) {
@@ -224,9 +223,9 @@ class Voodoo360 extends Component {
     if (imagesLoaded.indexOf(data.url) === -1) {
       imagesLoaded.push(data.url);
     }
-    let state = {imagesLoaded: imagesLoaded};
+    let state = { imagesLoaded: imagesLoaded };
     if (this.state.imagesLoaded.length >= this.props.images.length) {
-      Object.assign(state, {ready: true});
+      Object.assign(state, { ready: true });
     }
     this.setState(state);
   }
@@ -268,28 +267,23 @@ class Voodoo360 extends Component {
 
 class NetworkImage extends React.Component {
   _loadEventFired(e, eventName) {
-    eventName === 'onLoad' &&
+    eventName === "onLoad" &&
       this.props.onReady &&
-      this.props.onReady({index: this.props.index, url: this.props.image});
+      this.props.onReady({ index: this.props.index, url: this.props.image });
   }
 
   render() {
     let imageStyles = {
       width: SCREEN_WIDTH,
       height: SCREEN_WIDTH,
-      // position: 'absolute',
-      // left: 0,
-      // right: 0,
-      // top: 0,
-      // bottom: 0,
       opacity: this.props.active ? 1 : 0,
-      backgroundColor: 'rgba(0,0,0,0.0)',
+      backgroundColor: "rgba(0,0,0,0.0)",
     };
 
     let uri =
       Constants.APP_S3_BASE_URL +
-      (this.props.image ? this.props.image.file : '');
-    return <Image source={{uri}} style={imageStyles} resizeMode="contain" />;
+      (this.props.image ? this.props.image.file : "");
+    return <Image source={{ uri }} style={imageStyles} resizeMode="contain" />;
   }
 }
 

@@ -1,21 +1,27 @@
-import React, { Component, memo } from "react";
+/**
+ * Created by iLeaf Solutions Pvt.Ltd
+ * on February 19, 2020
+ * AddressListView - Address List View will show the Addresses of user.
+ */
+
 import {
   View,
   Text,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
   Image,
+  FlatList,
+  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
-import { translate } from "../../config/languageSwitching/index";
-import Images from "../../config/images";
 import Styles from "./style";
-import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
+import Images from "../../config/images";
 import constants from "../../config/constants";
 import Countries from "../../lib/countires.js";
-import { showAlertWithCallback } from "../../config/common";
 import HudView from "../../components/hudView";
+import React, { Component, memo } from "react";
+import { showAlertWithCallback } from "../../config/common";
+import { translate } from "../../config/languageSwitching/index";
 import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 class AddressListScreen extends Component {
   newDefaultAddress = (selectedIndex) => {
@@ -66,11 +72,6 @@ class AddressListScreen extends Component {
         />
         <Text style={Styles.titleStyle}>{translate("Address Book")}</Text>
         {addressList && addressList.length == 0 ? (
-          // <View style={Styles.emptylist}>
-          //   <Text style={{fontFamily: constants.Fonts.REGULAR}}>
-          //     {translate('No Address Found')}
-          //   </Text>
-          // </View>
           <View style={{ flex: 1 }}>
             <EmptyDataPlaceholder
               titleText={translate("Your address list is empty")}
@@ -130,21 +131,10 @@ class AddressListScreen extends Component {
 const AdressListComponent = memo(
   ({ item, props, index, setDefaultAddress, removeAddressFromList }) => {
     let a = item.default_billing;
-
-    // let selectedAddressIndex = props.navigation.state.params
-    //   .selectedAddressIndex
-    //   ? props.navigation.state.params.selectedAddressIndex
-    //   : -1;
-
     const onChoose = (selectedIndex) => {
       setDefaultAddress(selectedIndex);
     };
-
-    // const CountryData = Countries.filter(c => {
-    //   return item.country_id === c.id;
-    // });
     const countryName = Countries[item.country_id].name.common;
-
     const removeAddress = (selectedIndex) => {
       removeAddressFromList(selectedIndex);
     };

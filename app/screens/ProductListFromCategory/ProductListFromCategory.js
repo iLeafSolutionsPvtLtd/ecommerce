@@ -4,23 +4,12 @@
  * ProductListFromCategory - Products list based on the category
  */
 
-import React from "react";
-import styles from "./styles";
-import Login from "../LoginScreen";
-import Modal from "react-native-modal";
-import Constants from "../../config/constants";
-import HudView from "../../components/hudView";
-import commonStyles from "../../config/commonStyles";
-import { translate } from "../../config/languageSwitching";
-import ProductCell from "../../components/productCell";
-import { TabBar, TabView, SceneMap } from "react-native-tab-view";
 import {
   Text,
   View,
-  SafeAreaView,
   StatusBar,
   Dimensions,
-  FlatList,
+  SafeAreaView,
   ActivityIndicator,
 } from "react-native";
 import {
@@ -34,11 +23,21 @@ import {
   DataProvider,
   LayoutProvider,
 } from "recyclerlistview";
-import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import React from "react";
+import styles from "./styles";
+import Login from "../LoginScreen";
+import Modal from "react-native-modal";
 import Images from "../../config/images";
-import NetInfo from "@react-native-community/netinfo";
+import Constants from "../../config/constants";
+import HudView from "../../components/hudView";
 import ContextHelper from "../../lib/ContextHelper";
+import commonStyles from "../../config/commonStyles";
+import NetInfo from "@react-native-community/netinfo";
+import { translate } from "../../config/languageSwitching";
+import ProductCell from "../../components/productCell";
+import { TabBar, TabView, SceneMap } from "react-native-tab-view";
+import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 const renderTabBar = (props) => (
   <TabBar
@@ -156,10 +155,6 @@ class ProductListFromCategory extends React.Component {
 
   _generateArray(n) {
     let arr = [];
-    //for (let i = 0; i < 10; i++) {
-    //  arr.push({id: i, releaseYear: '1977', title: 'Star Wars'});
-    //}
-
     return arr;
   }
 
@@ -227,11 +222,6 @@ class ProductListFromCategory extends React.Component {
       didTapOnApplyFilter: this.didTapOnApplyFilter,
       category_id: categoryId,
     });
-
-    // this.props.navigation.navigate('FilterScreen', {
-    //   didTapOnApplyFilter: this.didTapOnApplyFilter,
-    //   category_id: this.state.parent_id,
-    // });
   };
 
   didTapOnApplyFilter = (params) => {
@@ -458,12 +448,6 @@ class ProductListFromCategory extends React.Component {
       Object.keys(selectedFilters).length > 0
     ) {
       return (
-        // <View style={commonStyles.noDataFoundContainer}>
-        //   <Text style={commonStyles.noDataFoundText}>
-        //     {translate('No products found')}
-        //   </Text>
-        // </View>
-
         <EmptyDataPlaceholder
           titleText={translate("No matching product found")}
           descriptionText={"Lorem Ipsum is simply dummy text of the printing"}
@@ -540,32 +524,6 @@ class ProductListFromCategory extends React.Component {
           // disableRecycling={true}
           // itemAnimator={'shift'}
         />
-
-        {/* <FlatList
-          style={{flex: 1}}
-          data={dataListArray._data}
-          numColumns={2}
-          renderItem={({item, index}) => {
-            return (
-              <View style={{overflow: 'hidden', width: 200}}>
-                <ProductCell
-                  data={item}
-                  index={index}
-                  screenWidth={screenWidth}
-                  numOfColumns={numOfColums + 0.1}
-                  currency={currency}
-                  didTapOnLikeButton={() => {
-                    //TODO:
-                  }}
-                  didSelectAdd={item =>
-                    this.props.navigation.navigate('ProductDetail', {
-                      sku: item.sku,
-                    })
-                  }
-                />
-              </View>
-            );
-          }}></FlatList> */}
 
         {isShowBottomLoader && (
           <View

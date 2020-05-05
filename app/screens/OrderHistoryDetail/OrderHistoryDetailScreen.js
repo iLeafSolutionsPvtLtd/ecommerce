@@ -1,28 +1,20 @@
 import {
-  translate,
-  changeLanguage,
-  setI18nConfigSecondTime,
-} from "../../config/languageSwitching/index";
+  View,
+  Text,
+  StatusBar,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import styles from "./styles";
 import React, { Component } from "react";
 import Images from "../../config/images";
 import Constants from "../../config/constants";
-import {
-  View,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-  Image,
-  FlatList,
-} from "react-native";
 import HudView from "../../components/hudView";
+import ItemCell from "../../components/itemCell";
+import { translate } from "../../config/languageSwitching/index";
 import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import OrderHistoryCell from "../../components/orderHistoryCell";
-import { isEmpty } from "../../config/common";
-import ItemCell from "../../components/itemCell";
 
 const ListItem = React.memo(
   ({
@@ -33,31 +25,6 @@ const ListItem = React.memo(
     addProductToWishList,
     props,
   }) => {
-    // function getQuantity(quantityValue) {
-    //   console.log('quantityValue', quantityValue);
-    //   setTotalGross(quantityValue * item.price);
-    // }
-
-    // const attributesColor = item.product_option.extension_attributes.configurable_item_options.filter(
-    //   color => {
-    //     return color.option_id === '93';
-    //   },
-    // );
-    // const attributesSize = item.product_option.extension_attributes.configurable_item_options.filter(
-    //   size => {
-    //     return size.option_id === '178';
-    //   },
-    // );
-    // const colorID = attributesColor[0].option_value.toString();
-    // const sizeID = attributesSize[0].option_value.toString();
-
-    // const colorName = productsColors.filter(item => {
-    //   return colorID === item.value;
-    // });
-    // const sizeName = productsSizes.filter(item => {
-    //   return sizeID === item.value;
-    // });
-
     const orderCell = item.items.map((orderedItem) => {
       if (orderedItem.parent_item) {
         return (
@@ -146,19 +113,6 @@ class OrderHistoryDetailScreen extends Component {
       console.log("orderitem::: ", orderItem);
       this.setState({ orderItem: orderItem });
     }
-
-    // this.props.getOrderHistory(response => {
-    //   response.items.map(orderedItem => {
-    //     let arr = [];
-    //     arr = orderedItem.items.filter(subItem => {
-    //       return subItem.product_type === 'simple';
-    //     });
-    //     orderedItem.items = arr;
-    //   });
-    //   console.log('order history after ', response);
-
-    //   this.setState({orderList: response.items});
-    // });
   }
 
   _didTapOnBackButton = () => {

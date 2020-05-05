@@ -1,28 +1,22 @@
 import {
-  translate,
-  changeLanguage,
-  setI18nConfigSecondTime,
-} from "../../config/languageSwitching/index";
+  Text,
+  View,
+  FlatList,
+  StatusBar,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import styles from "./styles";
 import React, { Component } from "react";
 import Images from "../../config/images";
+import { isEmpty } from "../../config/common";
 import Constants from "../../config/constants";
-import {
-  View,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-  Image,
-  FlatList,
-} from "react-native";
 import HudView from "../../components/hudView";
+import ItemCell from "../../components/itemCell";
+import { translate } from "../../config/languageSwitching/index";
 import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import OrderHistoryCell from "../../components/orderHistoryCell";
-import { isEmpty } from "../../config/common";
-import ItemCell from "../../components/itemCell";
 
 const ListItem = React.memo(
   ({
@@ -49,16 +43,6 @@ const ListItem = React.memo(
               paddingBottom: 5,
             }}
           >
-            {/* <OrderHistoryCell
-              item={orderedItem.parent_item}
-              addProductToWishList={addProductToWishList}
-              index={index}
-              productsSizes={productsSizes}
-              productsColors={productsColors}
-              allowAddOption={false}
-              showQuantity={false}
-              currency={props.currency}
-            /> */}
             <ItemCell
               item={orderedItem.parent_item}
               addProductToWishList={addProductToWishList}
@@ -98,14 +82,6 @@ const ListItem = React.memo(
               <Text>{" : "}</Text>
               <Text style={styles.orderNumberText}>{item.increment_id}</Text>
             </View>
-            {/* <Image
-              source={Images.arrowRight}
-              resizeMode={"contain"}
-              style={[
-                styles.itemImage,
-                { transform: [{ rotate: props.isRTL ? "180deg" : "0deg" }] },
-              ]}
-            /> */}
           </View>
 
           <View style={{ flexDirection: "row", marginTop: 10 }}>

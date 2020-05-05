@@ -1,33 +1,38 @@
-import React, { useState, useCallback, memo, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+/**
+ * Created by iLeaf Solutions Pvt.Ltd
+ * on February 19, 2020
+ * CartView - Cart View will show the cart items added by the user.
+ */
+
 import {
   View,
-  TouchableOpacity,
   Text,
   Image,
-  StatusBar,
-  SafeAreaView,
-  TextInput,
   FlatList,
+  StatusBar,
+  TextInput,
+  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
-import Constants from "../../config/constants";
-import Images from "../../config/images";
-import styles from "./styles.js";
-import * as CartActions from "../../actions/cartActions";
-import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import HudView from "../../components/hudView";
-import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
-import { translate } from "../../config/languageSwitching";
 import {
   isEmpty,
-  showAlertWithCallback,
   showSingleAlert,
   showSimpleSnackbar,
+  showAlertWithCallback,
 } from "../../config/common";
-
-import ItemCell from "../../components/itemCell";
+import styles from "./styles.js";
 import Login from "../LoginScreen";
 import Modal from "react-native-modal";
+import Images from "../../config/images";
+import Constants from "../../config/constants";
+import HudView from "../../components/hudView";
+import ItemCell from "../../components/itemCell";
+import { useSelector, useDispatch } from "react-redux";
+import * as CartActions from "../../actions/cartActions";
+import { translate } from "../../config/languageSwitching";
+import React, { useState, useCallback, memo, useEffect } from "react";
+import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
   const [quantityValue, setQuantity] = useState(quantiryItem.qty);
@@ -240,51 +245,6 @@ const CategoryCall = memo(
               />
             </View>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            onPress={removeFromCart}
-            style={{
-              width: "50%",
-              borderWidth: 2,
-              borderColor: Constants.APP_BOX_BACKGROUND_GREY,
-              borderBottomColor: "transparent",
-              alignItems: "center",
-              justifyContent: "center",
-              height: 40,
-            }}
-          >
-            <Text
-              style={{
-                color: Constants.APP_GREY_TEXT_COLOR,
-                fontFamily: Constants.Fonts.REGULAR,
-                fontSize: 12,
-              }}
-            >
-              REMOVE
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={addToWishList}
-            style={{
-              width: "50%",
-              borderWidth: 1,
-              borderColor: Constants.APP_BOX_BACKGROUND_GREY,
-              borderBottomColor: "transparent",
-              borderRightColor: "transparent",
-              alignItems: "center",
-              justifyContent: "center",
-              height: 35,
-            }}
-          >
-            <Text
-              style={{
-                color: Constants.APP_GREY_TEXT_COLOR,
-                fontFamily: Constants.Fonts.REGULAR,
-                fontSize: 12,
-              }}
-            >
-              ADD TO WISHLIST
-            </Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     );

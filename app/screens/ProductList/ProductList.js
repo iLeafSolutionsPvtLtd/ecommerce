@@ -4,40 +4,39 @@
  * ProductList - Products list based on the category
  */
 
-import React from "react";
-import styles from "./styles";
-import Login from "../LoginScreen";
-import Modal from "react-native-modal";
-import Constants from "../../config/constants";
-import HudView from "../../components/hudView";
-import commonStyles from "../../config/commonStyles";
-import { translate } from "../../config/languageSwitching";
-import ProductCell from "../../components/productCell";
-import { TabBar, TabView, SceneMap } from "react-native-tab-view";
 import {
   Text,
   View,
-  SafeAreaView,
   StatusBar,
-  FlatList,
   Dimensions,
+  SafeAreaView,
   ActivityIndicator,
 } from "react-native";
 import {
-  normalizedHeight,
   normalizedWidth,
+  normalizedHeight,
   showSimpleSnackbar,
   showAlertWithCallback,
 } from "../../config/common";
 import {
-  RecyclerListView,
   DataProvider,
   LayoutProvider,
+  RecyclerListView,
 } from "recyclerlistview";
-import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import React from "react";
+import styles from "./styles";
+import Login from "../LoginScreen";
+import Modal from "react-native-modal";
 import Images from "../../config/images";
+import Constants from "../../config/constants";
+import HudView from "../../components/hudView";
+import commonStyles from "../../config/commonStyles";
 import NetInfo from "@react-native-community/netinfo";
+import { translate } from "../../config/languageSwitching";
+import ProductCell from "../../components/productCell";
+import { TabBar, TabView, SceneMap } from "react-native-tab-view";
+import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 const renderTabBar = (props) => (
   <TabBar
@@ -156,8 +155,6 @@ class ProductList extends React.Component {
   }
 
   componentDidMount() {
-    // if (this.state.routes.length > 0) this._onIndexChange(0, true);
-
     this.unsubscribe = NetInfo.addEventListener((state) => {
       let networkStatus = state.isConnected;
       if (networkStatus) {
@@ -501,32 +498,6 @@ class ProductList extends React.Component {
           // disableRecycling={true}
           // itemAnimator={'shift'}
         />
-
-        {/* <FlatList
-          style={{flex: 1}}
-          data={dataListArray._data}
-          numColumns={2}
-          renderItem={({item, index}) => {
-            return (
-              <View style={{overflow: 'hidden', width: 200}}>
-                <ProductCell
-                  data={item}
-                  index={index}
-                  screenWidth={screenWidth}
-                  numOfColumns={numOfColums + 0.1}
-                  currency={currency}
-                  didTapOnLikeButton={() => {
-                    //TODO:
-                  }}
-                  didSelectAdd={item =>
-                    this.props.navigation.navigate('ProductDetail', {
-                      sku: item.sku,
-                    })
-                  }
-                />
-              </View>
-            );
-          }}></FlatList> */}
 
         {isShowBottomLoader && (
           <View

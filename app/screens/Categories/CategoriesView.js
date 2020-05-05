@@ -270,6 +270,7 @@ class CategoriesView extends Component {
                 width: 7,
                 height: 13,
                 tintColor: Constants.APP_WHITE_COLOR,
+                transform: [{ rotate: this.props.isRTL ? "180deg" : "0deg" }],
               }}
             />
           </View>

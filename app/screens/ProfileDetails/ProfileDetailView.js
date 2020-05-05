@@ -5,26 +5,21 @@
  */
 
 import {
-  translate,
-  changeLanguage,
-  setI18nConfigSecondTime,
-} from "../../config/languageSwitching/index";
-import styles from "./styles";
-import React, { Component } from "react";
-import RNRestart from "react-native-restart";
-import Constants from "../../config/constants";
-import {
   View,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
   Text,
   Image,
+  StatusBar,
   TextInput,
   ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
-import HudView from "../../components/hudView";
+import styles from "./styles";
+import React, { Component } from "react";
 import Images from "../../config/images";
+import HudView from "../../components/hudView";
+import Constants from "../../config/constants";
+import { translate } from "../../config/languageSwitching/index";
 import { showSingleAlert, checkPasswordValid } from "../../config/common";
 import NavigationHeader1 from "../../components/NavigationHeaders/NavigationHeader1";
 

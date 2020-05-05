@@ -1,30 +1,20 @@
 import {
-  translate,
-  changeLanguage,
-  setI18nConfigSecondTime,
-} from "../../config/languageSwitching/index";
+  View,
+  Text,
+  FlatList,
+  StatusBar,
+  ScrollView,
+  BackHandler,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import styles from "./styles";
 import React, { Component } from "react";
-import Images from "../../config/images";
 import Constants from "../../config/constants";
-import {
-  View,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-  Image,
-  FlatList,
-  BackHandler,
-} from "react-native";
-import { StackActions } from "@react-navigation/native";
-import HudView from "../../components/hudView";
 import ItemCell from "../../components/itemCell";
-import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
+import { StackActions } from "@react-navigation/native";
+import { translate } from "../../config/languageSwitching/index";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import OrderHistoryCell from "../../components/orderHistoryCell";
-import { isEmpty } from "../../config/common";
 
 const CategoryCall = React.memo(
   ({
@@ -78,14 +68,6 @@ class OrderCompletionScreen extends Component {
   }
 
   componentDidMount() {
-    // const orderItem = this.props.navigation.state.params
-    //   ? this.props.navigation.state.params.orderItem
-    //   : '';
-    // if (orderItem) {
-    //   console.log('orderitem::: ', orderItem);
-    //   this.setState({orderItem: orderItem});
-    // }
-
     const addressDict = this.props.navigation.state.params.addressDict;
     const totalCostDict = this.props.navigation.state.params.totalCostDict;
     const itemArray = this.props.navigation.state.params.itemArray;
@@ -185,16 +167,6 @@ class OrderCompletionScreen extends Component {
               </Text>
               {/* <View style={styles.underLineStyle} /> */}
             </View>
-
-            {/* {itemArray && (
-              <ListItem
-                item={itemArray}
-                index={0}
-                productsSizes={productsSizes}
-                productsColors={productsColors}
-                props={this.props}
-              />
-            )} */}
 
             <FlatList
               style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}

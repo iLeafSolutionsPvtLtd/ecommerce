@@ -5,13 +5,22 @@
  */
 
 import {
+  DataProvider,
+  LayoutProvider,
+  RecyclerListView,
+} from "recyclerlistview";
+import {
+  normalizedHeight,
+  normalizedWidth,
+  showSimpleSnackbar,
+  showAlertWithCallback,
+} from "../../config/common";
+import {
   View,
   Text,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
   StatusBar,
-  ActivityIndicator,
+  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import styles from "./styles";
 import Login from "../LoginScreen";
@@ -23,20 +32,7 @@ import HudView from "../../components/hudView";
 import ProductCell from "../../components/productCell";
 import { translate } from "../../config/languageSwitching/index";
 import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
-import {
-  RecyclerListView,
-  DataProvider,
-  LayoutProvider,
-} from "recyclerlistview";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import {
-  normalizedHeight,
-  normalizedWidth,
-  showSimpleSnackbar,
-  showAlertWithCallback,
-} from "../../config/common";
-// import {FlatGrid} from 'react-native-super-grid';
-import Orientation from "react-native-orientation";
 
 const ViewTypes = {
   FULL: 0,
@@ -66,13 +62,7 @@ class WishListView extends Component {
       }
     );
 
-    // const {wishList} = this.props;
-    // let list = dataProvider.cloneWithRows([]);
-    // if (wishList && wishList.length > 0) {
-    //   list = dataProvider.cloneWithRows(this.props.wishList);
-    // }
     this.state = {
-      //dataProvider: list,
       showLoader: false,
       pageIndex: 0,
       isAPILoading: false,
@@ -80,81 +70,9 @@ class WishListView extends Component {
     };
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.productsList !== prevState.productsList) {
-  //     return {dataProvider: dataProvider.cloneWithRows(nextProps.productsList)};
-  //   } else return null;
-  // }
-
-  // componentWillReceiveProps(newProps) {
-  //   const {productsList} = newProps;
-  //   this.setState({
-  //     dataProvider: this.state.dataProvider.cloneWithRows(productsList),
-  //     isShowBottomLoader: false,
-  //     pageIndex: 0,
-  //   });
-  // }
-
-  componentDidMount() {
-    // this._getProductList();
-    // setTimeout(() => {
-    //   fetch('https://staging-biotecnika.kinsta.cloud/app/webservice.php', {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //       authkey: 'df63h9ywem18tk2vs5oft',
-    //       method: 'blogposts',
-    //       countrycode: 'IN',
-    //       categoryid: '',
-    //       page: '1',
-    //       per_page: '500',
-    //       categorygroup: 'news',
-    //       sortorder: '',
-    //       userid: '7',
-    //       searchkey: '',
-    //     }),
-    //   })
-    //     .then(response => response.json())
-    //     .then(responseJson => {
-    //       console.log(responseJson);
-    //       //console.log(responseJson.movies);
-    //       this.setState(
-    //         {
-    //           dataProvider: this.state.dataProvider.cloneWithRows(
-    //             responseJson.posts,
-    //           ),
-    //         },
-    //         () => {
-    //           // console.log('----------------', this.state.dataProvider);
-    //         },
-    //       );
-    //     })
-    //     .catch(error => {
-    //       console.error(error);
-    //     });
-    // }, 2000);
-  }
+  componentDidMount() {}
 
   componentWillUnmount() {}
-
-  // _getProductList = () => {
-  //   const {pageIndex, isAPILoading} = this.state;
-  //   if (isAPILoading) return;
-  //   this.setState({isShowBottomLoader: true, isAPILoading: true});
-  //   this.props.getProductsList(
-  //     pageIndex,
-  //     Constants.PRODUCTS_PAGE_COUNT,
-  //     this._getProductListCallback,
-  //   );
-  // };
-
-  // _getProductListCallback = status => {
-  //   this.setState({isShowBottomLoader: false, isAPILoading: false});
-
-  //   const {pageIndex} = this.state;
-  //   if (status) {
-  //     this.setState({pageIndex: pageIndex + 1});
-  //   }
-  // };
 
   _didTapOnSearch = () => {
     this.props.navigation.navigate("Search");
@@ -195,8 +113,6 @@ class WishListView extends Component {
     } = this.props;
     let numOfColums = isHandset ? 2 : 3; //screenWidth > 410 ? 3 : 2;
     let cellWidth = (this.props.screenWidth - 32) / numOfColums;
-
-    //console.log('this.state.dataProvider', this.state.dataProvider);
 
     let subComponent = null;
     if (userToken && userToken.length > 0) {
@@ -308,39 +224,7 @@ class WishListView extends Component {
             showCart={true}
             cartItemsCount={cartArray.length}
           />
-
           {subComponent}
-
-          {/* <FlatGrid
-            itemDimension={170}
-            items={this.state.dataProvider._data}
-            renderItem={({item, index}) => (
-              <ProductCell
-                data={item}
-                index={index}
-                screenWidth={screenWidth}
-                numOfColumns={numOfColums + 0.1}
-                didTapOnLikeButton={() => {
-                  //TODO:
-                }}
-                didSelectAdd={item =>
-                  this.props.navigation.navigate('ProductDetail')
-                }
-              />
-            )}
-          /> */}
-
-          {/* {isShowBottomLoader && (
-            <View
-              style={{
-                width: '100%',
-                height: 50,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <ActivityIndicator />
-            </View>
-          )} */}
         </View>
         <Modal
           onBackButtonPress={() => this.setState({ isLoginViewShow: false })}

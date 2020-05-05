@@ -22,6 +22,7 @@ class CategoriesContainer extends Component {
 
 function mapStateToProps(state) {
   return {
+    isRTL: state.appReducer.selectedLanguage === 'ar' ? true : false,
     currency: state.appReducer.currency,
     selectedLanguage: state.appReducer.selectedLanguage,
     isLoading: state.loadingReducer.isLoading,

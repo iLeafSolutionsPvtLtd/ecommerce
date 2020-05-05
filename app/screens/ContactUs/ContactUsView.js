@@ -86,37 +86,6 @@ class ContactUsView extends Component {
     }
 
     return true;
-    // let isValid = true;
-    // if (name.length == 0) {
-    //   this.setState({ nameError: "Name required" });
-    //   isValid = false;
-    // } else {
-    //   this.setState({ nameError: "" });
-    // }
-    // if (email.length == 0) {
-    //   this.setState({ emailError: "Email required" });
-    //   isValid = false;
-    // } else {
-    //   if (checkEMailValidation(email)) {
-    //     this.setState({ emailError: "" });
-    //   } else {
-    //     this.setState({ emailError: "Invalid email" });
-    //     isValid = false;
-    //   }
-    // }
-    // if (phone.length == 0) {
-    //   this.setState({ phoneError: "Phone no. required" });
-    //   isValid = false;
-    // } else {
-    //   this.setState({ phoneError: "" });
-    // }
-    // if (onMyMind.trim().length == 0) {
-    //   this.setState({ feedbackError: "Please fill this field" });
-    //   isValid = false;
-    // } else {
-    //   this.setState({ feedbackError: "" });
-    // }
-    // return isValid;
   }
 
   _didTapOnUpdate = () => {

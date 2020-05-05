@@ -14,27 +14,24 @@ import {
   BackHandler,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
+import {
+  normalizedWidth,
+  normalizedHeight,
+  showSimpleSnackbar,
+  showAlertWithCallback,
+} from "../../config/common";
 import styles from "./styles";
 import Login from "../LoginScreen";
 import Modal from "react-native-modal";
 import React, { Component } from "react";
 import Images from "../../config/images";
 import Constants from "../../config/constants";
-import ProductCell2 from "../../components/productCell2";
 import HudView from "../../components/hudView";
 import ImageLoader from "react-native-image-progress";
-import { translate } from "../../config/languageSwitching/index";
 import { showSingleAlert } from "../../config/common";
 import ProductCell3 from "../../components/productCell3";
-
-import {
-  normalizedHeight,
-  normalizedWidth,
-  showSimpleSnackbar,
-  showAlertWithCallback,
-} from "../../config/common";
+import { translate } from "../../config/languageSwitching/index";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 /** Adds Item Component */
@@ -262,16 +259,7 @@ class HomeScreen extends Component {
     // this.props.navigation.navigate('ProductList');
   };
 
-  _ItemLoadMore() {
-    // if (this.state.current_page + 1 <= this.state.total_pages) {
-    //   if (this.keyword && this.keyword != '') {
-    //     var page = this.state.current_page + 1;
-    //     this.search(this.keyword, page);
-    //   } else {
-    //     this.loadMore(this.state.current_page + 1);
-    //   }
-    // }
-  }
+  _ItemLoadMore() {}
 
   _didTapOnCart = () => {
     this.props.navigation.navigate("Cart");
@@ -403,7 +391,6 @@ class HomeScreen extends Component {
           showCart={true}
           countryFlag={countryFlagg}
           cartItemsCount={cartArray.length}
-          // navigationBackgroundColor={"red"}
         />
         {loader ? (
           <HudView />

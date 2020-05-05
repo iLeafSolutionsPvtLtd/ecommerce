@@ -1,4 +1,9 @@
-import React, { Component } from "react";
+/**
+ * Created by iLeaf Solutions Pvt.Ltd
+ * on February 19, 2020
+ * AddAddressView - In this screen user can add/edit their address.
+ */
+
 import {
   View,
   Text,
@@ -8,37 +13,27 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { translate } from "../../config/languageSwitching/index";
-import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import { isEmpty } from "../../config/common";
 import Styles from "./style";
+import React, { Component } from "react";
+import Images from "../../config/images";
+import { isEmpty } from "../../config/common";
 import Countries from "../../lib/countires.js";
-import { showSingleAlert } from "../../config/common";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import HudView from "../../components/hudView";
 import constants from "../../config/constants";
-import Images from "../../config/images";
-// import CountryPicker from 'react-native-country-picker-modal';
-
-import CountryPicker, {
-  getAllCountries,
-  getCallingCode,
-} from "react-native-country-picker-modal";
+import { showSingleAlert } from "../../config/common";
+import CountryPicker from "react-native-country-picker-modal";
+import { translate } from "../../config/languageSwitching/index";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 let countryFromAddress = "";
 class AddAddress extends Component {
   constructor(props) {
     super(props);
     const { details, edit } = props.navigation.state.params;
-
     const { storeCode } = props;
-
     console.log("details", details);
-
     let streetAddress = "";
-    // edit
-    //   ? details.street.join().replace(new RegExp(',', 'g'), ' \n ')
-    //   : '';
+
     if (edit)
       details.street.map((item) => {
         streetAddress = streetAddress + item + "\n";
@@ -81,20 +76,11 @@ class AddAddress extends Component {
     }
 
     if (details.country_id && details.country_id !== "") {
-      // const c_select = Countries.filter(item => {
-      //   return item.id === details.country_id;
-      // });
-      // countryFromAddress = c_select[0].full_name_english;
-
       countryCode = details.country_id;
       console.log("CODE", countryCode);
       countryName = Countries[countryCode].name.common;
       console.log("COUNTRY DICT == ", countryName);
     }
-
-    console.log("DETAILS===", details);
-    console.log("COUNTRY===", countryName);
-    console.log("COUNTRY CODE===", countryCode);
 
     this.state = {
       availableCountries: [],
@@ -151,12 +137,7 @@ class AddAddress extends Component {
     };
   }
 
-  componentDidMount() {
-    // const availableCountries = Countries.map(country => {
-    //   return country.full_name_locale;
-    // });
-    // this.setState({availableCountries: availableCountries.sort()});
-  }
+  componentDidMount() {}
 
   componentWillUnmount() {
     countryFromAddress = "";
@@ -464,50 +445,6 @@ class AddAddress extends Component {
     this.setState({ formFeilds: formfeilds });
   };
 
-  selectedCountry = (item, index) => {
-    // const selectedC = Countries.filter((citem, cindex) => {
-    //   // return index.toString() == citem.full_name_english;
-    // });
-    // let stateObject = {
-    //   text: index.toString(),
-    //   countryID: selectedC[0].id,
-    //   valid: true,
-    // };
-    // let regionObject = {
-    //   text: '',
-    //   id: 0,
-    //   valid: false,
-    // };
-    // let formfeilds = this.state.formFeilds;
-    // formfeilds['country'] = stateObject;
-    // formfeilds['country_state'] = regionObject;
-    // this.setState({formFeilds: formfeilds});
-    // if (
-    //   selectedC[0].available_regions &&
-    //   selectedC[0].available_regions.length > 0
-    // ) {
-    //   const regions = selectedC[0].available_regions.map(item => {
-    //     return item.name;
-    //   });
-    //   this.setState({
-    //     availableRegions: regions,
-    //     countryRegions: selectedC[0].available_regions,
-    //   });
-    // } else {
-    //   regionObject = {
-    //     text: '',
-    //     id: 0,
-    //     valid: true,
-    //   };
-    //   formfeilds['country_state'] = regionObject;
-    //   this.setState({
-    //     formFeilds: formfeilds,
-    //     availableRegions: [],
-    //     regionID: 0,
-    //   });
-    // }
-  };
-
   selectedRegion = (region) => {
     let stateObject = {
       text: region[0].name.toString(),
@@ -626,27 +563,6 @@ class AddAddress extends Component {
       postcode: zipcode.text.trim(),
       default_billing: addressList.length > 0 ? false : true,
     };
-
-    // if (addressList.length > 0) {
-    //   let obj = {};
-    //   userAddress = addressList.map(item => {
-    //     if (isEdit && details.id === item.id) {
-    //       return newAddress;
-    //     } else {
-    //       obj['region_id'] = item.region_id;
-    //       obj['country_id'] = item.country_id;
-    //       obj['firstname'] = item.firstname;
-    //       obj['lastname'] = item.lastname;
-    //       obj['telephone'] = item.telephone;
-    //       obj['city'] = item.city;
-    //       obj['postcode'] = item.postcode;
-    //       obj['company'] = '';
-    //       obj['street'] = item.street;
-    //       obj['default_billing'] = item.default_billing;
-    //       return obj;
-    //     }
-    //   });
-    // }
 
     if (isEdit) {
       let itemIndex;

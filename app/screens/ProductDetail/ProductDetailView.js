@@ -20,6 +20,7 @@ import {
 import styles from "./styles";
 import Login from "../LoginScreen";
 import Image360 from "../image360";
+import Share from "react-native-share";
 import Modal from "react-native-modal";
 import React, { Component } from "react";
 import Images from "../../config/images";
@@ -27,17 +28,15 @@ import HTMLView from "react-native-htmlview";
 import Constants from "../../config/constants";
 import HudView from "../../components/hudView";
 import ImageView from "react-native-image-view";
+import NetInfo from "@react-native-community/netinfo";
 import { showSingleAlert } from "../../config/common";
 import ImageLoader from "react-native-image-progress";
 import ProductCell2 from "../../components/productCell2";
-import { showAlertWithCallback, showSimpleSnackbar } from "../../config/common";
 import { translate } from "../../config/languageSwitching/index";
-import { normalizedHeight, normalizedWidth } from "../../config/common";
-import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import Share from "react-native-share";
-
 import RefreshButtonView from "../../components/RefreshButtonView";
-import NetInfo from "@react-native-community/netinfo";
+import { normalizedHeight, normalizedWidth } from "../../config/common";
+import { showAlertWithCallback, showSimpleSnackbar } from "../../config/common";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 /** Product Image Component */
 const ProductImageItem = React.memo(({ item, index, didTapOnItem, props }) => {

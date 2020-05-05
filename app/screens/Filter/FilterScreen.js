@@ -1,29 +1,31 @@
-import React, { Component, useState, useEffect, memo } from "react";
+/**
+ * Created by iLeaf Solutions Pvt.Ltd
+ * on February 12, 2020
+ * FilterScreen - FilterScreen view
+ */
+
 import {
-  SafeAreaView,
-  TextInput,
-  StatusBar,
   Text,
   View,
-  FlatList,
-  Dimensions,
   Image,
+  FlatList,
+  TextInput,
+  StatusBar,
+  Dimensions,
+  SafeAreaView,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import Constants from "../../config/constants";
+import Styles from "./style";
 import Images from "../../config/images";
+import CustomLabel from "./PriceRangeLabel";
+import Constants from "../../config/constants";
 import HudView from "../../components/hudView";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import Styles from "./style";
-import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import { translate } from "../../config/languageSwitching/index";
-import { showSingleAlert } from "../../config/common";
-// import RangeSlider from "rn-range-slider";
-
-import CustomLabel from "./PriceRangeLabel";
-
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import { translate } from "../../config/languageSwitching/index";
+import React, { Component, useState, useEffect, memo } from "react";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 const { width } = Dimensions.get("window");
 
@@ -43,8 +45,6 @@ const AccordionComponent = memo(
     reset,
     isDiscountSelected,
   }) => {
-    console.log("isDiscountSelected!!!!!!", isDiscountSelected);
-
     const [expanded, setexpanded] = useState(false);
     const [discount, setDiscount] = useState(isDiscountSelected);
     const [dummy, setDummy] = useState(false);
@@ -76,9 +76,7 @@ const AccordionComponent = memo(
       }
     }, [reset]);
 
-    function emptyArray() {
-      console.log("12344");
-    }
+    function emptyArray() {}
 
     const { currency } = props;
 
@@ -311,29 +309,6 @@ const AccordionComponent = memo(
                     </Text>
                   </View>
                 </View> */}
-                {/* <RangeSlider
-                  style={{ width: Constants.SCREEN_WIDTH - 60, height: 80 }}
-                  gravity={"center"}
-                  min={10}
-                  max={10000}
-                  initialLowValue={minimumAmt}
-                  initialHighValue={maximumAmt}
-                  step={10}
-                  selectionColor="#F14935"
-                  blankColor="#b1b1b1"
-                  thumbBorderWidth={3}
-                  thumbBorderColor="#F14935"
-                  thumbColor="#ffffff"
-                  labelBorderRadius={5}
-                  labelBackgroundColor="#ffffff"
-                  labelBorderColor={"#ffffff"}
-                  labelTextColor={"#F14935"}
-                  onValueChanged={(low, high, fromUser) => {
-                    // this.setState({ rangeLow: low, rangeHigh: high });
-                    setminimumAmt(low);
-                    setmaximumAmt(high);
-                  }}
-                /> */}
 
                 <MultiSlider
                   values={[minimumAmt, maximumAmt]}
@@ -419,7 +394,6 @@ const AccordionComponent = memo(
 const ChildComponent = memo(
   ({ childItem, childIndex, title, sortedIndex, multiSort, props }) => {
     let imgSrc = "";
-    console.log("childItem");
     if (title === "Choose Color") {
       imgSrc =
         "https://staging.saloonaat.com/pub/media/" + childItem.image_code;
@@ -650,7 +624,6 @@ const ChildComponent = memo(
 const ChildComponent2 = memo(
   ({ childItem, childIndex, title, sortedIndex, multiSort, props }) => {
     let imgSrc = "";
-    console.log("childItem");
     if (title === "Choose Color") {
       imgSrc =
         "https://staging.saloonaat.com/pub/media/" + childItem.image_code;
@@ -739,15 +712,11 @@ class FilterScreen extends Component {
     const { selectedFilters } = this.props;
     let sortOrder = selectedFilters.sort_orer ? selectedFilters.sort_orer : "";
 
-    console.log("=====isDiscountSelected====", this.state.isDiscountSelected);
     this.props.filterArray.map((datas) => {
       if (!!datas.keys) {
         datas.keys.map((val) => {
           switch (datas.title) {
             case "Sort By":
-              console.log("=====>>", val);
-              console.log("==++++===>>", sortOrder);
-
               val.togglevalue = val.value === sortOrder ? true : false;
               break;
             // case
@@ -867,8 +836,6 @@ class FilterScreen extends Component {
   };
 
   selectSortData = (keyarray) => {
-    console.log("=====####", keyarray);
-
     const a = keyarray.keys.filter((q) => {
       return q.togglevalue;
     });
@@ -885,7 +852,6 @@ class FilterScreen extends Component {
   };
 
   didSelectDiscount = (value) => {
-    console.log("DISCOUNT VAL", value);
     this.setState({ isDiscountSelected: value });
   };
 
@@ -905,14 +871,6 @@ class FilterScreen extends Component {
 
     console.log("--------filters-------", filters);
 
-    // if (
-    //   Object.keys(filters.filter_attributes) == 0 &&
-    //   filters.sort_orer === ''
-    // ) {
-    //   showSingleAlert(translate('Please select any filter option'));
-    //   this.props.clearSelectedFilters();
-    //   return;
-    // }
     this.props.updateFilters(filters);
     this.props.navigation.state.params.didTapOnApplyFilter(filters);
     this.props.navigation.goBack();

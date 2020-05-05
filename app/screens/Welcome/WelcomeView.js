@@ -6,21 +6,21 @@
 
 import {
   View,
-  SafeAreaView,
-  TouchableOpacity,
   Text,
   Image,
   StatusBar,
   I18nManager,
   BackHandler,
+  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
-import { translate } from "../../config/languageSwitching/index";
 import styles from "./styles";
+import Images from "../../config/images";
 import React, { Component } from "react";
 import RNRestart from "react-native-restart";
 import Constants from "../../config/constants";
-import Images from "../../config/images";
 import { showSingleAlert } from "../../config/common";
+import { translate } from "../../config/languageSwitching/index";
 
 class WelcomeView extends Component {
   constructor(props) {

@@ -66,18 +66,6 @@ class VideoPlayerView extends Component {
     const {videoUrl} = this.state;
     return (
       <View style={styles.container}>
-        {/* <Video
-          source={{
-            uri: videoDict.url,
-          }} // Can be a URL or a local file.
-          ref={ref => {
-            this.player = ref;
-          }} // Store reference
-          onBuffer={this.onBuffer} // Callback when remote video is buffering
-          onError={this.videoError} // Callback when video cannot be loaded
-          style={styles.backgroundVideo}
-          controls={true}
-        /> */}
         <VideoPlayer
           videoDict={videoUrl}
           onError={this.videoError}
