@@ -30,17 +30,18 @@ const styles = StyleSheet.create({
   welcomText: {
     color: "rgb(40,40,40)",
     fontSize: 28,
-    marginTop: 130,
-    marginStart: 20,
+    marginTop: 136,
+    marginStart: 16,
     textAlign: "left",
     alignSelf: "flex-start",
-    letterSpacing: 1.5,
+    letterSpacing: 1.4,
     fontFamily: Constants.Fonts.MEDIUM
   },
   girlImage: {
+    width: "86%",
     position: "absolute",
-    right: "-17%",
-    top: "5%"
+    right: "-16%",
+    top: "4%"
   },
   blurCard: {
     position: "absolute",
@@ -97,6 +98,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "rgb(241,73,53)",
     fontFamily: Constants.Fonts.REGULAR
+  },
+  guestButton: {
+    marginTop: 8,
+    fontSize: 13,
+    color: "rgb(241,73,53)",
+    textDecorationLine: "underline",
+    fontFamily: Constants.Fonts.MEDIUM
   },
   forgotPwdinputs: {
     height: normalizedHeight(45),

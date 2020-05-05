@@ -526,7 +526,7 @@ class LoginScreen extends Component {
 
   renderPasswordAccessory() {
     let { secureTextEntry } = this.state;
-    let name = secureTextEntry ? "visibility" : "visibility-off";
+    let name = secureTextEntry ? "visibility-off" : "visibility";
     return (
       <MaterialIcon
         size={22}
@@ -592,6 +592,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
+                  lineWidth={0.7}
                   tintColor={"rgb(142, 142, 142)"}
                   keyboardType="email-address"
                   autoCapitalize="none"
@@ -615,6 +616,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
+                  lineWidth={0.7}
                   tintColor={"rgb(142,142,142)"}
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -662,6 +664,18 @@ class LoginScreen extends Component {
                     <Text style={styles.signup}>{translate("Signup")}</Text>
                   </TouchableOpacity>
                 </View>
+                <View style={styles.footerContainer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      // this.props.navigation.navigate('RegistrationScreen')
+                      this.setState({ isLogin: false })
+                    }
+                  >
+                    <Text style={styles.guestButton}>
+                      {translate("Continue as guest")}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           )}
@@ -687,6 +701,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
+                  lineWidth={0.7}
                   tintColor={"rgb(142, 142, 142)"}
                   autoCorrect={false}
                   enablesReturnKeyAutomatically={true}
@@ -707,6 +722,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
+                  lineWidth={0.7}
                   tintColor={"rgb(142, 142, 142)"}
                   autoCorrect={false}
                   enablesReturnKeyAutomatically={true}
@@ -727,6 +743,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
+                  lineWidth={0.7}
                   tintColor={"rgb(142, 142, 142)"}
                   keyboardType="email-address"
                   autoCapitalize="none"
