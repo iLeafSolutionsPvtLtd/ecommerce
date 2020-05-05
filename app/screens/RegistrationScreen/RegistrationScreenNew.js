@@ -241,7 +241,7 @@ class RegistrationScreen extends Component {
                 textColor={"rgb(40,40,40)"}
                 labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                 activeLineWidth={1.5}
-                lineWidth={0.7}
+                lineWidth={1}
                 tintColor={"rgb(142, 142, 142)"}
                 autoCorrect={false}
                 enablesReturnKeyAutomatically={true}
@@ -262,7 +262,7 @@ class RegistrationScreen extends Component {
                 textColor={"rgb(40,40,40)"}
                 labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                 activeLineWidth={1.5}
-                lineWidth={0.7}
+                lineWidth={1}
                 tintColor={"rgb(142, 142, 142)"}
                 autoCorrect={false}
                 enablesReturnKeyAutomatically={true}
@@ -283,7 +283,7 @@ class RegistrationScreen extends Component {
                 textColor={"rgb(40,40,40)"}
                 labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                 activeLineWidth={1.5}
-                lineWidth={0.7}
+                lineWidth={1}
                 tintColor={"rgb(142, 142, 142)"}
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -307,7 +307,7 @@ class RegistrationScreen extends Component {
                 textColor={"rgb(40,40,40)"}
                 labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                 activeLineWidth={1.5}
-                lineWidth={0.7}
+                lineWidth={1}
                 tintColor={"rgb(142,142,142)"}
                 autoCapitalize="none"
                 autoCorrect={false}

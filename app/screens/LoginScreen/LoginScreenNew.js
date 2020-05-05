@@ -592,7 +592,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
-                  lineWidth={0.7}
+                  lineWidth={1}
                   tintColor={"rgb(142, 142, 142)"}
                   keyboardType="email-address"
                   autoCapitalize="none"
@@ -616,7 +616,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
-                  lineWidth={0.7}
+                  lineWidth={1}
                   tintColor={"rgb(142,142,142)"}
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -701,7 +701,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
-                  lineWidth={0.7}
+                  lineWidth={1}
                   tintColor={"rgb(142, 142, 142)"}
                   autoCorrect={false}
                   enablesReturnKeyAutomatically={true}
@@ -722,7 +722,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
-                  lineWidth={0.7}
+                  lineWidth={1}
                   tintColor={"rgb(142, 142, 142)"}
                   autoCorrect={false}
                   enablesReturnKeyAutomatically={true}
@@ -743,7 +743,7 @@ class LoginScreen extends Component {
                   textColor={"rgb(40,40,40)"}
                   labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
                   activeLineWidth={1.5}
-                  lineWidth={0.7}
+                  lineWidth={1}
                   tintColor={"rgb(142, 142, 142)"}
                   keyboardType="email-address"
                   autoCapitalize="none"
@@ -759,7 +759,7 @@ class LoginScreen extends Component {
                 />
 
                 <TouchableOpacity
-                  style={[styles.submitButtonStyle, { marginTop: 40 }]}
+                  style={[styles.submitButtonStyle, { marginTop: 35 }]}
                   activeOpacity={0.7}
                   onPress={() => {
                     this.onSubmitGuest();
@@ -769,7 +769,7 @@ class LoginScreen extends Component {
                     {translate("Continue as guest")}
                   </Text>
                 </TouchableOpacity>
-                <View style={styles.footerContainer}>
+                <View style={[styles.footerContainer, { marginBottom: 26 }]}>
                   <Text style={styles.forgotPassword}>
                     {translate("AlreadyHaveAccount")}
                   </Text>
