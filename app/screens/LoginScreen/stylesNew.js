@@ -10,15 +10,15 @@ import { normalizedHeight, normalizedWidth } from "../../config/common";
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    height: Constants.SCREEN_HEIGHT + 20,
+    //flex: 1,
+    //height: Constants.SCREEN_HEIGHT,
+    height: Constants.SCREEN_HEIGHT < 800 ? 700 : 800,
     backgroundColor: "rgb(255,255,255)"
   },
   container2: {
-    height: "53%",
     position: "absolute",
     backgroundColor: "#FCFAF9",
-    paddingTop: 24,
+    paddingTop: 20,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "rgba(112,112,112,0.25)",
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   submitButtonStyle: {
     marginTop: 32,
     width: "90%",
-    height: 48,
+    height: 47,
     marginHorizontal: "5%",
     justifyContent: "center",
     alignItems: "center",
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   },
   guestButton: {
     marginTop: 8,
+    marginBottom: 26,
     fontSize: 13,
     color: "rgb(241,73,53)",
     textDecorationLine: "underline",

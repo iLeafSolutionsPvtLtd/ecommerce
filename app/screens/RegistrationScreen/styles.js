@@ -10,7 +10,8 @@ import { normalizedHeight, normalizedWidth } from "../../config/common";
 
 const styles = StyleSheet.create({
   container: {
-    height: Constants.SCREEN_HEIGHT - 30,
+    //height: Constants.SCREEN_HEIGHT - 30,
+    height: Constants.SCREEN_HEIGHT < 800 ? 750 : 800,
     backgroundColor: "rgb(255,255,255)"
   },
   safeContainer: {
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
   container2: {
     position: "absolute",
     backgroundColor: "#FCFAF9",
-    paddingTop: 24,
+    paddingTop: 20,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "rgba(112,112,112,0.25)",
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     marginTop: 42,
     marginBottom: 42,
     width: "90%",
-    height: 48,
+    height: 47,
     marginHorizontal: "5%",
     justifyContent: "center",
     alignItems: "center",
