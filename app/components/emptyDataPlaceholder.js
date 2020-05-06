@@ -4,16 +4,10 @@
  * EmptyDataPlaceholder -
  */
 
-import React, {Component} from 'react';
-import {View, ActivityIndicator, Image, Text} from 'react-native';
-import Constants from '../config/constants';
-import Images from '../config/images';
-import {
-  normalizedHeight,
-  normalizedWidth,
-  showAlertWithCallback,
-} from '../config/common';
-import {translate} from '../config/languageSwitching/index';
+import React, { Component } from "react";
+import Constants from "../config/constants";
+import { View, Image, Text } from "react-native";
+import { normalizedWidth } from "../config/common";
 
 export default class emptyDataPlaceholder extends Component {
   constructor(props) {
@@ -31,16 +25,18 @@ export default class emptyDataPlaceholder extends Component {
       <View
         style={{
           flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
+          alignItems: "center",
+          justifyContent: "center",
           backgroundColor: Constants.APP_WHITE_COLOR,
-        }}>
+        }}
+      >
         <View
           style={{
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: "center",
+            justifyContent: "center",
             marginTop: -(normalizedWidth(300) / 2),
-          }}>
+          }}
+        >
           <Image
             resizeMode="contain"
             style={[
@@ -57,8 +53,9 @@ export default class emptyDataPlaceholder extends Component {
               fontFamily: Constants.Fonts.BOLD,
               fontSize: 16,
               color: Constants.APP_BLACK_COLOR,
-              textAlign: 'center',
-            }}>
+              textAlign: "center",
+            }}
+          >
             {titleText}
           </Text>
           <Text
@@ -66,9 +63,10 @@ export default class emptyDataPlaceholder extends Component {
               fontFamily: Constants.Fonts.REGULAR,
               fontSize: 13,
               color: Constants.APP_GRAY_COLOR,
-              textAlign: 'center',
+              textAlign: "center",
               marginTop: 10,
-            }}>
+            }}
+          >
             {descriptionText}
           </Text>
         </View>

@@ -5,8 +5,8 @@
  */
 
 import React, { Component } from "react";
-import { View, ActivityIndicator } from "react-native";
 import Constants from "../config/constants";
+import { View, ActivityIndicator } from "react-native";
 
 export default class hudView extends Component {
   constructor(props) {

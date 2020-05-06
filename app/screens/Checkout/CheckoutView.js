@@ -102,6 +102,7 @@ class CheckoutView extends Component {
       mGuestcartList: "",
       paymentMethods: [],
       shipmentMethods: [],
+      selectedShippingOptionIndex: 0,
     };
   }
 
@@ -348,29 +349,31 @@ class CheckoutView extends Component {
       voucherCode,
       isVoucherApplied,
       paymentMethods,
+      shipmentMethods,
+      selectedShippingOptionIndex,
     } = this.state;
 
     // let paymentMethods = ['KENT', 'Credit Card', 'Cash on Delivery'];
-    let shipmentMethods = [
-      {
-        name: "Fedex",
-        delivery: "Delivery in 2 days",
-        price: 10,
-        isSelected: false,
-      },
-      {
-        name: "Aramex",
-        delivery: "Delivery in 3 days",
-        price: 8,
-        isSelected: true,
-      },
-      {
-        name: "Bluedart",
-        delivery: "Delivery in 4 days",
-        price: 5,
-        isSelected: false,
-      },
-    ];
+    // let shipmentMethods = [
+    //   {
+    //     name: "Fedex",
+    //     delivery: "Delivery in 2 days",
+    //     price: 10,
+    //     isSelected: false,
+    //   },
+    //   {
+    //     name: "Aramex",
+    //     delivery: "Delivery in 3 days",
+    //     price: 8,
+    //     isSelected: true,
+    //   },
+    //   {
+    //     name: "Bluedart",
+    //     delivery: "Delivery in 4 days",
+    //     price: 5,
+    //     isSelected: false,
+    //   },
+    // ];
 
     let itemArray = userToken.length > 0 ? cartList : guestcartList;
     let newStreetAddress = "";
@@ -379,6 +382,12 @@ class CheckoutView extends Component {
       newStreetAddress =
         addressDict.street.length > 0 ? addressDict.street[0] : "";
       isAddressAvailable = true;
+    }
+
+    let shippingAmount = "";
+    if (shipmentMethods.length > 0) {
+      let shippingDict = shipmentMethods[selectedShippingOptionIndex];
+      shippingAmount = shippingDict.amount;
     }
 
     let currDate = new Date();
@@ -655,46 +664,51 @@ class CheckoutView extends Component {
                 }}
               />
 
-              {storeCode !== "kwstoreen" && storeCode !== "kwstorear" && (
-                <View style={styles.itemCellContainer}>
-                  <View style={{ marginHorizontal: 20 }}>
-                    <Text style={styles.addVoucherCode}>
-                      {translate("Shipment Methods")}
-                    </Text>
-                    {shipmentMethods.map((item) => (
-                      <TouchableOpacity
-                        onPress={() => this._didTapOnShipmentMethod(item)}
-                        style={[
-                          styles.paymentMethodButton,
-                          { backgroundColor: Constants.APP_WHITE_COLOR },
-                        ]}
-                        activeOpacity={Constants.ACTIVE_OPACITY}
-                      >
-                        <View style={styles.paymentOption}>
-                          <View
-                            style={[
-                              styles.paymentOption2,
-                              {
-                                backgroundColor: item.isSelected
-                                  ? Constants.APP_THEME_COLOR
-                                  : Constants.APP_WHITE_COLOR,
-                              },
-                            ]}
-                          />
-                        </View>
-                        <Text style={styles.paymentText}>{item.name}</Text>
-                        <Text style={[styles.paymentText, { flex: 1 }]}>
-                          {item.delivery}
-                        </Text>
-                        <Text style={styles.paymentText}>
-                          {item.price + " " + currency}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                    <View style={{ height: 10 }} />
+              {storeCode !== "kwstoreen" &&
+                storeCode !== "kwstorear" &&
+                shipmentMethods.length > 0 && (
+                  <View style={styles.itemCellContainer}>
+                    <View style={{ marginHorizontal: 20 }}>
+                      <Text style={styles.addVoucherCode}>
+                        {translate("Shipment Methods")}
+                      </Text>
+                      {shipmentMethods.map((item, index) => (
+                        <TouchableOpacity
+                          onPress={() => this._didTapOnShipmentMethod(item)}
+                          style={[
+                            styles.paymentMethodButton,
+                            { backgroundColor: Constants.APP_WHITE_COLOR },
+                          ]}
+                          activeOpacity={Constants.ACTIVE_OPACITY}
+                        >
+                          <View style={styles.paymentOption}>
+                            <View
+                              style={[
+                                styles.paymentOption2,
+                                {
+                                  backgroundColor:
+                                    selectedShippingOptionIndex == index
+                                      ? Constants.APP_THEME_COLOR
+                                      : Constants.APP_WHITE_COLOR,
+                                },
+                              ]}
+                            />
+                          </View>
+                          <Text style={styles.paymentText}>
+                            {item.carrier_title}
+                          </Text>
+                          <Text style={[styles.paymentText, { flex: 1 }]}>
+                            {/* {item.delivery} */}
+                          </Text>
+                          <Text style={styles.paymentText}>
+                            {item.amount + " " + currency}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                      <View style={{ height: 10 }} />
+                    </View>
                   </View>
-                </View>
-              )}
+                )}
 
               <View
                 style={{
@@ -738,7 +752,7 @@ class CheckoutView extends Component {
                         {translate("Shipping")}
                       </Text>
                       <Text style={styles.titleValueLabel}>
-                        {"8" + " " + currency}
+                        {shippingAmount + " " + currency}
                       </Text>
                     </View>
                   )}
@@ -748,7 +762,7 @@ class CheckoutView extends Component {
                       {translate("Cart Total (After Discounts)")}
                     </Text>
                     <Text style={styles.titleValueLabel}>
-                      {totalCostDict.grand_total + " " + currency}
+                      {totalCostDict.subtotal_with_discount + " " + currency}
                     </Text>
                   </View>
 
@@ -779,9 +793,7 @@ class CheckoutView extends Component {
                         },
                       ]}
                     >
-                      {parseFloat(totalCostDict.grand_total + 8) +
-                        " " +
-                        currency}
+                      {totalCostDict.grand_total + " " + currency}
                     </Text>
                   </View>
                 </View>

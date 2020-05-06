@@ -11,31 +11,28 @@ import {
 } from "./../config/languageSwitching";
 import {
   View,
-  Dimensions,
   Animated,
   StatusBar,
+  Dimensions,
   SafeAreaView,
   ImageBackground,
 } from "react-native";
+import Images from "../config/images";
 import { connect } from "react-redux";
+import Modal from "react-native-modal";
 import React, { Component } from "react";
+import Login from "../screens/LoginScreen";
+import Constants from "../config/constants";
+import DeviceInfo from "react-native-device-info";
+import Orientation from "react-native-orientation";
+import * as RNLocalize from "react-native-localize";
 import NetInfo from "@react-native-community/netinfo";
 import SplashScreen from "react-native-splash-screen";
 import * as appActions from "./../actions/appActions";
+import * as loginActions from "../actions/loginActions";
 import * as storeActions from "./../actions/storeActions";
 import * as categoryActions from "./../actions/categoryActions";
-import * as RNLocalize from "react-native-localize";
-import DeviceInfo from "react-native-device-info";
-import Login from "../screens/LoginScreen";
-import Modal from "react-native-modal";
-
 import { showSingleAlert, showAlertWithCallback } from "../config/common";
-import * as loginActions from "../actions/loginActions";
-
-import Images from "../config/images";
-
-import Constants from "../config/constants";
-import Orientation from "react-native-orientation";
 
 class PreLoaderScreen extends Component {
   constructor(props) {
@@ -239,17 +236,6 @@ class PreLoaderScreen extends Component {
         </ImageBackground>
       </SafeAreaView>
     );
-    // return (
-    //   <View
-    //     style={{
-    //       flex: 1,
-    //       alignItems: 'center',
-    //       justifyContent: 'center',
-    //       backgroundColor: Constants.APP_BLACK_COLOR,
-    //     }}>
-    //     <ActivityIndicator></ActivityIndicator>
-    //   </View>
-    // );
   }
 }
 

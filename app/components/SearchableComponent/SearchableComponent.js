@@ -1,7 +1,7 @@
+import Style from "./styles";
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import Style from "./styles";
 
 export default class SearchableComponent extends Component {
   render() {

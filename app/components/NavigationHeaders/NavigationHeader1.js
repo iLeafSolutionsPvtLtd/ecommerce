@@ -4,11 +4,11 @@
  * NavigationHeader - Navigation header component.
  */
 
-import React, { Component } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import Images from "../../config/images";
+import React, { Component } from "react";
 import Constants from "../../config/constants";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 
 class NavigationHeader1 extends Component {
   constructor(props) {

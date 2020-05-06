@@ -4,16 +4,16 @@
  * Entrypoint - Everthing starts from the entrypoint.
  */
 
-import Navigator from './navigation';
-import {Provider} from 'react-redux';
-import React, {Component} from 'react';
-import configureStore from './store/configureStore';
-import {PersistGate} from 'redux-persist/es/integration/react';
-import {ActivityIndicator, Text, TextInput} from 'react-native';
-import Orientation from 'react-native-orientation';
-import DeviceInfo from 'react-native-device-info';
+import Navigator from "./navigation";
+import { Provider } from "react-redux";
+import React, { Component } from "react";
+import DeviceInfo from "react-native-device-info";
+import Orientation from "react-native-orientation";
+import configureStore from "./store/configureStore";
+import { PersistGate } from "redux-persist/es/integration/react";
+import { ActivityIndicator, Text, TextInput } from "react-native";
 
-const {persistor, store} = configureStore();
+const { persistor, store } = configureStore();
 
 export default class Entrypoint extends Component {
   constructor(props) {
@@ -27,8 +27,8 @@ export default class Entrypoint extends Component {
   componentDidMount() {
     console.disableYellowBox = true;
     let type = DeviceInfo.getDeviceType();
-    console.log('********DEVICE TYPE*******', type);
-    if (type === 'Handset') {
+    console.log("********DEVICE TYPE*******", type);
+    if (type === "Handset") {
       Orientation.lockToPortrait();
     }
   }
