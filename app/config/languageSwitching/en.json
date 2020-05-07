@@ -238,5 +238,10 @@
   "Edit your profile": "Edit your profile",
   "CATEGORIES": "CATEGORIES",
   "WISHLIST": "WISHLIST",
-  "Please enter a valid phone number": "Please enter a valid phone number"
+  "Please enter a valid phone number": "Please enter a valid phone number",
+  "Email required": "Email required",
+  "Invalid Email": "Invalid Email",
+  "Password required": "Password required",
+  "First name required": "First name required",
+  "Last name required": "Last name required"
 }

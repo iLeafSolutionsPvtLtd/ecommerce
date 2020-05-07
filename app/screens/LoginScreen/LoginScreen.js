@@ -4,7 +4,7 @@
  * LoginScreen - LoginScreen View
  */
 
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -14,39 +14,42 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
-import styles from './styles';
-import {translate} from '../../config/languageSwitching/index';
-import {LoginButton, AccessToken} from 'react-native-fbsdk';
+  TouchableOpacity
+} from "react-native";
+import styles from "./styles";
+import { translate } from "../../config/languageSwitching/index";
+import { LoginButton, AccessToken } from "react-native-fbsdk";
 import {
   isEmpty,
   showSingleAlert,
   checkEMailValidation,
   showAlertWithCallback,
-  normalizedHeight,
-} from '../../config/common';
-import {LoginManager} from 'react-native-fbsdk';
-import Images from '../../config/images';
-import LinearGradient from 'react-native-linear-gradient';
+  normalizedHeight
+} from "../../config/common";
+import { LoginManager } from "react-native-fbsdk";
+import Images from "../../config/images";
+import LinearGradient from "react-native-linear-gradient";
 import {
   GoogleSignin,
   GoogleSigninButton,
-  statusCodes,
-} from '@react-native-community/google-signin';
+  statusCodes
+} from "@react-native-community/google-signin";
 import appleAuth, {
   AppleButton,
   AppleAuthError,
   AppleAuthRequestScope,
   AppleAuthRealUserStatus,
   AppleAuthCredentialState,
-  AppleAuthRequestOperation,
-} from '@invertase/react-native-apple-authentication';
-import Constants from '../../config/constants';
-import Modal from 'react-native-modal';
-import HudView from '../../components/hudView';
+  AppleAuthRequestOperation
+} from "@invertase/react-native-apple-authentication";
+import { TextField } from "react-native-material-textfield";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+import { BlurView } from "@react-native-community/blur";
+import Constants from "../../config/constants";
+import Modal from "react-native-modal";
+import HudView from "../../components/hudView";
 
-import SignUp from '../../screens/RegistrationScreen';
+import SignUp from "../../screens/RegistrationScreen";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -58,36 +61,47 @@ class LoginScreen extends Component {
     this.user = null;
     this.state = {
       credentialStateForUser: -1,
-      email: '',
-      password: '',
-      emailError: '',
-      passwordError: '',
+      email: "",
+      password: "",
       isLogin: !isGuestLogin,
       isSignUpViewShow: false,
       isForgotPasswordShow: false,
-      firstName: '',
-      lastName: '',
-      firstNameError: '',
-      lastnameError: '',
-      guestEmailError: '',
+      firstName: "",
+      lastName: "",
       showClose: true,
-      forgotEmail: '',
-      forgotEmailError: '',
+      forgotEmail: "",
+      forgotEmailError: "",
       isTermsChecked: false,
+      secureTextEntry: true
     };
+
+    this.onFocus = this.onFocus.bind(this);
+    this.onChangeText = this.onChangeText.bind(this);
+    this.onSubmitEmail = this.onSubmitEmail.bind(this);
+    this.emailRef = this.updateRef.bind(this, "email");
+    this.passwordRef = this.updateRef.bind(this, "password");
+    this.onAccessoryPress = this.onAccessoryPress.bind(this);
+    this.onSubmitPassword = this.onSubmitPassword.bind(this);
+    this.onSubmitFirstName = this.onSubmitFirstName.bind(this);
+    this.onSubmitLastName = this.onSubmitLastName.bind(this);
+    this.onSubmitGuestEmail = this.onSubmitGuestEmail.bind(this);
+    this.lastnameRef = this.updateRef.bind(this, "lastname");
+    this.firstnameRef = this.updateRef.bind(this, "firstname");
+    this.guestEmailRef = this.updateRef.bind(this, "guestEmail");
+    this.renderPasswordAccessory = this.renderPasswordAccessory.bind(this);
   }
 
   componentDidMount() {
     // GoogleSignin.configure();
-    console.log('VESRION===', Constants.IOS_VERSION);
+    console.log("VESRION===", Constants.IOS_VERSION);
 
     GoogleSignin.configure({
-      hostedDomain: '',
-      loginHint: '',
+      hostedDomain: "",
+      loginHint: "",
       forceConsentPrompt: true,
-      accountName: '',
+      accountName: "",
       iosClientId:
-        '855821477319-lof8mcnb5v133mt0ptpnk3rcgqie169e.apps.googleusercontent.com',
+        "855821477319-lof8mcnb5v133mt0ptpnk3rcgqie169e.apps.googleusercontent.com"
     });
 
     // /**
@@ -121,21 +135,66 @@ class LoginScreen extends Component {
     // this.authCredentialListener();
   }
 
+  updateRef(name, ref) {
+    this[name] = ref;
+  }
+
+  onFocus() {
+    let { errors = {} } = this.state;
+    for (let name in errors) {
+      let ref = this[name];
+      if (ref && ref.isFocused()) {
+        delete errors[name];
+      }
+    }
+    this.setState({ errors });
+  }
+
+  onChangeText(text) {
+    ["email", "password", "lastname", "firstname", "guestEmail"]
+      .map(name => ({ name, ref: this[name] }))
+      .forEach(({ name, ref }) => {
+        if (ref && ref.isFocused()) {
+          this.setState({ [name]: text });
+        }
+      });
+  }
+
+  onSubmitEmail() {
+    this.password.focus();
+  }
+
+  onSubmitPassword() {
+    this.password.blur();
+  }
+
+  onSubmitFirstName() {
+    this.lastname.focus();
+  }
+
+  onSubmitLastName() {
+    this.guestEmail.focus();
+  }
+
+  onSubmitGuestEmail() {
+    this.guestEmail.blur();
+  }
+
   /** FB Login */
   onFBLoginPress = () => {
     // this.props.navigateToHomeScreen();
     // this.props.navigation.navigate('HomeScreen');
     LoginManager.logOut();
-    LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+    LoginManager.logInWithPermissions(["public_profile", "email"]).then(
       function(result) {
-        console.log('FB LOGIN RESULT===', result);
+        console.log("FB LOGIN RESULT===", result);
 
         if (result.isCancelled) {
-          console.log('Login cancelled');
+          console.log("Login cancelled");
         } else {
           console.log(
-            'Login success with permissions: ' +
-              result.grantedPermissions.toString(),
+            "Login success with permissions: " +
+              result.grantedPermissions.toString()
           );
           AccessToken.getCurrentAccessToken().then(data => {
             console.log(data.accessToken.toString());
@@ -143,14 +202,14 @@ class LoginScreen extends Component {
             let token = data.accessToken.toString();
 
             fetch(
-              'https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' +
-                token,
+              "https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=" +
+                token
             )
               .then(response => response.json())
               .then(json => {
-                console.log('DATA RESPONSE ==', json);
+                console.log("DATA RESPONSE ==", json);
 
-                alert('Login success');
+                alert("Login success");
 
                 // // Some user object has been set up somewhere, build that user here
                 // user.name = json.name;
@@ -163,14 +222,14 @@ class LoginScreen extends Component {
                 // user.avatar = setAvatar(json.id);
               })
               .catch(() => {
-                reject('ERROR GETTING DATA FROM FACEBOOK');
+                reject("ERROR GETTING DATA FROM FACEBOOK");
               });
           });
         }
       },
       function(error) {
-        console.log('Login fail with error: ' + error);
-      },
+        console.log("Login fail with error: " + error);
+      }
     );
   };
 
@@ -179,10 +238,10 @@ class LoginScreen extends Component {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log('userInfo', userInfo);
-      alert('Login success');
+      console.log("userInfo", userInfo);
+      alert("Login success");
     } catch (error) {
-      console.log('ERROR', error);
+      console.log("ERROR", error);
 
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -198,7 +257,7 @@ class LoginScreen extends Component {
 
   /** Apple Login */
   onAppleLoginPress = async () => {
-    console.warn('Beginning Apple Authentication');
+    console.warn("Beginning Apple Authentication");
 
     // start a login request
     try {
@@ -206,27 +265,27 @@ class LoginScreen extends Component {
         requestedOperation: AppleAuthRequestOperation.LOGIN,
         requestedScopes: [
           AppleAuthRequestScope.EMAIL,
-          AppleAuthRequestScope.FULL_NAME,
-        ],
+          AppleAuthRequestScope.FULL_NAME
+        ]
       });
 
-      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+      console.log("appleAuthRequestResponse", appleAuthRequestResponse);
 
       const {
         user: newUser,
         email,
         nonce,
         identityToken,
-        realUserStatus /* etc */,
+        realUserStatus /* etc */
       } = appleAuthRequestResponse;
 
       const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user,
+        appleAuthRequestResponse.user
       );
-      console.log('credentialState====----->>>', credentialState);
+      console.log("credentialState====----->>>", credentialState);
 
       if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
-        alert('SUCCESS');
+        alert("SUCCESS");
       }
 
       this.user = newUser;
@@ -254,10 +313,10 @@ class LoginScreen extends Component {
 
       console.warn(`Apple Authentication Completed, ${this.user}, ${email}`);
     } catch (error) {
-      console.log('!!!ERROR', error);
+      console.log("!!!ERROR", error);
 
       if (error.code === AppleAuthError.CANCELED) {
-        console.warn('User canceled Apple Sign in.');
+        console.warn("User canceled Apple Sign in.");
       } else {
         console.error(error);
       }
@@ -279,89 +338,19 @@ class LoginScreen extends Component {
   //   }
   // };
 
-  _isFieldsValid() {
-    const {email, password} = this.state;
-    let isValid = true;
-    if (isEmpty(email)) {
-      this.setState({emailError: 'Email required.'});
-      isValid = false;
-    } else {
-      if (checkEMailValidation(email)) {
-        this.setState({emailError: null});
-      } else {
-        this.setState({emailError: 'Invalid Email.'});
-        isValid = false;
-      }
-    }
-    if (isEmpty(password)) {
-      isValid = false;
-      this.setState({passwordError: 'Password required.'});
-    } else {
-      this.setState({passwordError: null});
-    }
-    return isValid;
-  }
-
-  _onSubmit() {
-    const {email, password} = this.state;
-    const {onLoginUser} = this.props;
-    if (this._isFieldsValid()) {
-      onLoginUser(email, password, this._loginCallback);
-    }
-  }
-
-  _onSubmitGuest = () => {
-    const {firstName, lastName, email} = this.state;
-    let valid = true;
-    if (firstName === '') {
-      this.setState({firstNameError: 'First name required'});
-      valid = false;
-    } else {
-      this.setState({firstNameError: ''});
-    }
-    if (lastName === '') {
-      this.setState({lastnameError: 'Last name required'});
-      valid = false;
-    } else {
-      this.setState({lastnameError: ''});
-    }
-    if (isEmpty(email)) {
-      this.setState({guestEmailError: 'Email required'});
-      valid = false;
-    } else {
-      this.setState({guestEmailError: ''});
-      if (checkEMailValidation(email)) {
-        this.setState({guestEmailError: ''});
-      } else {
-        this.setState({guestEmailError: 'Invalid Email'});
-        valid = false;
-      }
-    }
-
-    if (valid) {
-      let params = {firstName: firstName, lastName: lastName, email: email};
-      this.props.updateGuestInfo(params);
-      if (this.props.guestInfoAddedCallback) {
-        this.props.guestInfoAddedCallback();
-      } else {
-        this.props.didTapOnclose();
-      }
-    }
-  };
-
   _loginCallback = (status, showAlert) => {
     if (status) {
       this.props.didTapOnclose();
     } else {
       if (showAlert) {
         showAlertWithCallback(
-          'Something went wrong, please login again',
-          'Ok',
-          'Continue as guest',
+          "Something went wrong, please login again",
+          "Ok",
+          "Continue as guest",
           () => {},
           () => {
             this.props.didTapOnclose();
-          },
+          }
         );
       }
       this.props.userDidLogOut();
@@ -369,29 +358,126 @@ class LoginScreen extends Component {
   };
 
   _didSubmitForgotPwd = () => {
-    const {forgotEmail} = this.state;
+    const { forgotEmail } = this.state;
     let valid = true;
     if (isEmpty(forgotEmail)) {
-      this.setState({forgotEmailError: 'Email required'});
+      this.setState({ forgotEmailError: translate("Email required") });
       valid = false;
     } else {
-      this.setState({forgotEmailError: ''});
+      this.setState({ forgotEmailError: "" });
       if (checkEMailValidation(forgotEmail)) {
-        this.setState({forgotEmailError: ''});
+        this.setState({ forgotEmailError: "" });
       } else {
-        this.setState({forgotEmailError: 'Invalid Email'});
+        this.setState({ forgotEmailError: translate("Invalid Email") });
         valid = false;
       }
     }
     if (valid) {
-      this.setState({forgotEmail: ''});
+      this.setState({ forgotEmail: "" });
       showSingleAlert(
-        translate('Message sent succesfully'),
-        translate('Ok'),
-        () => this.setState({isForgotPasswordShow: false}),
+        translate("Message sent succesfully"),
+        translate("Ok"),
+        () => this.setState({ isForgotPasswordShow: false })
       );
     }
   };
+
+  onSubmit() {
+    let errors = {};
+    let isValid = true;
+    ["email", "password"].forEach(name => {
+      let value = this[name].value();
+      if ("email" === name) {
+        if (!value) {
+          errors[name] = translate("Email required");
+          isValid = false;
+        } else if (!checkEMailValidation(value)) {
+          errors[name] = translate("Invalid Email");
+          isValid = false;
+        }
+      }
+      if ("password" === name && !value) {
+        errors[name] = translate("Password required");
+        isValid = false;
+      }
+    });
+    this.setState({ errors });
+
+    if (isValid) {
+      const { onLoginUser } = this.props;
+      onLoginUser(
+        this["email"].value(),
+        this["password"].value(),
+        this._loginCallback
+      );
+    }
+  }
+
+  onSubmitGuest() {
+    let errors = {};
+    let isValid = true;
+    ["lastname", "firstname", "guestEmail"].forEach(name => {
+      let value = this[name].value();
+      if ("lastname" === name && !value) {
+        errors[name] = translate("Last name required");
+        isValid = false;
+      }
+      if ("firstname" === name && !value) {
+        errors[name] = translate("First name required");
+        isValid = false;
+      }
+      if ("guestEmail" === name) {
+        if (!value) {
+          errors[name] = translate("Email required");
+          isValid = false;
+        } else if (!checkEMailValidation(value)) {
+          errors[name] = translate("Invalid Email");
+          isValid = false;
+        }
+      }
+    });
+    this.setState({ errors });
+
+    if (isValid) {
+      let params = {
+        firstName: this["firstname"].value(),
+        lastName: this["lastname"].value(),
+        email: this["guestEmail"].value()
+      };
+      this.props.updateGuestInfo(params);
+      if (this.props.guestInfoAddedCallback) {
+        this.props.guestInfoAddedCallback();
+      } else {
+        this.props.didTapOnclose();
+      }
+    }
+  }
+
+  onAccessoryPress() {
+    this.setState(({ secureTextEntry }) => ({
+      secureTextEntry: !secureTextEntry
+    }));
+  }
+
+  renderPasswordAccessory() {
+    let { secureTextEntry } = this.state;
+    let name = secureTextEntry ? "visibility-off" : "visibility";
+    return (
+      <MaterialIcon
+        style={{
+          paddingStart: 10,
+          paddingEnd: 6,
+          paddingBottom: 2,
+          paddingTop: 16
+        }}
+        size={22}
+        name={name}
+        color={TextField.defaultProps.baseColor}
+        onPress={this.onAccessoryPress}
+        suppressHighlighting={true}
+      />
+    );
+  }
 
   render() {
     const {
@@ -399,401 +485,316 @@ class LoginScreen extends Component {
       isForgotPasswordShow,
       forgotEmailError,
       isTermsChecked,
+      secureTextEntry,
+      errors = {}
     } = this.state;
-    const {isLoading} = this.props;
-
-    let loginTextColor = this.state.isLogin
-      ? 'rgb(42,42,42)'
-      : 'rgba(120,120,120, 0.5)';
-    let guestTextColor = !this.state.isLogin
-      ? 'rgb(42,42,42)'
-      : 'rgba(120,120,120, 0.5)';
-    let loginLineColor = this.state.isLogin
-      ? 'rgb(42,42,42)'
-      : 'rgb(255,255,255)';
-    let guestLineColor = !this.state.isLogin
-      ? 'rgb(42,42,42)'
-      : 'rgb(255,255,255)';
+    const { isLoading } = this.props;
 
     return (
       <SafeAreaView style={styles.safeContainer}>
         <StatusBar backgroundColor={Constants.APP_THEME_DARK_GRAY} />
         <ScrollView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           scrollEventThrottle={16}
           onScroll={event => {
-            if (event.nativeEvent.contentOffset.y > 150) {
-              this.setState({showClose: false});
+            if (event.nativeEvent.contentOffset.y > 100) {
+              this.setState({ showClose: false });
             } else {
-              this.setState({showClose: true});
+              this.setState({ showClose: true });
             }
-          }}>
-          <View style={styles.container}>
-            <View style={{width: '100%', height: '28%'}}>
+          }}
+        >
+          {/* login section */}
+          {this.state.isLogin && (
+            <View style={styles.container}>
+              <Text style={styles.welcomText}>
+                {translate("Hello welcome")}
+              </Text>
               <Image
-                source={Images.loginHeaderBg}
-                resizeMode="cover"
-                style={styles.logo}
+                source={Images.womenShopping}
+                resizeMode="contain"
+                style={styles.girlImage}
               />
-              <View style={styles.overlay} />
-              <View style={styles.logoContainer}>
-                <Image
-                  source={Images.logo}
-                  resizeMode="contain"
-                  style={styles.appLogo}
+              <View style={styles.container2}>
+                {/* <BlurView
+                blurType="light"
+                blurAmount={1}
+                blurRadius={1}
+                style={styles.blurCard}
+              /> */}
+                {/* <Text style={styles.subText}>{translate("Email")}</Text> */}
+
+                <TextField
+                  ref={this.emailRef}
+                  containerStyle={styles.containerStyle}
+                  labelTextStyle={styles.inpuLabelTextStyle}
+                  labelFontSize={15}
+                  fontSize={16}
+                  textColor={"rgb(40,40,40)"}
+                  labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                  activeLineWidth={1.5}
+                  lineWidth={1}
+                  tintColor={"rgb(142, 142, 142)"}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  enablesReturnKeyAutomatically={true}
+                  onFocus={this.onFocus}
+                  onChangeText={this.onChangeText}
+                  onSubmitEditing={this.onSubmitEmail}
+                  returnKeyType="next"
+                  label={translate("Email")}
+                  error={errors.email}
+                  blurOnSubmit={false}
                 />
-              </View>
-              {/* <TouchableOpacity
-                onPress={() => {
-                  this.props.didTapOnclose();
-                }}
-                style={styles.closeButtonView}>
-                <Image
-                  source={Images.close}
-                  style={{width: 15, height: 15}}></Image>
-              </TouchableOpacity> */}
-            </View>
-
-            <View style={styles.cardContainer}>
-              <View style={styles.tabContainer}>
-                <View style={{flexDirection: 'column'}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({isLogin: true});
-                    }}>
-                    <Text style={[styles.loginText, {color: loginTextColor}]}>
-                      {translate('Login')}
-                    </Text>
-                    <View
-                      style={[styles.uline, {backgroundColor: loginLineColor}]}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={{flexDirection: 'column'}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({isLogin: false});
-                    }}>
-                    <Text style={[styles.guestText, {color: guestTextColor}]}>
-                      {translate('Guest')}
-                    </Text>
-                    <View
-                      style={[styles.uline, {backgroundColor: guestLineColor}]}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              {/* login section */}
-              {this.state.isLogin && (
-                <View
+                <TextField
+                  ref={this.passwordRef}
+                  secureTextEntry={secureTextEntry}
+                  containerStyle={styles.containerStyle}
+                  labelTextStyle={styles.inpuLabelTextStyle}
+                  labelFontSize={15}
+                  fontSize={16}
+                  textColor={"rgb(40,40,40)"}
+                  labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                  activeLineWidth={1.5}
+                  lineWidth={1}
+                  tintColor={"rgb(142,142,142)"}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  enablesReturnKeyAutomatically={true}
+                  onFocus={this.onFocus}
+                  onChangeText={this.onChangeText}
+                  onSubmitEditing={this.onSubmitPassword}
+                  renderRightAccessory={this.renderPasswordAccessory}
+                  returnKeyType="done"
+                  label={translate("Password")}
+                  error={errors.password}
+                />
+                <TouchableOpacity
                   style={{
-                    flexDirection: 'column',
-                    marginTop: 20,
-                  }}>
-                  <View style={styles.inputContainerFull}>
-                    <TextInput
-                      style={styles.inputs}
-                      returnKeyType={'next'}
-                      placeholder={translate('Email')}
-                      keyboardType="email-address"
-                      onSubmitEditing={() => this.passwordInput.focus()}
-                      onChangeText={value => this.setState({email: value})}
-                      underlineColorAndroid="transparent"
-                      blurOnSubmit={false}
-                    />
-                  </View>
-                  <Text style={styles.errorText}>{this.state.emailError}</Text>
-                  <View style={[styles.inputContainerFull, {marginTop: 8}]}>
-                    <TextInput
-                      style={styles.inputs}
-                      placeholder={translate('Password')}
-                      ref={input => (this.passwordInput = input)}
-                      onChangeText={value => this.setState({password: value})}
-                      returnKeyType={'done'}
-                      keyboardType="default"
-                      secureTextEntry={true}
-                      onSubmitEditing={() => this._onSubmit()}
-                      underlineColorAndroid="transparent"
-                    />
-                  </View>
-                  <Text style={styles.errorText}>
-                    {this.state.passwordError}
+                    alignSelf: "flex-end",
+                    marginHorizontal: 12,
+                    marginVertical: 6
+                  }}
+                  onPress={() => this.setState({ isForgotPasswordShow: true })}
+                >
+                  <Text style={styles.forgotPassword}>
+                    {translate("Forgot Password")}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.submitButtonStyle}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    this.onSubmit();
+                  }}
+                >
+                  <Text style={styles.submitText}>{translate("SIGN IN")}</Text>
+                </TouchableOpacity>
+                <View style={styles.footerContainer}>
+                  <Text style={styles.forgotPassword}>
+                    {translate("Dont have an account?")}
                   </Text>
                   <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      this._onSubmit();
-                    }}>
-                    <LinearGradient
-                      colors={['rgb(185, 128, 43)', 'rgb(229, 183, 80)']}
-                      start={{x: 0, y: 0}}
-                      end={{x: 1, y: 0}}
-                      style={styles.gradient}>
-                      <Text style={styles.submitText}>
-                        {translate('Submit')}
-                      </Text>
-                    </LinearGradient>
+                    onPress={() =>
+                      // this.props.navigation.navigate('RegistrationScreen')
+                      this.setState({ isSignUpViewShow: true })
+                    }
+                  >
+                    <Text style={styles.signup}>{translate("Signup")}</Text>
                   </TouchableOpacity>
-                  <View style={styles.footerContainer}>
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.setState({isForgotPasswordShow: true})
-                      }>
-                      <Text style={styles.forgotPassword}>
-                        {translate('Forgot Password')}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() =>
-                        // this.props.navigation.navigate('RegistrationScreen')
-                        this.setState({isSignUpViewShow: true})
-                      }>
-                      <Text style={styles.signup}>{translate('Signup')}</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <Text style={styles.or}>{translate('OR')}</Text>
-                  <View style={styles.containerHalf}>
-                    <TouchableOpacity
-                      //onPress={this.onGoogleLoginPress}
-                      style={styles.buttonHalf}>
-                      <Image
-                        source={Images.google}
-                        resizeMode="contain"
-                        style={styles.socialLogo}
-                      />
-                      <Text style={styles.socialName}>
-                        {translate('Google')}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      //onPress={this.onFBLoginPress}
-                      style={styles.buttonHalf}>
-                      <Image
-                        source={Images.fb}
-                        resizeMode="contain"
-                        style={styles.socialLogo}
-                      />
-                      <Text
-                        style={[
-                          styles.socialName,
-                          {color: 'rgb(57, 111, 204)'},
-                        ]}>
-                        {translate('Facebook')}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                  {Platform.OS === 'ios' && (
-                    <TouchableOpacity
-                      //onPress={this.onAppleLoginPress}
-                      style={[
-                        styles.buttonFull,
-                        {borderColor: 'rgb(0, 0, 0)'},
-                      ]}>
-                      <Image
-                        source={Images.apple}
-                        resizeMode="contain"
-                        style={styles.socialLogo}
-                      />
-                      <Text
-                        style={[styles.socialName, {color: 'rgb(0, 0, 0)'}]}>
-                        {translate('APPLE login')}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
                 </View>
-              )}
-
-              {/* Guest section */}
-              {!this.state.isLogin && (
-                <View style={{}}>
-                  <View style={[styles.containerHalf, {marginTop: 38}]}>
-                    <View style={{flexDirection: 'column', width: '48%'}}>
-                      <View style={styles.inputContainerHalf}>
-                        <TextInput
-                          style={styles.inputs}
-                          placeholder={translate('First name')}
-                          onChangeText={value =>
-                            this.setState({firstName: value})
-                          }
-                          returnKeyType={'next'}
-                          keyboardType="default"
-                          blurOnSubmit={false}
-                          maxLength={16}
-                          numberOfLines={1}
-                          onSubmitEditing={() => this.lastNameInput.focus()}
-                          underlineColorAndroid="transparent"
-                        />
-                      </View>
-                      <Text style={[styles.errorText, {marginStart: 6}]}>
-                        {this.state.firstNameError}
-                      </Text>
-                    </View>
-                    <View style={{flexDirection: 'column', width: '48%'}}>
-                      <View style={styles.inputContainerHalf}>
-                        <TextInput
-                          style={styles.inputs}
-                          placeholder={translate('Last name')}
-                          ref={input => (this.lastNameInput = input)}
-                          returnKeyType={'next'}
-                          keyboardType="default"
-                          blurOnSubmit={false}
-                          maxLength={16}
-                          numberOfLines={1}
-                          onSubmitEditing={() => this.guestEmailInput.focus()}
-                          onChangeText={value =>
-                            this.setState({lastName: value})
-                          }
-                          underlineColorAndroid="transparent"
-                        />
-                      </View>
-                      <Text style={[styles.errorText, {marginStart: 6}]}>
-                        {this.state.lastnameError}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.inputContainerFull}>
-                    <TextInput
-                      style={styles.inputs}
-                      placeholder={translate('Email')}
-                      ref={input => (this.guestEmailInput = input)}
-                      keyboardType="email-address"
-                      returnKeyType={'done'}
-                      //onSubmitEditing={() => this._onSubmitGuest()}
-                      onChangeText={value => this.setState({email: value})}
-                      underlineColorAndroid="transparent"
-                    />
-                  </View>
-                  <Text style={styles.errorText}>
-                    {this.state.guestEmailError}
-                  </Text>
-                  <View style={styles.termsWrapper}>
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.setState({isTermsChecked: !isTermsChecked})
-                      }>
-                      <Image
-                        source={
-                          isTermsChecked
-                            ? Images.filterIcons.check_tick
-                            : Images.filterIcons.check_outline
-                        }
-                        resizeMode="contain"
-                        style={styles.termsTick}
-                      />
-                    </TouchableOpacity>
-                    <Text style={styles.termsText}>
-                      {translate('terms_text_part_one') + ' '}
-                      <Text
-                        style={styles.termsTextColored}
-                        onPress={() => showSingleAlert('Terms clicked')}>
-                        {translate('terms_text_part_two') + ' '}
-                      </Text>
-                      {translate('terms_text_part_three') + ' '}
-                      <Text
-                        style={styles.termsTextColored}
-                        onPress={() => showSingleAlert('condition clicked')}>
-                        {translate('terms_text_part_four')}
-                      </Text>
+                <View style={styles.footerContainer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      // this.props.navigation.navigate('RegistrationScreen')
+                      this.setState({ isLogin: false })
+                    }
+                  >
+                    <Text style={styles.guestButton}>
+                      {translate("Continue as guest")}
                     </Text>
-                  </View>
-                  <TouchableOpacity
-                    disabled={!isTermsChecked}
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      this._onSubmitGuest();
-                    }}>
-                    <LinearGradient
-                      colors={['rgb(185, 128, 43)', 'rgb(229, 183, 80)']}
-                      opacity={isTermsChecked ? 1 : 0.6}
-                      start={{x: 0, y: 0}}
-                      end={{x: 1, y: 0}}
-                      style={styles.gradient}>
-                      <Text style={styles.submitText}>
-                        {translate('Submit')}
-                      </Text>
-                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
-              )}
+              </View>
             </View>
+          )}
 
-            {/* 
-          <Text style={styles.errorText}>{this.state.emailError}</Text>
-          <Text style={styles.errorText}>{this.state.passwordError}</Text>
-    
-          {Constants.IOS_VERSION >= 13 && (
-            <TouchableOpacity
-              onPress={this.onAppleLoginPress}
-              style={{
-                borderWidth: 1,
-                margin: 5,
-                padding: 15,
-                alignSelf: 'center',
-              }}>
-              <Text>{translate('APPLE login')}</Text>
-            </TouchableOpacity>
-          )} */}
-          </View>
+          {/* Guest section */}
+          {!this.state.isLogin && (
+            <View style={styles.container}>
+              <Text style={styles.welcomText}>
+                {translate("Hello welcome")}
+              </Text>
+              <Image
+                source={Images.womenShopping}
+                resizeMode="contain"
+                style={styles.girlImage}
+              />
+              <View style={styles.container2}>
+                <TextField
+                  ref={this.firstnameRef}
+                  containerStyle={styles.containerStyle}
+                  labelTextStyle={styles.inpuLabelTextStyle}
+                  labelFontSize={15}
+                  fontSize={16}
+                  textColor={"rgb(40,40,40)"}
+                  labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                  activeLineWidth={1.5}
+                  lineWidth={1}
+                  tintColor={"rgb(142, 142, 142)"}
+                  autoCorrect={false}
+                  enablesReturnKeyAutomatically={true}
+                  onFocus={this.onFocus}
+                  onChangeText={this.onChangeText}
+                  onSubmitEditing={this.onSubmitFirstName}
+                  returnKeyType="next"
+                  label={translate("First name")}
+                  error={errors.firstname}
+                  blurOnSubmit={false}
+                />
+                <TextField
+                  ref={this.lastnameRef}
+                  containerStyle={styles.containerStyle}
+                  labelTextStyle={styles.inpuLabelTextStyle}
+                  labelFontSize={15}
+                  fontSize={16}
+                  textColor={"rgb(40,40,40)"}
+                  labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                  activeLineWidth={1.5}
+                  lineWidth={1}
+                  tintColor={"rgb(142, 142, 142)"}
+                  autoCorrect={false}
+                  enablesReturnKeyAutomatically={true}
+                  onFocus={this.onFocus}
+                  onChangeText={this.onChangeText}
+                  onSubmitEditing={this.onSubmitLastName}
+                  returnKeyType="next"
+                  label={translate("Last name")}
+                  error={errors.lastname}
+                  blurOnSubmit={false}
+                />
+                <TextField
+                  ref={this.guestEmailRef}
+                  containerStyle={styles.containerStyle}
+                  labelTextStyle={styles.inpuLabelTextStyle}
+                  labelFontSize={15}
+                  fontSize={16}
+                  textColor={"rgb(40,40,40)"}
+                  labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                  activeLineWidth={1.5}
+                  lineWidth={1}
+                  tintColor={"rgb(142, 142, 142)"}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  enablesReturnKeyAutomatically={true}
+                  onFocus={this.onFocus}
+                  onChangeText={this.onChangeText}
+                  onSubmitEditing={this.onSubmitGuestEmail}
+                  returnKeyType="done"
+                  label={translate("Email")}
+                  error={errors.guestEmail}
+                  blurOnSubmit={false}
+                />
+
+                <TouchableOpacity
+                  style={[styles.submitButtonStyle, { marginTop: 35 }]}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    this.onSubmitGuest();
+                  }}
+                >
+                  <Text style={styles.submitText}>
+                    {translate("Continue as guest")}
+                  </Text>
+                </TouchableOpacity>
+                <View style={[styles.footerContainer, { marginBottom: 26 }]}>
+                  <Text style={styles.forgotPassword}>
+                    {translate("AlreadyHaveAccount")}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      // this.props.navigation.navigate('RegistrationScreen')
+                      this.setState({ isLogin: true })
+                    }
+                  >
+                    <Text style={styles.signup}>{translate("Login")}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
         </ScrollView>
+
         {this.state.showClose && (
           <TouchableOpacity
             onPress={() => {
               this.props.didTapOnclose();
             }}
-            style={styles.closeButtonView}>
+            style={styles.closeButtonView}
+          >
             <Image
               source={Images.close}
-              style={{width: 15, height: 15}}></Image>
+              style={{ width: 15, height: 15, tintColor: "rgb(0,0,0)" }}
+            ></Image>
           </TouchableOpacity>
         )}
+
         <Modal
-          onBackButtonPress={() => this.setState({isSignUpViewShow: false})}
-          isVisible={isSignUpViewShow}>
-          <View style={{flex: 1}}>
+          onBackButtonPress={() => this.setState({ isSignUpViewShow: false })}
+          isVisible={isSignUpViewShow}
+        >
+          <View style={{ flex: 1 }}>
             <SignUp
-              didTapOnclose={() => this.setState({isSignUpViewShow: false})}
+              didTapOnclose={() => this.setState({ isSignUpViewShow: false })}
               showLogin={true}
             />
           </View>
         </Modal>
+
         <Modal
           isVisible={isForgotPasswordShow}
-          onBackdropPress={() => this.setState({isForgotPasswordShow: false})}
+          //onBackdropPress={() => this.setState({ isForgotPasswordShow: false })}
+          backdropOpacity={0.6}
           onBackButtonPress={() =>
-            this.setState({isForgotPasswordShow: false})
-          }>
+            this.setState({ isForgotPasswordShow: false })
+          }
+        >
           <View style={styles.passwordModalWrapper}>
             <View style={styles.passwordCardWrapper}>
               <Text style={styles.forgotPwdTxt}>
-                {translate('Forgot your password?')}
+                {translate("Forgot your password?")}
               </Text>
               <View style={styles.inputContainerFull}>
                 <TextInput
-                  style={styles.inputs}
-                  placeholder={translate('Enter your email Address')}
+                  style={styles.forgotPwdinputs}
+                  placeholder={translate("Enter your email Address")}
                   keyboardType="email-address"
-                  returnKeyType={'done'}
-                  onChangeText={value => this.setState({forgotEmail: value})}
+                  returnKeyType={"done"}
+                  onChangeText={value => this.setState({ forgotEmail: value })}
                   underlineColorAndroid="transparent"
                 />
               </View>
-              {forgotEmailError !== '' && (
+              {forgotEmailError !== "" && (
                 <Text style={styles.errorText}>
                   {this.state.forgotEmailError}
                 </Text>
               )}
               <View style={styles.pwdSubmitWrapper}>
                 <TouchableOpacity
-                  onPress={() => this.setState({isForgotPasswordShow: false})}
-                  style={styles.pwdCancelWrapper}>
-                  <Text style={styles.pwdCancelTxt}>{translate('Cancel')}</Text>
+                  onPress={() => this.setState({ isForgotPasswordShow: false })}
+                  style={styles.pwdCancelWrapper}
+                >
+                  <Text style={styles.pwdCancelTxt}>{translate("Cancel")}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => this._didSubmitForgotPwd()}
-                  style={styles.pwdSubmitBtnWrapper}>
+                  style={styles.pwdSubmitBtnWrapper}
+                >
                   <Text style={styles.pwdSubmitTxt}>
-                    {translate('Continue')}
+                    {translate("Continue")}
                   </Text>
                 </TouchableOpacity>
               </View>

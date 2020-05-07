@@ -11,7 +11,7 @@ import { normalizedHeight, normalizedWidth } from "../../config/common";
 const styles = StyleSheet.create({
   container: {
     //height: Constants.SCREEN_HEIGHT - 30,
-    height: Constants.SCREEN_HEIGHT < 800 ? 750 : 800,
+    height: Constants.SCREEN_HEIGHT < 800 ? 760 : 800,
     backgroundColor: "rgb(255,255,255)"
   },
   safeContainer: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   container2: {
     position: "absolute",
     backgroundColor: "#FCFAF9",
-    paddingTop: 20,
+    paddingTop: 16,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "rgba(112,112,112,0.25)",
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   welcomText: {
     color: "rgb(40,40,40)",
     fontSize: 28,
-    marginTop: 136,
+    marginTop: 110,
     marginStart: 16,
     textAlign: "left",
     alignSelf: "flex-start",
@@ -42,8 +42,7 @@ const styles = StyleSheet.create({
   girlImage: {
     width: "86%",
     position: "absolute",
-    right: "-16%",
-    top: "3%"
+    right: "-16%"
   },
   blurCard: {
     position: "absolute",
@@ -62,8 +61,7 @@ const styles = StyleSheet.create({
     fontFamily: Constants.Fonts.REGULAR
   },
   containerStyle: {
-    marginHorizontal: 12,
-    marginTop: 2
+    marginHorizontal: 12
   },
   inpuLabelTextStyle: {
     textAlign: "left",
@@ -76,10 +74,10 @@ const styles = StyleSheet.create({
     fontFamily: Constants.Fonts.REGULAR
   },
   submitButtonStyle: {
-    marginTop: 42,
-    marginBottom: 42,
+    marginTop: 28,
+    marginBottom: 24,
     width: "90%",
-    height: 47,
+    height: 46,
     marginHorizontal: "5%",
     justifyContent: "center",
     alignItems: "center",
