@@ -20,9 +20,9 @@ import { isEmpty } from "../../config/common";
 import Countries from "../../lib/countires.js";
 import HudView from "../../components/hudView";
 import constants from "../../config/constants";
-import { showSingleAlert } from "../../config/common";
 import CountryPicker from "react-native-country-picker-modal";
 import { translate } from "../../config/languageSwitching/index";
+import { showSingleAlert, checkPhoneNumberValid } from "../../config/common";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 let countryFromAddress = "";
@@ -495,6 +495,13 @@ class AddAddress extends Component {
         return !this.state.formFeilds[item].valid;
       });
       this.setState({ isFormValid: filledFeilds.length > 0 ? false : true });
+
+      if (filledFeilds.length === 0) {
+        if (!checkPhoneNumberValid(mobile.text) || mobile.text.length < 8) {
+          showSingleAlert(translate("Please enter a valid phone number"));
+          return;
+        }
+      }
       if (filledFeilds.length === 0) {
         this.props.navigation.state.params.addAddressCallback(newAddress);
         this.props.navigation.goBack();
@@ -502,10 +509,20 @@ class AddAddress extends Component {
         showSingleAlert(translate("Please fill the mandatory fields"));
       }
     } else {
+      const { mobile } = this.state.formFeilds;
+
+      const { countryCode } = this.state;
       const filledFeilds = Object.keys(this.state.formFeilds).filter((item) => {
         return !this.state.formFeilds[item].valid;
       });
       this.setState({ isFormValid: filledFeilds.length > 0 ? false : true });
+
+      if (filledFeilds.length === 0) {
+        if (!checkPhoneNumberValid(mobile.text) || mobile.text.length < 8) {
+          showSingleAlert(translate("Please enter a valid phone number"));
+          return;
+        }
+      }
 
       if (filledFeilds.length === 0) {
         this.callAddressAction();

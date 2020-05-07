@@ -263,7 +263,7 @@ class ContactUsView extends Component {
                     styles.inputs,
                     { textAlign: isRTL ? "right" : "left" },
                   ]}
-                  placeholder={translate("Phone Number")}
+                  placeholder={translate("Mobile Number")}
                   keyboardType="phone-pad"
                   returnKeyType={"next"}
                   value={this.state.phone}

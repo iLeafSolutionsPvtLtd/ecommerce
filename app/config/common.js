@@ -4,9 +4,9 @@
  * Common - Common functions in the App.
  */
 
-import {Alert} from 'react-native';
-import Constants from './constants';
-import Snackbar from 'react-native-snackbar';
+import { Alert } from "react-native";
+import Constants from "./constants";
+import Snackbar from "react-native-snackbar";
 
 // Method to check object is empty/null
 export function isEmpty(obj) {
@@ -21,7 +21,7 @@ export function isEmpty(obj) {
   // If it isn't an object at this point
   // it is empty, but it can't be anything *but* empty
   // Is it empty?  Depends on your application.
-  if (typeof obj !== 'object') return true;
+  if (typeof obj !== "object") return true;
 
   // Otherwise, does it have any properties of its own?
   // Note that this doesn't handle
@@ -52,7 +52,7 @@ export function showSingleAlert(alertMessage, okText, callbackFunction) {
   setTimeout(function() {
     Alert.alert(Constants.APP_NAME, alertMessage, [
       {
-        text: okText ? okText : 'Ok',
+        text: okText ? okText : "Ok",
         onPress: () => {
           callbackFunction ? callbackFunction() : null;
         },
@@ -67,7 +67,7 @@ export function showAlertWithCallback(
   okText,
   cancelText,
   okCallbackFunction,
-  cancelCallbackFunction,
+  cancelCallbackFunction
 ) {
   setTimeout(function() {
     Alert.alert(
@@ -76,7 +76,7 @@ export function showAlertWithCallback(
       [
         {
           text: cancelText,
-          style: 'cancel',
+          style: "cancel",
           onPress: () => {
             cancelCallbackFunction ? cancelCallbackFunction() : null;
           },
@@ -88,7 +88,7 @@ export function showAlertWithCallback(
           },
         },
       ],
-      {cancelable: true},
+      { cancelable: true }
     );
   }, 100);
 }
@@ -128,12 +128,12 @@ export function checkPhoneNumberValid(phone) {
 
 //Format phone number
 export function formatMobileNumber(text) {
-  var cleaned = ('' + text).replace(/\D/g, '');
+  var cleaned = ("" + text).replace(/\D/g, "");
   var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
   if (match) {
-    var intlCode = match[1] ? '+1 ' : '',
-      number = [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join(
-        '',
+    var intlCode = match[1] ? "+1 " : "",
+      number = [intlCode, "(", match[2], ") ", match[3], "-", match[4]].join(
+        ""
       );
     return number;
   }
