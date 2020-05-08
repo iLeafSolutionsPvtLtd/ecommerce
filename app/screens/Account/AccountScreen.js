@@ -27,6 +27,8 @@ import { showAlertWithCallback } from "../../config/common";
 import { translate } from "../../config/languageSwitching/index";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
+var isLogoutTapped = false;
+
 class AccountScreen extends Component {
   constructor(props) {
     super(props);
@@ -97,6 +99,15 @@ class AccountScreen extends Component {
   };
 
   _didTapOnLogOut = () => {
+    if (isLogoutTapped) {
+      return;
+    }
+
+    isLogoutTapped = true;
+    setTimeout(() => {
+      isLogoutTapped = false;
+    }, 2000);
+
     showAlertWithCallback(
       translate("Are you sure you want to logout?"),
       translate("Yes"),

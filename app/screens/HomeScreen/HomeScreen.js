@@ -346,6 +346,7 @@ class HomeScreen extends Component {
       currency,
       storeCode,
       cartArray,
+      wishList,
     } = this.props;
     let countryFlagg = "";
     if (storeCode) {
@@ -374,6 +375,12 @@ class HomeScreen extends Component {
           break;
       }
     }
+
+    let wishListArray = [];
+    wishList.map((wishItem) => {
+      wishListArray.push(wishItem.productId);
+    });
+
     return (
       <SafeAreaView style={styles.safeContainer}>
         <StatusBar
@@ -501,7 +508,7 @@ class HomeScreen extends Component {
                   data={newProductsArray}
                   renderItem={({ item, index }) => {
                     let likeValue = false;
-                    if (bestSellerWishlist.includes(item.entity_id)) {
+                    if (wishListArray.includes(item.entity_id)) {
                       likeValue = true;
                     }
                     return (
@@ -545,7 +552,7 @@ class HomeScreen extends Component {
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item, index }) => {
                     let likeValue = false;
-                    if (bestSellerWishlist.includes(item.entity_id)) {
+                    if (wishListArray.includes(item.entity_id)) {
                       likeValue = true;
                     }
                     return (
@@ -583,7 +590,7 @@ class HomeScreen extends Component {
                   data={topSalesArray}
                   renderItem={({ item, index }) => {
                     let likeValue = false;
-                    if (bestSellerWishlist.includes(item.entity_id)) {
+                    if (wishListArray.includes(item.entity_id)) {
                       likeValue = true;
                     }
                     return (
