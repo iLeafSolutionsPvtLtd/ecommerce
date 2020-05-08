@@ -12,7 +12,7 @@ import {
   FlatList,
   TextInput,
   SafeAreaView,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import styles from "./styles";
 import Modal from "react-native-modal";
@@ -36,7 +36,7 @@ const CategoryCall = memo(
     productsSizes,
     addProductToWishList,
     currency,
-    totalCost,
+    totalCost
   }) => {
     function removeFromCart() {}
     function addToWishList() {
@@ -63,6 +63,7 @@ const CategoryCall = memo(
           borderRadius: 5,
           paddingBottom: 5,
           paddingTop: 5,
+          elevation: 3
         }}
       >
         <ItemCell
@@ -102,7 +103,7 @@ class CheckoutView extends Component {
       mGuestcartList: "",
       paymentMethods: [],
       shipmentMethods: [],
-      selectedShippingOptionIndex: 0,
+      selectedShippingOptionIndex: 0
     };
   }
 
@@ -110,7 +111,7 @@ class CheckoutView extends Component {
     const { addressList, cartList, userToken, guestcartList } = this.props;
     let defaultAddress = null;
     if (addressList && addressList.length > 0) {
-      addressList.map((item) => {
+      addressList.map(item => {
         if (item.default_billing) {
           defaultAddress = item;
         }
@@ -138,7 +139,7 @@ class CheckoutView extends Component {
     if (paymentMethodsArray.length > 0 && shipmentMethodsArray.length > 0) {
       this.setState({
         paymentMethods: paymentMethodsArray,
-        shipmentMethods: shipmentMethodsArray,
+        shipmentMethods: shipmentMethodsArray
       });
     } else {
       showSingleAlert(translate("API_Failed"), translate("Ok"), () => {
@@ -152,18 +153,18 @@ class CheckoutView extends Component {
     if (userToken.length > 0) {
       this.props.navigation.navigate("AddressListScreen", {
         selectedAddressIndex: this.state.selectedAddressIndex,
-        didSelectUserAddress: this._didSelectUserAddress,
+        didSelectUserAddress: this._didSelectUserAddress
       });
     } else {
       this.props.navigation.navigate("AddAddressScreen", {
         details: this.state.addressDict,
         isFromGuestCheckout: true,
-        addAddressCallback: this._addAddressCallback,
+        addAddressCallback: this._addAddressCallback
       });
     }
   };
 
-  _addAddressCallback = (addressDict) => {
+  _addAddressCallback = addressDict => {
     this.setState({ addressDict }, () => {
       console.log("ADDRESS==>", addressDict);
       this._setShippingAddress();
@@ -195,7 +196,7 @@ class CheckoutView extends Component {
           firstname: addressDict.firstname,
           lastname: addressDict.lastname,
           email: email,
-          sameAsBilling: 1,
+          sameAsBilling: 1
         },
         billingAddress: {
           country_id: addressDict.country_id,
@@ -206,16 +207,16 @@ class CheckoutView extends Component {
           city: addressDict.city,
           firstname: addressDict.firstname,
           lastname: addressDict.lastname,
-          email: email,
+          email: email
         },
         shipping_method_code: "flatrate",
-        shipping_carrier_code: "flatrate",
-      },
+        shipping_carrier_code: "flatrate"
+      }
     };
     this.props.setShipmentInfo(params, false, this._setShippingAddressCallback);
   };
 
-  _setShippingAddressCallback = (status) => {
+  _setShippingAddressCallback = status => {
     if (status) {
       this.props.getPaymentAndShippingMethods(
         this._getPaymentAndShippingMethodsCallback
@@ -225,11 +226,11 @@ class CheckoutView extends Component {
     }
   };
 
-  _didTapOnShipmentMethod = (item) => {
+  _didTapOnShipmentMethod = item => {
     //TODO: shipment tap
   };
 
-  _didTapOnPaymentMethod = (item) => {
+  _didTapOnPaymentMethod = item => {
     //TODO: payment tap
   };
 
@@ -238,7 +239,7 @@ class CheckoutView extends Component {
       addressDict,
       totalCostDict,
       mCartList,
-      mGuestcartList,
+      mGuestcartList
     } = this.state;
     const { userToken } = this.props;
     let itemArray = userToken.length > 0 ? mCartList : mGuestcartList;
@@ -246,7 +247,7 @@ class CheckoutView extends Component {
     this.props.navigation.navigate("OrderCompletion", {
       addressDict: addressDict,
       totalCostDict: totalCostDict,
-      itemArray: itemArray,
+      itemArray: itemArray
     });
   };
 
@@ -273,7 +274,7 @@ class CheckoutView extends Component {
           firstname: addressDict.firstname,
           lastname: addressDict.lastname,
           email: email,
-          sameAsBilling: 1,
+          sameAsBilling: 1
         },
         billingAddress: {
           country_id: addressDict.country_id,
@@ -284,16 +285,16 @@ class CheckoutView extends Component {
           city: addressDict.city,
           firstname: addressDict.firstname,
           lastname: addressDict.lastname,
-          email: email,
+          email: email
         },
         shipping_method_code: "flatrate",
-        shipping_carrier_code: "flatrate",
-      },
+        shipping_carrier_code: "flatrate"
+      }
     };
     this.props.setShipmentInfo(params, true, this._orderPlacedCallback);
   };
 
-  _orderPlacedCallback = (status) => {
+  _orderPlacedCallback = status => {
     if (status) {
       // showSingleAlert(
       //   translate('Order placed Successfully'),
@@ -316,7 +317,7 @@ class CheckoutView extends Component {
       showSingleAlert(translate("voucher code empty"));
       return;
     }
-    this.props.applyVoucher(voucherCode, (status) => {
+    this.props.applyVoucher(voucherCode, status => {
       if (status) {
         showSingleAlert(translate("Voucher applied successfully"));
         this.setState({ isVoucherApplied: true });
@@ -338,7 +339,7 @@ class CheckoutView extends Component {
       productsColors,
       currency,
       storeCode,
-      userInfo,
+      userInfo
     } = this.props;
 
     const {
@@ -350,7 +351,7 @@ class CheckoutView extends Component {
       isVoucherApplied,
       paymentMethods,
       shipmentMethods,
-      selectedShippingOptionIndex,
+      selectedShippingOptionIndex
     } = this.state;
 
     // let paymentMethods = ['KENT', 'Credit Card', 'Cash on Delivery'];
@@ -426,7 +427,7 @@ class CheckoutView extends Component {
                 <View
                   style={{
                     flexDirection: "row",
-                    marginHorizontal: 20,
+                    marginHorizontal: 20
                   }}
                 >
                   <TouchableOpacity
@@ -457,7 +458,7 @@ class CheckoutView extends Component {
                     <View
                       style={{
                         height: 1,
-                        backgroundColor: Constants.APP_GRAY_COLOR2,
+                        backgroundColor: Constants.APP_GRAY_COLOR2
                       }}
                     />
 
@@ -467,7 +468,7 @@ class CheckoutView extends Component {
                       <View
                         style={[
                           styles.sameDayDeliveryPickerContainer,
-                          { marginRight: 10 },
+                          { marginRight: 10 }
                         ]}
                       >
                         <Text style={styles.deliveryDateText}>
@@ -487,7 +488,7 @@ class CheckoutView extends Component {
                       <View
                         style={[
                           styles.sameDayDeliveryPickerContainer,
-                          { marginLeft: 10 },
+                          { marginLeft: 10 }
                         ]}
                       >
                         <Text style={styles.deliveryDateText}>
@@ -514,18 +515,16 @@ class CheckoutView extends Component {
                   style={{
                     flexDirection: "row",
                     marginBottom: 25,
-                    marginTop: 10,
+                    marginTop: 10
                   }}
                 >
                   <TextInput
                     style={[
                       styles.voucherInput,
-                      { textAlign: isRTL ? "right" : "left" },
+                      { textAlign: isRTL ? "right" : "left" }
                     ]}
                     value={voucherCode}
-                    onChangeText={(text) =>
-                      this.setState({ voucherCode: text })
-                    }
+                    onChangeText={text => this.setState({ voucherCode: text })}
                     placeholder={translate("APPLY PROMO CODE HERE")}
                   />
                   <TouchableOpacity
@@ -534,8 +533,8 @@ class CheckoutView extends Component {
                       {
                         backgroundColor: isVoucherApplied
                           ? "green"
-                          : Constants.APP_BLACK_COLOR,
-                      },
+                          : Constants.APP_BLACK_COLOR
+                      }
                     ]}
                     onPress={this._didTapOnApplyVoucher}
                   >
@@ -543,7 +542,7 @@ class CheckoutView extends Component {
                       <Text
                         style={[
                           styles.applyText,
-                          { color: Constants.APP_WHITE_COLOR },
+                          { color: Constants.APP_WHITE_COLOR }
                         ]}
                       >
                         {translate("Applied")}
@@ -562,7 +561,7 @@ class CheckoutView extends Component {
                   <Text style={styles.addVoucherCode}>
                     {translate("CHOOSE YOUR PAYMENT METHOD")}
                   </Text>
-                  {paymentMethods.map((item) => (
+                  {paymentMethods.map(item => (
                     <TouchableOpacity
                       onPress={() => this._didTapOnPaymentMethod(item)}
                       style={styles.paymentMethodButton}
@@ -576,8 +575,8 @@ class CheckoutView extends Component {
                               backgroundColor:
                                 item === "Cash on Delivery"
                                   ? Constants.APP_THEME_COLOR
-                                  : "rgb(167,174,194)",
-                            },
+                                  : "rgb(167,174,194)"
+                            }
                           ]}
                         />
                       </View>
@@ -614,14 +613,14 @@ class CheckoutView extends Component {
                           onPress={this._didTapOnAddAddress}
                           hitSlop={{ left: 10, right: 10, top: 10, bottom: 10 }}
                           style={{
-                            marginVertical: 10,
+                            marginVertical: 10
                           }}
                         >
                           <Text
                             style={{
                               fontFamily: Constants.Fonts.REGULAR,
                               color: Constants.APP_THEME_COLOR,
-                              fontSize: 13,
+                              fontSize: 13
                             }}
                           >
                             {translate("Change")}
@@ -640,14 +639,14 @@ class CheckoutView extends Component {
                         justifyContent: "center",
                         borderWidth: 1,
                         borderColor: Constants.APP_GRAY_COLOR2,
-                        marginBottom: 10,
+                        marginBottom: 10
                       }}
                     >
                       <Text
                         style={{
                           fontFamily: Constants.Fonts.REGULAR,
                           color: Constants.APP_GREY_TEXT_COLOR,
-                          fontSize: 13,
+                          fontSize: 13
                         }}
                       >
                         {translate("Add Address")}
@@ -660,7 +659,7 @@ class CheckoutView extends Component {
               <View
                 style={{
                   height: 1,
-                  backgroundColor: Constants.APP_SEPARATOR_COLOR,
+                  backgroundColor: Constants.APP_SEPARATOR_COLOR
                 }}
               />
 
@@ -677,7 +676,7 @@ class CheckoutView extends Component {
                           onPress={() => this._didTapOnShipmentMethod(item)}
                           style={[
                             styles.paymentMethodButton,
-                            { backgroundColor: Constants.APP_WHITE_COLOR },
+                            { backgroundColor: Constants.APP_WHITE_COLOR }
                           ]}
                           activeOpacity={Constants.ACTIVE_OPACITY}
                         >
@@ -689,8 +688,8 @@ class CheckoutView extends Component {
                                   backgroundColor:
                                     selectedShippingOptionIndex == index
                                       ? Constants.APP_THEME_COLOR
-                                      : Constants.APP_WHITE_COLOR,
-                                },
+                                      : Constants.APP_WHITE_COLOR
+                                }
                               ]}
                             />
                           </View>
@@ -713,7 +712,7 @@ class CheckoutView extends Component {
               <View
                 style={{
                   height: 1,
-                  backgroundColor: Constants.APP_SEPARATOR_COLOR,
+                  backgroundColor: Constants.APP_SEPARATOR_COLOR
                 }}
               />
 
@@ -738,7 +737,7 @@ class CheckoutView extends Component {
                       <Text
                         style={[
                           styles.titleValueLabel,
-                          { color: "rgb(249,91,91)" },
+                          { color: "rgb(249,91,91)" }
                         ]}
                       >
                         {"-" + data.discount_amount + " " + currency}
@@ -769,7 +768,7 @@ class CheckoutView extends Component {
                   <View
                     style={{
                       flexDirection: "row",
-                      marginBottom: 10,
+                      marginBottom: 10
                     }}
                   >
                     <Text
@@ -778,8 +777,8 @@ class CheckoutView extends Component {
                         {
                           flex: 1,
                           fontFamily: Constants.Fonts.BOLD,
-                          color: Constants.APP_BLACK_COLOR,
-                        },
+                          color: Constants.APP_BLACK_COLOR
+                        }
                       ]}
                     >
                       {translate("TOTAL")}
@@ -789,8 +788,8 @@ class CheckoutView extends Component {
                         styles.titleLabel,
                         {
                           fontFamily: Constants.Fonts.BOLD,
-                          color: Constants.APP_BLACK_COLOR,
-                        },
+                          color: Constants.APP_BLACK_COLOR
+                        }
                       ]}
                     >
                       {totalCostDict.grand_total + " " + currency}
@@ -822,7 +821,7 @@ class CheckoutView extends Component {
           <View
             style={{
               alignSelf: "center",
-              backgroundColor: "rgb(255,255,255)",
+              backgroundColor: "rgb(255,255,255)"
             }}
           >
             <DatePicker
@@ -830,7 +829,7 @@ class CheckoutView extends Component {
               minimumDate={this.state.nowDate}
               maximumDate={maxDate}
               date={this.state.newDate}
-              onDateChange={(date) => this.setState({ newDate: date })}
+              onDateChange={date => this.setState({ newDate: date })}
             />
           </View>
         </Modal>
@@ -843,7 +842,7 @@ class CheckoutView extends Component {
           <View
             style={{
               alignSelf: "center",
-              backgroundColor: "rgb(255,255,255)",
+              backgroundColor: "rgb(255,255,255)"
             }}
           >
             {/* <DatePicker
@@ -857,7 +856,7 @@ class CheckoutView extends Component {
               selectedValue={this.state.nowTime}
               style={{
                 height: Constants.IS_ANDROID ? 50 : 200,
-                width: Constants.SCREEN_WIDTH - 100,
+                width: Constants.SCREEN_WIDTH - 100
               }}
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ nowTime: itemValue })

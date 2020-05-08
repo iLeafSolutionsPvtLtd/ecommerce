@@ -4,7 +4,7 @@ import {
   StatusBar,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import styles from "./styles";
 import React, { Component } from "react";
@@ -23,9 +23,9 @@ const ListItem = React.memo(
     productsColors,
     productsSizes,
     addProductToWishList,
-    props,
+    props
   }) => {
-    const orderCell = item.items.map((orderedItem) => {
+    const orderCell = item.items.map(orderedItem => {
       if (orderedItem.parent_item) {
         return (
           <View
@@ -38,6 +38,7 @@ const ListItem = React.memo(
               shadowRadius: 5,
               borderRadius: 5,
               paddingBottom: 5,
+              elevation: 3
             }}
           >
             <ItemCell
@@ -60,7 +61,7 @@ const ListItem = React.memo(
       <View
         style={{
           marginTop: 3,
-          backgroundColor: Constants.APP_WHITE_COLOR,
+          backgroundColor: Constants.APP_WHITE_COLOR
         }}
       >
         <View style={{ marginHorizontal: 20, marginTop: 10 }}>
@@ -83,8 +84,8 @@ const ListItem = React.memo(
               style={[
                 styles.deliveryStatusText,
                 {
-                  color: item.status === "pending" ? "green" : "red",
-                },
+                  color: item.status === "pending" ? "green" : "red"
+                }
               ]}
             >
               {item.status}
@@ -101,7 +102,7 @@ class OrderHistoryDetailScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orderItem: "",
+      orderItem: ""
     };
   }
 
@@ -119,7 +120,7 @@ class OrderHistoryDetailScreen extends Component {
     this.props.navigation.goBack();
   };
 
-  _getShippingAddress = (orderItem) => {
+  _getShippingAddress = orderItem => {
     return (
       orderItem.billing_address.firstname +
       " " +
@@ -143,7 +144,7 @@ class OrderHistoryDetailScreen extends Component {
       productsColors,
       isLoading,
       isRTL,
-      currency,
+      currency
     } = this.props;
     const { orderItem } = this.state;
     const paymethod =
@@ -198,6 +199,7 @@ class OrderHistoryDetailScreen extends Component {
                   shadowRadius: 5,
                   borderRadius: 5,
                   paddingBottom: 5,
+                  elevation: 3
                 }}
               >
                 <View
@@ -240,7 +242,7 @@ class OrderHistoryDetailScreen extends Component {
             <View
               style={{
                 backgroundColor: "#FFFFFF",
-                paddingBottom: 4,
+                paddingBottom: 4
               }}
             >
               <View style={styles.wrapperColumn}>
