@@ -4,11 +4,11 @@
  * LoginScreen - LoginScreen Container
  */
 
-import React, {Component} from 'react';
-import LoginScreen from './LoginScreenNew';
-import {connect} from 'react-redux';
-import * as loginActions from '../../actions/loginActions';
-import * as navigationActions from '../../actions/navigationActions';
+import React, { Component } from "react";
+import LoginScreen from "./LoginScreen";
+import { connect } from "react-redux";
+import * as loginActions from "../../actions/loginActions";
+import * as navigationActions from "../../actions/navigationActions";
 
 class LoginContainer extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class LoginContainer extends Component {
 function mapStateToProps(state) {
   return {
     loginResponse: state.loginReducer.response,
-    isLoading: state.loadingReducer.isLoading,
+    isLoading: state.loadingReducer.isLoading
   };
 }
 function mapDispatchToProps(dispatch) {
@@ -39,7 +39,7 @@ function mapDispatchToProps(dispatch) {
     },
     updateGuestInfo: params => {
       dispatch(loginActions.updateGuestInfo(params));
-    },
+    }
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

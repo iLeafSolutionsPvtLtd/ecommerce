@@ -4,7 +4,7 @@
  * RegistrationScreen - RegistrationScreen View
  */
 
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import {
   View,
   SafeAreaView,
@@ -14,49 +14,62 @@ import {
   Text,
   Keyboard,
   ScrollView,
-  Image,
-} from 'react-native';
-import styles from './styles';
-import LinearGradient from 'react-native-linear-gradient';
-import {translate} from '../../config/languageSwitching/index';
-import Constants from '../../config/constants';
+  Image
+} from "react-native";
+import styles from "./styles";
+import { TextField } from "react-native-material-textfield";
+import LinearGradient from "react-native-linear-gradient";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+import { translate } from "../../config/languageSwitching/index";
+import Constants from "../../config/constants";
 import {
   isEmpty,
   checkEMailValidation,
-  checkPasswordValid,
-} from '../../config/common';
-import Images from '../../config/images';
-import HudView from '../../components/hudView';
-import {navigateToHomeScreen} from '../../actions/navigationActions';
-import {showSingleAlert} from '../../config/common';
+  checkPasswordValid
+} from "../../config/common";
+import Images from "../../config/images";
+import HudView from "../../components/hudView";
+import { navigateToHomeScreen } from "../../actions/navigationActions";
+import { showSingleAlert } from "../../config/common";
 
 class RegistrationScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPwd: '',
-      firstNameError: '',
-      lastNameError: '',
-      emailError: '',
-      passwordError: '',
-      passwordMismatchError: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPwd: "",
       showClose: true,
+      secureTextEntry: true,
+      cpSecureTextEntry: true
     };
+
+    this.onFocus = this.onFocus.bind(this);
+    this.onChangeText = this.onChangeText.bind(this);
+    this.onSubmitEmail = this.onSubmitEmail.bind(this);
+    this.onSubmitPassword = this.onSubmitPassword.bind(this);
+    this.onSubmitLastName = this.onSubmitLastName.bind(this);
+    this.onSubmitFirstName = this.onSubmitFirstName.bind(this);
+    this.onSubmitConfirmPassword = this.onSubmitPassword.bind(this);
+
+    this.emailRef = this.updateRef.bind(this, "email");
+    this.passwordRef = this.updateRef.bind(this, "password");
+    this.lastnameRef = this.updateRef.bind(this, "lastname");
+    this.firstnameRef = this.updateRef.bind(this, "firstname");
+    this.confirmPasswordRef = this.updateRef.bind(this, "confirmPassword");
   }
 
   componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this._keyboardDidShow,
+      "keyboardDidShow",
+      this._keyboardDidShow
     );
     this.keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      this._keyboardDidHide,
+      "keyboardDidHide",
+      this._keyboardDidHide
     );
   }
 
@@ -68,66 +81,97 @@ class RegistrationScreen extends Component {
     this.keyboardDidHideListener.remove();
   }
 
+  updateRef(name, ref) {
+    this[name] = ref;
+  }
+
+  onFocus() {
+    let { errors = {} } = this.state;
+    for (let name in errors) {
+      let ref = this[name];
+      if (ref && ref.isFocused()) {
+        delete errors[name];
+      }
+    }
+    this.setState({ errors });
+  }
+
+  onChangeText(text) {
+    ["email", "password", "lastname", "firstname"]
+      .map(name => ({ name, ref: this[name] }))
+      .forEach(({ name, ref }) => {
+        if (ref && ref.isFocused()) {
+          this.setState({ [name]: text });
+        }
+      });
+  }
+
+  onSubmitFirstName() {
+    this.lastname.focus();
+  }
+
+  onSubmitLastName() {
+    this.email.focus();
+  }
+
+  onSubmitEmail() {
+    this.password.focus();
+  }
+
+  onSubmitPassword() {
+    this.confirmPassword.focus();
+  }
+
+  onSubmitConfirmPassword() {
+    this.confirmPassword.blur();
+  }
+
   _keyboardDidShow() {}
 
   _keyboardDidHide() {}
 
-  _isFieldsValid() {
-    const {email, password, firstName, lastName, confirmPwd} = this.state;
+  _onSubmit() {
+    const { onRegisterUser } = this.props;
+    let errors = {};
     let isValid = true;
-    if (isEmpty(firstName)) {
-      isValid = false;
-      this.setState({firstNameError: 'First name required.'});
-    } else {
-      this.setState({firstNameError: null});
-    }
-    if (isEmpty(lastName)) {
-      isValid = false;
-      this.setState({lastNameError: 'Last name required.'});
-    } else {
-      this.setState({lastNameError: null});
-    }
-    if (isEmpty(email)) {
-      this.setState({emailError: 'Email required.'});
-      isValid = false;
-    } else {
-      if (checkEMailValidation(email)) {
-        this.setState({emailError: null});
-      } else {
-        this.setState({emailError: 'Invalid Email.'});
+    ["firstname", "lastname", "email", "password"].forEach(name => {
+      let value = this[name].value();
+      if ("firstname" === name && !value) {
+        errors[name] = translate("First name required");
         isValid = false;
       }
-    }
-    if (isEmpty(password)) {
-      isValid = false;
-      this.setState({passwordError: 'Password required.'});
-    } else {
-      this.setState({passwordError: null});
-    }
-    if (password !== confirmPwd) {
-      isValid = false;
-      this.setState({passwordMismatchError: 'Password mismatch.'});
-    } else {
-      this.setState({passwordMismatchError: null});
-    }
-    return isValid;
-  }
+      if ("lastname" === name && !value) {
+        errors[name] = translate("Last name required");
+        isValid = false;
+      }
+      if ("email" === name) {
+        if (!value) {
+          errors[name] = translate("Email required");
+          isValid = false;
+        } else if (!checkEMailValidation(value)) {
+          errors[name] = translate("Invalid Email");
+          isValid = false;
+        }
+      }
+      if ("password" === name && !value) {
+        errors[name] = translate("Password required");
+        isValid = false;
+      }
+    });
+    this.setState({ errors });
 
-  _onSubmit() {
-    const {email, password, firstName, lastName, confirmPwd} = this.state;
-    const {onRegisterUser} = this.props;
-    if (this._isFieldsValid()) {
-      if (checkPasswordValid(password)) {
+    if (isValid) {
+      if (checkPasswordValid(this["password"].value())) {
         //onRegisterUser('abc4', 'def4', 'abcdef4@test.com', 'abcdef');
         onRegisterUser(
-          firstName,
-          lastName,
-          email,
-          password,
-          this._registerCallback,
+          this["firstname"].value(),
+          this["lastname"].value(),
+          this["email"].value(),
+          this["password"].value(),
+          this._registerCallback
         );
       } else {
-        showSingleAlert(translate('password_invalid'), translate('Ok'), null);
+        showSingleAlert(translate("password_invalid"), translate("Ok"), null);
       }
     }
   }
@@ -135,169 +179,216 @@ class RegistrationScreen extends Component {
   _registerCallback = status => {
     if (status) {
       showSingleAlert(
-        translate('registration_complete_success'),
-        translate('Ok'),
+        translate("registration_complete_success"),
+        translate("Ok"),
         () => {
           this.props.didTapOnclose();
-        },
+        }
       );
     }
   };
 
+  onAccessoryPress(ref) {
+    if (ref === "pwd_icon") {
+      this.setState(({ secureTextEntry }) => ({
+        secureTextEntry: !secureTextEntry
+      }));
+    } else {
+      this.setState(({ cpSecureTextEntry }) => ({
+        cpSecureTextEntry: !cpSecureTextEntry
+      }));
+    }
+  }
+
+  renderPasswordAccessory(ref) {
+    let { secureTextEntry, cpSecureTextEntry } = this.state;
+    let iconName;
+    if (ref === "pwd_icon") {
+      iconName = secureTextEntry ? "visibility-off" : "visibility";
+    } else {
+      iconName = cpSecureTextEntry ? "visibility-off" : "visibility";
+    }
+    return (
+      <MaterialIcon
+        style={{
+          paddingStart: 10,
+          paddingEnd: 6,
+          paddingBottom: 2,
+          paddingTop: 16
+        }}
+        size={22}
+        name={iconName}
+        color={TextField.defaultProps.baseColor}
+        onPress={this.onAccessoryPress.bind(this, ref)}
+        suppressHighlighting={true}
+      />
+    );
+  }
+
   render() {
-    const {isLoading, showLogin} = this.props;
+    const { isLoading, showLogin } = this.props;
+    const { secureTextEntry, cpSecureTextEntry, errors = {} } = this.state;
     return (
       <SafeAreaView style={styles.safeContainer}>
         <StatusBar backgroundColor={Constants.APP_THEME_DARK_GRAY} />
         <ScrollView
           scrollEventThrottle={16}
           onScroll={event => {
-            if (event.nativeEvent.contentOffset.y > 150) {
-              this.setState({showClose: false});
+            if (event.nativeEvent.contentOffset.y > 100) {
+              this.setState({ showClose: false });
             } else {
-              this.setState({showClose: true});
+              this.setState({ showClose: true });
             }
-          }}>
+          }}
+        >
           <View style={styles.container}>
-            <View style={{width: '100%', height: '28%'}}>
-              <Image
-                source={Images.loginHeaderBg}
-                resizeMode="cover"
-                style={styles.logo}
+            <Text style={styles.welcomText}>{translate("Hello welcome")}</Text>
+            <Image
+              source={Images.womenShopping}
+              resizeMode="contain"
+              style={styles.girlImage}
+            />
+            <View style={styles.container2}>
+              <TextField
+                ref={this.firstnameRef}
+                containerStyle={styles.containerStyle}
+                labelTextStyle={styles.inpuLabelTextStyle}
+                labelFontSize={15}
+                fontSize={16}
+                textColor={"rgb(40,40,40)"}
+                labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                activeLineWidth={1.5}
+                lineWidth={1}
+                tintColor={"rgb(142, 142, 142)"}
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitFirstName}
+                returnKeyType="next"
+                label={translate("First name")}
+                error={errors.firstname}
+                blurOnSubmit={false}
               />
-              <View style={styles.overlay} />
-              <View style={styles.logoContainer}>
-                <Image
-                  source={Images.logo}
-                  resizeMode="contain"
-                  style={styles.appLogo}
-                />
-              </View>
-            </View>
+              <TextField
+                ref={this.lastnameRef}
+                containerStyle={styles.containerStyle}
+                labelTextStyle={styles.inpuLabelTextStyle}
+                labelFontSize={15}
+                fontSize={16}
+                textColor={"rgb(40,40,40)"}
+                labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                activeLineWidth={1.5}
+                lineWidth={1}
+                tintColor={"rgb(142, 142, 142)"}
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitLastName}
+                returnKeyType="next"
+                label={translate("Last name")}
+                error={errors.lastname}
+                blurOnSubmit={false}
+              />
+              <TextField
+                ref={this.emailRef}
+                containerStyle={styles.containerStyle}
+                labelTextStyle={styles.inpuLabelTextStyle}
+                labelFontSize={15}
+                fontSize={16}
+                textColor={"rgb(40,40,40)"}
+                labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                activeLineWidth={1.5}
+                lineWidth={1}
+                tintColor={"rgb(142, 142, 142)"}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitEmail}
+                returnKeyType="next"
+                label={translate("Email")}
+                error={errors.email}
+                blurOnSubmit={false}
+              />
+              <TextField
+                ref={this.passwordRef}
+                secureTextEntry={secureTextEntry}
+                containerStyle={styles.containerStyle}
+                labelTextStyle={styles.inpuLabelTextStyle}
+                labelFontSize={15}
+                fontSize={16}
+                textColor={"rgb(40,40,40)"}
+                labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                activeLineWidth={1.5}
+                lineWidth={1}
+                tintColor={"rgb(142,142,142)"}
+                autoCapitalize="none"
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitPassword}
+                renderRightAccessory={this.renderPasswordAccessory.bind(
+                  this,
+                  "pwd_icon"
+                )}
+                returnKeyType="next"
+                label={translate("Password")}
+                error={errors.password}
+              />
+              <TextField
+                ref={this.confirmPasswordRef}
+                secureTextEntry={cpSecureTextEntry}
+                containerStyle={styles.containerStyle}
+                labelTextStyle={styles.inpuLabelTextStyle}
+                labelFontSize={15}
+                fontSize={16}
+                textColor={"rgb(40,40,40)"}
+                labelOffset={{ x0: 0, y0: 0, x1: 0, y1: -9 }}
+                activeLineWidth={1.5}
+                lineWidth={1}
+                tintColor={"rgb(142,142,142)"}
+                autoCapitalize="none"
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitConfirmPassword}
+                renderRightAccessory={this.renderPasswordAccessory.bind(
+                  this,
+                  "cpass_icon"
+                )}
+                returnKeyType="done"
+                label={translate("Confirm Password")}
+                error={errors.password}
+              />
 
-            <View style={styles.cardContainer}>
-              <Text style={styles.registrationText}>
-                {translate('Registration')}
-              </Text>
-              <View style={styles.underline} />
-              <View style={styles.containerHalf}>
-                <View style={styles.containerHalfInner}>
-                  <View style={styles.inputContainerHalf}>
-                    <TextInput
-                      style={styles.inputs}
-                      placeholder={translate('First name')}
-                      keyboardType="default"
-                      returnKeyType={'next'}
-                      blurOnSubmit={false}
-                      maxLength={16}
-                      numberOfLines={1}
-                      onSubmitEditing={() => this.lastNameInput.focus()}
-                      onChangeText={value => this.setState({firstName: value})}
-                      underlineColorAndroid="transparent"
-                    />
-                  </View>
-                  <Text style={styles.errorText}>
-                    {this.state.firstNameError}
-                  </Text>
-                </View>
-                <View style={styles.containerHalfInner}>
-                  <View style={styles.inputContainerHalf}>
-                    <TextInput
-                      style={styles.inputs}
-                      placeholder={translate('Last name')}
-                      ref={input => (this.lastNameInput = input)}
-                      keyboardType="default"
-                      returnKeyType={'next'}
-                      blurOnSubmit={false}
-                      maxLength={16}
-                      numberOfLines={1}
-                      onSubmitEditing={() => this.emailInput.focus()}
-                      onChangeText={value => this.setState({lastName: value})}
-                      underlineColorAndroid="transparent"
-                    />
-                  </View>
-                  <Text style={styles.errorText}>
-                    {this.state.lastNameError}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.inputContainerFull}>
-                <TextInput
-                  style={styles.inputs}
-                  placeholder={translate('Email')}
-                  ref={input => (this.emailInput = input)}
-                  keyboardType="email-address"
-                  returnKeyType={'next'}
-                  blurOnSubmit={false}
-                  onSubmitEditing={() => this.passwordInput.focus()}
-                  onChangeText={value => this.setState({email: value})}
-                  underlineColorAndroid="transparent"
-                />
-              </View>
-              <Text style={[styles.errorText, {marginStart: 27}]}>
-                {this.state.emailError}
-              </Text>
-              <View style={styles.inputContainerFull}>
-                <TextInput
-                  style={styles.inputs}
-                  placeholder={translate('Password')}
-                  ref={input => (this.passwordInput = input)}
-                  keyboardType="default"
-                  returnKeyType={'next'}
-                  blurOnSubmit={false}
-                  onSubmitEditing={() => this.confPasswordInput.focus()}
-                  secureTextEntry={true}
-                  onChangeText={value => this.setState({password: value})}
-                  underlineColorAndroid="transparent"
-                />
-              </View>
-              <Text style={[styles.errorText, {marginStart: 27}]}>
-                {this.state.passwordError}
-              </Text>
-              <View style={styles.inputContainerFull}>
-                <TextInput
-                  style={styles.inputs}
-                  placeholder={translate('Confirm Password')}
-                  ref={input => (this.confPasswordInput = input)}
-                  keyboardType="default"
-                  returnKeyType={'done'}
-                  secureTextEntry={true}
-                  onSubmitEditing={() => this._onSubmit()}
-                  onChangeText={value => this.setState({confirmPwd: value})}
-                  underlineColorAndroid="transparent"
-                />
-              </View>
-              <Text style={[styles.errorText, {marginStart: 27}]}>
-                {this.state.passwordMismatchError}
-              </Text>
               <TouchableOpacity
+                style={styles.submitButtonStyle}
                 activeOpacity={0.7}
                 onPress={() => {
                   this._onSubmit();
-                }}>
-                <LinearGradient
-                  colors={['rgb(185, 128, 43)', 'rgb(229, 183, 80)']}
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 0}}
-                  style={styles.gradient}>
-                  <Text style={styles.submitText}>{translate('Submit')}</Text>
-                </LinearGradient>
+                }}
+              >
+                <Text style={styles.submitText}>{translate("SIGN UP")}</Text>
               </TouchableOpacity>
-
-              {showLogin && (
-                <View style={styles.footerContainer}>
-                  <Text style={styles.haveAccount}>
-                    {translate('AlreadyHaveAccount')}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.props.didTapOnclose();
-                      // this.props.navigation.navigate('LoginScreen')
-                    }}>
-                    <Text style={styles.login}>{translate('Login')}</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+              {/* <View style={styles.footerContainer}>
+                <Text style={styles.forgotPassword}>
+                  {translate("Dont have an account?")}
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    // this.props.navigation.navigate('RegistrationScreen')
+                    this.setState({ isSignUpViewShow: true })
+                  }
+                >
+                  <Text style={styles.signup}>{translate("Signup")}</Text>
+                </TouchableOpacity>
+              </View> */}
             </View>
           </View>
         </ScrollView>
@@ -306,10 +397,12 @@ class RegistrationScreen extends Component {
             onPress={() => {
               this.props.didTapOnclose();
             }}
-            style={styles.closeButtonView}>
+            style={styles.closeButtonView}
+          >
             <Image
               source={Images.close}
-              style={{width: 15, height: 15}}></Image>
+              style={{ width: 15, height: 15, tintColor: "rgb(0,0,0)" }}
+            />
           </TouchableOpacity>
         )}
         {isLoading && <HudView />}

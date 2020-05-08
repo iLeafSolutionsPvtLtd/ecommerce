@@ -11,7 +11,7 @@ import {
   StatusBar,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import styles from "./styles";
 import Login from "../LoginScreen";
@@ -34,17 +34,17 @@ class AccountScreen extends Component {
     super(props);
     this.state = {
       isLoginViewShow: false,
-      isRegisterViewShow: false,
+      isRegisterViewShow: false
     };
   }
 
-  _didLanguageChange = (lang) => {
+  _didLanguageChange = lang => {
     const {
       selectedLanguage,
       didChangeLAnguage,
       storesView,
       storeCode,
-      storeConfiguration,
+      storeConfiguration
     } = this.props;
     if (selectedLanguage === lang) {
       return;
@@ -53,14 +53,14 @@ class AccountScreen extends Component {
     let groupId = -1;
     let newStoreCode = "";
     if (storesView && storesView.length > 0) {
-      storesView.map((item) => {
+      storesView.map(item => {
         if (item.code === storeCode) {
           groupId = item.store_group_id;
         }
       });
       let savedLang = storeCode.slice(-2);
       const newLang = savedLang === "en" ? "Arabic" : "English";
-      storesView.map((item) => {
+      storesView.map(item => {
         if (
           item.name.toUpperCase() === newLang.toUpperCase() &&
           item.store_group_id === groupId
@@ -69,7 +69,7 @@ class AccountScreen extends Component {
         }
       });
       this.props.storeCodeUpdated(newStoreCode);
-      storeConfiguration.map((storeConfigItem) => {
+      storeConfiguration.map(storeConfigItem => {
         if (storeConfigItem.code === newStoreCode) {
           this.props.updateCurrency(
             storeConfigItem.default_display_currency_code
@@ -127,7 +127,7 @@ class AccountScreen extends Component {
       userToken,
       userInfo,
       cartArray,
-      storeCode,
+      storeCode
     } = this.props;
     const { isLoginViewShow, isRegisterViewShow } = this.state;
     return (
@@ -284,7 +284,7 @@ class AccountScreen extends Component {
                   resizeMode={"contain"}
                   style={[
                     styles.itemImage,
-                    { tintColor: Constants.APP_THEME_COLOR },
+                    { tintColor: Constants.APP_THEME_COLOR }
                   ]}
                 />
                 <Text style={styles.itemText}>{translate("Logout")}</Text>
@@ -315,13 +315,13 @@ class AccountScreen extends Component {
         </Modal>
 
         <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
+          ref={o => (this.ActionSheet = o)}
           title={translate("Select your language")}
           options={["English", translate("ARABIC"), translate("Cancel")]}
           cancelButtonIndex={2}
           // destructiveButtonIndex={2}
           tintColor={Constants.APP_THEME_COLOR}
-          onPress={(index) => {
+          onPress={index => {
             switch (index) {
               case 0: {
                 this._didLanguageChange("en");
