@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     backgroundColor: Constants.APP_WHITE_COLOR,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   addTocartButton: {
     flex: 1,
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderColor: Constants.APP_GRAY_COLOR3,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   buyNowButton: {
     flex: 1,
@@ -31,18 +31,18 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     backgroundColor: Constants.APP_THEME_COLOR,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   addToCartText: {
     fontFamily: Constants.Fonts.REGULAR,
     fontSize: 14,
     color: Constants.APP_BLACK_COLOR,
-    textAlign: "center",
+    textAlign: "center"
   },
   buyNowText: {
     fontFamily: Constants.Fonts.MEDIUM,
     fontSize: 16,
-    color: Constants.APP_WHITE_COLOR,
+    color: Constants.APP_WHITE_COLOR
   },
   titleStyle: {
     textAlign: "left",
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     fontSize: 18,
     color: Constants.APP_THEME_COLOR,
-    fontFamily: Constants.Fonts.MEDIUM,
+    fontFamily: Constants.Fonts.MEDIUM
   },
   returnPolicyView: {
     height: 85,
@@ -64,25 +64,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     borderRadius: 5,
+    elevation: 3
   },
   sendBackText: {
     fontSize: 12,
     color: "rgb(142,142,142)",
     fontFamily: Constants.Fonts.REGULAR,
-    marginVertical: 3,
+    marginVertical: 3
   },
   sendBackTitleText: {
     fontSize: 13,
     color: Constants.APP_THEME_COLOR,
     fontFamily: Constants.Fonts.MEDIUM,
-    marginVertical: 3,
+    marginVertical: 3
   },
   moreinfo: {
     fontSize: 12,
     color: Constants.APP_THEME_COLOR,
     fontFamily: Constants.Fonts.REGULAR,
     textDecorationLine: "underline",
-    marginVertical: 3,
+    marginVertical: 3
   },
   orderInfo: {
     fontSize: 15,
@@ -90,8 +91,8 @@ const styles = StyleSheet.create({
     fontFamily: Constants.Fonts.REGULAR,
     marginLeft: 15,
     marginTop: 15,
-    marginRight: 10,
-  },
+    marginRight: 10
+  }
 });
 
 export default styles;

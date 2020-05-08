@@ -12,14 +12,14 @@ import { normalizedHeight, normalizedWidth } from "../../config/common";
 const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   scrollContainer: {
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   accountInfoContainer: {
     marginTop: 8,
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   userNameText: {
     fontSize: 16,
@@ -28,21 +28,21 @@ const styles = StyleSheet.create({
     marginTop: 16,
     textAlign: "left",
     marginHorizontal: 20,
-    marginBottom: 10,
+    marginBottom: 10
   },
   line: {
     marginVertical: 15,
     height: 1,
     width: "100%",
     alignSelf: "center",
-    backgroundColor: "rgb(241, 243, 246)",
+    backgroundColor: "rgb(241, 243, 246)"
   },
   subTitle: {
     fontSize: 14,
     fontFamily: Constants.Fonts.REGULAR,
     color: "rgb(120,120,120)",
     marginTop: 5,
-    textAlign: "left",
+    textAlign: "left"
   },
   inputs: {
     flex: 1,
@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: Constants.Fonts.REGULAR,
     height: 45,
-    borderRadius: 2,
+    borderRadius: 2
   },
   passwordContainer: {
     marginVertical: 8,
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   buttonContainer: {
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   buttonOutlineContainer: {
     marginVertical: 12,
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "80%",
     alignSelf: "center",
-    marginBottom: 30,
+    marginBottom: 30
   },
   updateText: {
     fontFamily: Constants.Fonts.MEDIUM,
     fontSize: 15,
-    color: Constants.APP_WHITE_COLOR,
+    color: Constants.APP_WHITE_COLOR
   },
   titleStyle: {
     // marginTop: 20,
@@ -92,20 +92,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 18,
     color: Constants.APP_THEME_COLOR,
-    fontFamily: Constants.Fonts.MEDIUM,
+    fontFamily: Constants.Fonts.MEDIUM
   },
   holderView: {
     flexDirection: "row",
     marginHorizontal: 20,
     marginVertical: 5,
-    alignItems: "center",
+    alignItems: "center"
   },
   iconContainer: {
     // width: 25,
     height: 45,
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });
 
 export default styles;

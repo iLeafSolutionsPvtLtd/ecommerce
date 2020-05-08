@@ -8,11 +8,12 @@ import {
   View,
   Text,
   Image,
+  Keyboard,
   StatusBar,
   TextInput,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import styles from "./styles";
 import React, { Component } from "react";
@@ -33,6 +34,7 @@ class ProfileDetailView extends Component {
       oldPassword: "",
       newPassword: "",
       confirmPassword: "",
+      isChanged: false
     };
   }
 
@@ -41,13 +43,80 @@ class ProfileDetailView extends Component {
     this.setState({
       firstName: userInfo.firstname,
       lastName: userInfo.lastname,
-      email: userInfo.email,
+      email: userInfo.email
     });
   }
 
-  _profileUpdateCallback = (status) => {
+  componentDidUpdate() {
+    const {
+      firstName,
+      lastName,
+      isChanged,
+      oldPassword,
+      newPassword,
+      confirmPassword
+    } = this.state;
+    const { userInfo } = this.props;
+    if (firstName !== userInfo.firstname || lastName !== userInfo.lastname) {
+      if (oldPassword !== "" || newPassword !== "" || confirmPassword !== "") {
+        if (
+          oldPassword.length > 0 &&
+          newPassword.length > 0 &&
+          confirmPassword.length > 0
+        ) {
+          if (!isChanged) {
+            this.setState({ isChanged: true });
+          }
+        } else {
+          if (isChanged) {
+            this.setState({ isChanged: false });
+          }
+        }
+      } else {
+        if (!isChanged) {
+          this.setState({ isChanged: true });
+        }
+      }
+    } else if (
+      oldPassword !== "" ||
+      newPassword !== "" ||
+      confirmPassword !== ""
+    ) {
+      if (
+        oldPassword.length > 0 &&
+        newPassword.length > 0 &&
+        confirmPassword.length > 0
+      ) {
+        if (!isChanged) {
+          this.setState({ isChanged: true });
+        }
+      } else {
+        if (isChanged) {
+          this.setState({ isChanged: false });
+        }
+      }
+    } else {
+      if (isChanged) {
+        this.setState({ isChanged: false });
+      }
+    }
+  }
+
+  _profileUpdateCallback = status => {
     if (status) {
-      showSingleAlert(translate("profile_updated"), translate("Ok"), null);
+      showSingleAlert(translate("profile_updated"), translate("Ok"), () => {
+        this.props.navigation.goBack();
+      });
+    } else {
+      this.setState({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+        isChanged: false
+      });
+      this.newPassword.clear();
+      this.oldPassword.clear();
+      this.confirmPassword.clear();
     }
   };
 
@@ -67,6 +136,7 @@ class ProfileDetailView extends Component {
   };
 
   _didTapOnUpdate = () => {
+    Keyboard.dismiss();
     const { newPassword, confirmPassword } = this.state;
     if (newPassword === confirmPassword) {
       if (newPassword.length > 0) {
@@ -85,6 +155,7 @@ class ProfileDetailView extends Component {
 
   render() {
     const { selectedLanguage, isLoading } = this.props;
+    const { isChanged } = this.state;
     const { isRTL } = this.props;
     return (
       <SafeAreaView style={styles.safeContainer}>
@@ -115,7 +186,7 @@ class ProfileDetailView extends Component {
                   keyboardType="name-phone-pad"
                   returnKeyType={"next"}
                   onSubmitEditing={() => this.lastName.focus()}
-                  onChangeText={(value) => this.setState({ firstName: value })}
+                  onChangeText={value => this.setState({ firstName: value })}
                   value={this.state.firstName}
                   underlineColorAndroid="transparent"
                   blurOnSubmit={false}
@@ -123,11 +194,11 @@ class ProfileDetailView extends Component {
                 <TextInput
                   placeholder={translate("Last Name")}
                   style={styles.inputs}
-                  ref={(input) => (this.lastName = input)}
+                  ref={input => (this.lastName = input)}
                   keyboardType="name-phone-pad"
-                  returnKeyType={"next"}
-                  onSubmitEditing={() => this.emailInput.focus()}
-                  onChangeText={(value) => this.setState({ lastName: value })}
+                  returnKeyType={"done"}
+                  onSubmitEditing={() => this.lastName.blur()}
+                  onChangeText={value => this.setState({ lastName: value })}
                   value={this.state.lastName}
                   underlineColorAndroid="transparent"
                   blurOnSubmit={false}
@@ -141,11 +212,11 @@ class ProfileDetailView extends Component {
                 <TextInput
                   style={[styles.inputs, { color: "rgba(110,110,110,0.5)" }]}
                   placeholder={translate("Email")}
-                  ref={(input) => (this.emailInput = input)}
+                  ref={input => (this.emailInput = input)}
                   keyboardType="email-address"
                   returnKeyType={"done"}
                   editable={false}
-                  onChangeText={(value) => this.setState({ email: value })}
+                  onChangeText={value => this.setState({ email: value })}
                   value={this.state.email}
                   underlineColorAndroid="transparent"
                 />
@@ -167,10 +238,9 @@ class ProfileDetailView extends Component {
                   keyboardType="default"
                   secureTextEntry={true}
                   returnKeyType={"next"}
+                  ref={input => (this.oldPassword = input)}
                   onSubmitEditing={() => this.newPassword.focus()}
-                  onChangeText={(value) =>
-                    this.setState({ oldPassword: value })
-                  }
+                  onChangeText={value => this.setState({ oldPassword: value })}
                   underlineColorAndroid="transparent"
                   blurOnSubmit={false}
                 />
@@ -183,14 +253,12 @@ class ProfileDetailView extends Component {
                 <TextInput
                   placeholder={translate("New Password")}
                   style={styles.inputs}
-                  ref={(input) => (this.newPassword = input)}
+                  ref={input => (this.newPassword = input)}
                   keyboardType="default"
                   returnKeyType={"next"}
                   secureTextEntry={true}
                   onSubmitEditing={() => this.confirmPassword.focus()}
-                  onChangeText={(value) =>
-                    this.setState({ newPassword: value })
-                  }
+                  onChangeText={value => this.setState({ newPassword: value })}
                   underlineColorAndroid="transparent"
                   blurOnSubmit={false}
                 />
@@ -203,11 +271,11 @@ class ProfileDetailView extends Component {
                 <TextInput
                   placeholder={translate("Confirm Password")}
                   style={[styles.inputs]}
-                  ref={(input) => (this.confirmPassword = input)}
+                  ref={input => (this.confirmPassword = input)}
                   keyboardType="default"
                   returnKeyType={"done"}
                   secureTextEntry={true}
-                  onChangeText={(value) =>
+                  onChangeText={value =>
                     this.setState({ confirmPassword: value })
                   }
                   underlineColorAndroid="transparent"
@@ -218,7 +286,11 @@ class ProfileDetailView extends Component {
         </ScrollView>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.buttonOutlineContainer}
+            disabled={!isChanged}
+            style={[
+              styles.buttonOutlineContainer,
+              { opacity: isChanged ? 1 : 0.7 }
+            ]}
             activeOpacity={Constants.activeOpacity}
             onPress={() => {
               this._didTapOnUpdate();

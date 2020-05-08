@@ -12,23 +12,23 @@ import {
   addWishlistItem,
   getCartProducts,
   getCartID,
-  submitFeedback,
-} from '../api/apiMethods';
-import {put, call, select} from 'redux-saga/effects';
-import {showSingleAlert} from '../config/common';
-import * as cartActions from '../actions/cartActions';
-import * as loginActions from '../actions/loginActions';
-import * as loadingActions from '../actions/loadingActions';
-import * as navigationActions from '../actions/navigationActions';
-import * as addAddressAction from '../actions/addAddressAction';
-import {translate} from '../config/languageSwitching';
+  submitFeedback
+} from "../api/apiMethods";
+import { put, call, select } from "redux-saga/effects";
+import { showSingleAlert } from "../config/common";
+import * as cartActions from "../actions/cartActions";
+import * as loginActions from "../actions/loginActions";
+import * as loadingActions from "../actions/loadingActions";
+import * as navigationActions from "../actions/navigationActions";
+import * as addAddressAction from "../actions/addAddressAction";
+import { translate } from "../config/languageSwitching";
 
 export function* loginUserSaga(action) {
-  const {isNetworkAvailable, userToken, adminToken, storeCode} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, userToken, adminToken, storeCode } = yield select(
+    state => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -40,15 +40,15 @@ export function* loginUserSaga(action) {
   yield put(loadingActions.enableLoader());
   try {
     const response = yield call(loginUser, action.username, action.password);
-    console.log('API RESPONSE OF LOGIN::: ', response);
+    console.log("API RESPONSE OF LOGIN::: ", response);
     if (response && response.message) {
       yield put(loadingActions.disableLoader({}));
-      if (userToken === '') {
+      if (userToken === "") {
         //showSingleAlert(response.message);
-        showSingleAlert(translate('login_error'));
+        showSingleAlert(translate("login_error"));
       }
       if (action.loginCallback) {
-        action.loginCallback(false, userToken === '' ? false : true);
+        action.loginCallback(false, userToken === "" ? false : true);
       }
     } else if (response && response.length > 0) {
       loginState = true;
@@ -56,18 +56,18 @@ export function* loginUserSaga(action) {
 
       // Get user info
       const userInfoResponse = yield call(getUserInfoAPI, response);
-      console.log('==========userInfoResponse====', userInfoResponse);
+      console.log("==========userInfoResponse====", userInfoResponse);
       if (userInfoResponse && userInfoResponse.id) {
         userInfoState = true;
         yield put(
           loginActions.updateUserInfo(
             userInfoResponse,
             action.username,
-            action.password,
-          ),
+            action.password
+          )
         );
         yield put(
-          addAddressAction.addAddressResponse(userInfoResponse.addresses),
+          addAddressAction.addAddressResponse(userInfoResponse.addresses)
         );
       } else {
         yield put(loginActions.updateUserInfo(null));
@@ -76,33 +76,33 @@ export function* loginUserSaga(action) {
       // Get wish list
       const wishListResponse = yield call(getWishlist, response);
       if (wishListResponse && wishListResponse.message) {
-        console.log('WISHLIST API RESPONSE ERROR:::', wishListResponse.message);
+        console.log("WISHLIST API RESPONSE ERROR:::", wishListResponse.message);
       } else {
         wishListState = true;
-        console.log('WISHLIST API RESPONSE:::', wishListResponse);
+        console.log("WISHLIST API RESPONSE:::", wishListResponse);
         yield put(loginActions.updateWishList(wishListResponse));
       }
 
       const cartIDResponse = yield call(getCartID, response, storeCode);
-      console.log('+++++++++ cartID RESPONSE ++++++++++', cartIDResponse);
+      console.log("+++++++++ cartID RESPONSE ++++++++++", cartIDResponse);
       if (cartIDResponse && cartIDResponse.message) {
         // yield put(loginActions.cartProductsCallFailed());
-        console.log('CART LIST ID RESPONSE ERROR::: ', cartIDResponse.message);
+        console.log("CART LIST ID RESPONSE ERROR::: ", cartIDResponse.message);
       } else {
         cartIdState = true;
         yield put(loginActions.updateCartId(cartIDResponse));
-        console.log('CART LIST ID RESPONSE::: ', cartIDResponse);
+        console.log("CART LIST ID RESPONSE::: ", cartIDResponse);
       }
 
       // Get cart list
       const cartResponse = yield call(getCartProducts, response);
       if (cartResponse && cartResponse.message) {
         yield put(cartActions.cartProductsCallFailed());
-        console.log('CART LIST RESPONSE ERROR::: ', cartResponse.message);
+        console.log("CART LIST RESPONSE ERROR::: ", cartResponse.message);
       } else {
         cartListState = true;
         yield put(cartActions.cartProductsList(cartResponse));
-        console.log('CART LIST RESPONSE::: ', cartResponse);
+        console.log("CART LIST RESPONSE::: ", cartResponse);
       }
       // clear guest cart
       yield put(loginActions.clearGuestCart());
@@ -123,39 +123,44 @@ export function* loginUserSaga(action) {
       }
     }
   } catch (error) {
-    console.log('LOGIN API ERROR!!!!', error);
+    console.log("LOGIN API ERROR!!!!", error);
     yield put(loginActions.loginFailed());
     yield put(loadingActions.disableLoader({}));
   }
 }
 
 export function* profileUpdateSaga(action) {
-  const {isNetworkAvailable, userToken} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, userToken } = yield select(
+    state => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
   yield put(loadingActions.enableLoader());
   try {
     const response = yield call(profileUpdate, action.userInfo, userToken);
-    console.log('API RESPONSE OF UPDATE PROFILE ', response);
+    console.log("API RESPONSE OF UPDATE PROFILE ", response);
     if (response) {
       if (response.message) {
         showSingleAlert(response.message);
+        yield put(loadingActions.disableLoader({}));
       } else {
         if (action.newPassword.length > 0) {
           const passwordResponse = yield call(
             passwordUpdate,
             action.oldPassword,
             action.newPassword,
-            userToken,
+            userToken
           );
-          console.log('API RESPONSE OF PASSWORD UPDATE ', passwordResponse);
+          console.log("API RESPONSE OF PASSWORD UPDATE ", passwordResponse);
           if (passwordResponse) {
             if (passwordResponse.message) {
               showSingleAlert(passwordResponse.message);
+              yield put(loadingActions.disableLoader({}));
+              if (action.profileUpdateCallback) {
+                action.profileUpdateCallback(false);
+              }
             } else {
               yield put(loginActions.onProfileUpdateResponse(response));
               yield put(loadingActions.disableLoader({}));
@@ -174,17 +179,17 @@ export function* profileUpdateSaga(action) {
       }
     }
   } catch (error) {
-    console.log('PROFILE UPDATE API ERROR!!!!', error);
+    console.log("PROFILE UPDATE API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }
 
 export function* removeWishlistItemSaga(action) {
-  const {isNetworkAvailable, userToken} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, userToken } = yield select(
+    state => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     if (action.removeCallback) {
       action.removeCallback(false);
     }
@@ -194,9 +199,9 @@ export function* removeWishlistItemSaga(action) {
     const response = yield call(
       removeWishlistItem,
       action.productId,
-      userToken,
+      userToken
     );
-    console.log('API RESPONSE OF REMOVE ITEM ', response);
+    console.log("API RESPONSE OF REMOVE ITEM ", response);
     if (response) {
       if (response.message) {
         showSingleAlert(response.message);
@@ -210,17 +215,17 @@ export function* removeWishlistItemSaga(action) {
         const wishListResponse = yield call(getWishlist, userToken);
         if (wishListResponse && wishListResponse.message) {
           console.log(
-            'WISHLIST API RESPONSE ERROR:::',
-            wishListResponse.message,
+            "WISHLIST API RESPONSE ERROR:::",
+            wishListResponse.message
           );
         } else {
-          console.log('WISHLIST API RESPONSE:::', wishListResponse);
+          console.log("WISHLIST API RESPONSE:::", wishListResponse);
           yield put(loginActions.updateWishList(wishListResponse));
         }
       }
     }
   } catch (error) {
-    console.log('REMOVE ITEM API ERROR!!!!', error);
+    console.log("REMOVE ITEM API ERROR!!!!", error);
     if (action.removeCallback) {
       action.removeCallback(false);
     }
@@ -228,11 +233,11 @@ export function* removeWishlistItemSaga(action) {
 }
 
 export function* addWishlistItemSaga(action) {
-  const {isNetworkAvailable, userToken} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, userToken } = yield select(
+    state => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     if (action.addCallback) {
       action.addCallback(false);
     }
@@ -240,7 +245,7 @@ export function* addWishlistItemSaga(action) {
   }
   try {
     const response = yield call(addWishlistItem, action.productId, userToken);
-    console.log('API RESPONSE OF ADD ITEM ', response);
+    console.log("API RESPONSE OF ADD ITEM ", response);
     if (response) {
       if (response.message) {
         showSingleAlert(response.message);
@@ -254,17 +259,17 @@ export function* addWishlistItemSaga(action) {
         const wishListResponse = yield call(getWishlist, userToken);
         if (wishListResponse && wishListResponse.message) {
           console.log(
-            'WISHLIST API RESPONSE ERROR:::',
-            wishListResponse.message,
+            "WISHLIST API RESPONSE ERROR:::",
+            wishListResponse.message
           );
         } else {
-          console.log('WISHLIST API RESPONSE:::', wishListResponse);
+          console.log("WISHLIST API RESPONSE:::", wishListResponse);
           yield put(loginActions.updateWishList(wishListResponse));
         }
       }
     }
   } catch (error) {
-    console.log('ADD ITEM API ERROR!!!!', error);
+    console.log("ADD ITEM API ERROR!!!!", error);
     if (action.addCallback) {
       action.addCallback(false);
     }
@@ -272,9 +277,9 @@ export function* addWishlistItemSaga(action) {
 }
 
 export function* submitFeedbackSaga(action) {
-  const {isNetworkAvailable} = yield select(state => state.appReducer);
+  const { isNetworkAvailable } = yield select(state => state.appReducer);
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
   yield put(loadingActions.enableLoader());
@@ -284,26 +289,26 @@ export function* submitFeedbackSaga(action) {
       action.name,
       action.email,
       action.phone,
-      action.onMyMind,
+      action.onMyMind
     );
-    console.log('API RESPONSE OF SUBMIT FEEDBACK ', response);
+    console.log("API RESPONSE OF SUBMIT FEEDBACK ", response);
     yield put(loadingActions.disableLoader());
     if (response) {
       if (response.message) {
         showSingleAlert(response.message);
         if (action.callBack) {
-          console.log('callbackkkk1');
+          console.log("callbackkkk1");
           action.callBack(false);
         }
       } else {
         if (action.callBack) {
-          console.log('callbackkkk2');
+          console.log("callbackkkk2");
           action.callBack(true);
         }
       }
     }
   } catch (error) {
     yield put(loadingActions.disableLoader());
-    console.log('SUBMIT FEEDBACK API ERROR!!!!', error);
+    console.log("SUBMIT FEEDBACK API ERROR!!!!", error);
   }
 }
