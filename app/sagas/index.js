@@ -4,59 +4,52 @@
  * Sagas -  Redux saga class init.
  */
 
-import * as types from '../actions/types';
-import {takeEvery, all, takeLatest} from 'redux-saga/effects';
-
-import {
-  loginUserSaga,
-  profileUpdateSaga,
-  removeWishlistItemSaga,
-  addWishlistItemSaga,
-  submitFeedbackSaga,
-} from './loginSaga';
-import {getAllCategoriesSaga} from './categoriesSaga';
-import {getProductsBySearchTextSaga} from './searchSaga';
-import {registerUserSaga} from './registerSaga';
-import {getStoresSaga} from './storeSaga';
-import {getOrderHistory} from './orderHistorySaga';
-import {getFilterDetails} from './getAllFiltersSaga';
-import {getFilterProducts} from './filterResultSaga';
-import {getHomeDetails} from './homeSaga';
 import {
   addAddressSaga,
   editAddressSaga,
   deleteAddressSaga,
-} from './addAddressSaga';
-
+} from "./addAddressSaga";
+import {
+  loginUserSaga,
+  profileUpdateSaga,
+  submitFeedbackSaga,
+  addWishlistItemSaga,
+  removeWishlistItemSaga,
+} from "./loginSaga";
 import {
   getCartSaga,
   addProductToCartSaga,
   getTotalCartCostSaga,
   getLoggedUserCartIdSaga,
-} from './cartSaga';
-
-import {addWishlistFromCartSaga} from './addWishlistFromCartSaga';
-
+} from "./cartSaga";
 import {
   get360ImagesSaga,
   getProductsListSaga,
   getProductDetailSaga,
   getCategoryProductsListSaga,
-} from './productsSaga';
-
+} from "./productsSaga";
+import {
+  removeProductUserCart,
+  removeProductGuestCart,
+} from "./removeCartProducts";
 import {
   setShipmentSaga,
   applyVoucherCodeSaga,
   getPaymentAndShipmentMethodsSaga,
-} from './checkoutSaga';
-
-import {updateLoggedinUserCart, updateGuestCart} from './updateCartProducts';
-import {
-  removeProductGuestCart,
-  removeProductUserCart,
-} from './removeCartProducts';
-
-import {createGuestCartSaga, guestAddToCartSaga} from './guestSaga';
+} from "./checkoutSaga";
+import * as types from "../actions/types";
+import { getStoresSaga } from "./storeSaga";
+import { getHomeDetails } from "./homeSaga";
+import { registerUserSaga } from "./registerSaga";
+import { getOrderHistory } from "./orderHistorySaga";
+import { getFilterDetails } from "./getAllFiltersSaga";
+import { getFilterProducts } from "./filterResultSaga";
+import { getAllCategoriesSaga } from "./categoriesSaga";
+import { getProductsBySearchTextSaga } from "./searchSaga";
+import { takeEvery, all, takeLatest } from "redux-saga/effects";
+import { addWishlistFromCartSaga } from "./addWishlistFromCartSaga";
+import { createGuestCartSaga, guestAddToCartSaga } from "./guestSaga";
+import { updateLoggedinUserCart, updateGuestCart } from "./updateCartProducts";
 
 export default function* watch() {
   yield all([
@@ -94,7 +87,7 @@ export default function* watch() {
     takeLatest(types.APPLY_VOUCHER_CODE, applyVoucherCodeSaga),
     takeEvery(
       types.GET_PAYMENT_AND_SHIPPING_METHODS,
-      getPaymentAndShipmentMethodsSaga,
+      getPaymentAndShipmentMethodsSaga
     ),
     takeLatest(types.GET_LOGGED_USER_CART_ID, getLoggedUserCartIdSaga),
   ]);

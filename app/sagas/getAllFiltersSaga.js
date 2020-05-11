@@ -4,13 +4,13 @@
  * Filter Fetch - handles all datas of filters for different categories
  */
 
-import {put, call, select} from 'redux-saga/effects';
-import {getAllFilters} from '../api/apiMethods';
-import * as loadingActions from '../actions/loadingActions';
-import {translate} from '../config/languageSwitching';
-import * as filterResultAction from '../actions/filterResultAction';
-import {showSingleAlert, isEmpty} from '../config/common';
-import filterArray from '../lib/filterManipulation';
+import { getAllFilters } from "../api/apiMethods";
+import filterArray from "../lib/filterManipulation";
+import { put, call, select } from "redux-saga/effects";
+import { translate } from "../config/languageSwitching";
+import { showSingleAlert, isEmpty } from "../config/common";
+import * as loadingActions from "../actions/loadingActions";
+import * as filterResultAction from "../actions/filterResultAction";
 
 // Our worker Saga that logins the user
 export function* getFilterDetails(action) {
@@ -40,9 +40,9 @@ export function* getFilterDetails(action) {
     productsAttachments,
     productsBrands,
     productsStylesInch,
-  } = yield select(state => state.appReducer);
+  } = yield select((state) => state.appReducer);
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
   yield put(loadingActions.enableLoader());
@@ -51,22 +51,22 @@ export function* getFilterDetails(action) {
       getAllFilters,
       action.categoryid,
       storeCode,
-      adminToken,
+      adminToken
     );
     final_array.push(
       {
-        title: 'Sort By',
+        title: "Sort By",
         keys: [
-          {title: 'New Arrival', value: 'new'},
-          {title: 'Low To High', value: 'asc'},
-          {title: 'High To Low', value: 'desc'},
+          { title: "New Arrival", value: "new" },
+          { title: "Low To High", value: "asc" },
+          { title: "High To Low", value: "desc" },
         ],
-      },
+      }
       // {title: 'Discount'}, //for discount
       // {title: 'Price', price_from: '', price_to: ''},
     ); //for price
 
-    console.log('FILTER OPTIONS RESPONSE', response);
+    console.log("FILTER OPTIONS RESPONSE", response);
 
     if (response.length > 0) {
       color_array = response[0].color ? response[0].color : [];
@@ -84,7 +84,7 @@ export function* getFilterDetails(action) {
       const gradeArray = filterArray(productsGrades, grade_array);
       const attachmentArray = filterArray(
         productsAttachments,
-        attachment_array,
+        attachment_array
       );
       const sizeInchArray = filterArray(productsStylesInch, size_inch_array);
       const brandArray = filterArray(productsBrands, brand_array);
@@ -93,8 +93,8 @@ export function* getFilterDetails(action) {
       if (!isEmpty(styles_array)) {
         //for styles
         style_obj = {
-          title: 'Style',
-          key: 'style',
+          title: "Style",
+          key: "style",
           keys: styleArray,
         };
         final_array.push(style_obj);
@@ -103,8 +103,8 @@ export function* getFilterDetails(action) {
       if (!isEmpty(color_array)) {
         // for color
         color_obj = {
-          title: 'Choose Color',
-          key: 'color',
+          title: "Choose Color",
+          key: "color",
           keys: colorArray,
         };
         final_array.push(color_obj);
@@ -113,8 +113,8 @@ export function* getFilterDetails(action) {
       if (!isEmpty(attachment_array)) {
         //for attachment
         attachment_obj = {
-          title: 'Attachment Type',
-          key: 'attachment_type',
+          title: "Attachment Type",
+          key: "attachment_type",
           keys: attachmentArray,
         };
         final_array.push(attachment_obj);
@@ -123,24 +123,24 @@ export function* getFilterDetails(action) {
       if (!isEmpty(size_inch_array)) {
         //for size(inch)
         size_inch_obj = {
-          title: 'Size (Inch)',
-          key: 'size_inch',
+          title: "Size (Inch)",
+          key: "size_inch",
           keys: sizeInchArray,
         };
         final_array.push(size_inch_obj);
       }
 
       //for price
-      final_array.push({title: 'Price', price_from: '', price_to: ''});
+      final_array.push({ title: "Price", price_from: "", price_to: "" });
 
       //for discount
-      final_array.push({title: 'Discount'});
+      final_array.push({ title: "Discount" });
 
       if (!isEmpty(size_array)) {
         //for size
         size_obj = {
-          title: 'Size',
-          key: 'size',
+          title: "Size",
+          key: "size",
           keys: sizeArray,
         };
         final_array.push(size_obj);
@@ -149,8 +149,8 @@ export function* getFilterDetails(action) {
       if (!isEmpty(brand_array)) {
         //for brand
         brand_obj = {
-          title: 'Brand',
-          key: 'brand',
+          title: "Brand",
+          key: "brand",
           keys: brandArray,
         };
         final_array.push(brand_obj);
@@ -159,23 +159,23 @@ export function* getFilterDetails(action) {
       if (!isEmpty(grade_array)) {
         // for grade
         grade_obj = {
-          title: 'Grade',
-          key: 'grade',
+          title: "Grade",
+          key: "grade",
           keys: gradeArray,
         };
         final_array.push(grade_obj);
       }
     } else {
       //for price
-      final_array.push({title: 'Price', price_from: '', price_to: ''});
+      final_array.push({ title: "Price", price_from: "", price_to: "" });
 
       //for discount
-      final_array.push({title: 'Discount'});
+      final_array.push({ title: "Discount" });
     }
     yield put(filterResultAction.loadFilterList(final_array));
     yield put(loadingActions.disableLoader({}));
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(filterResultAction.loadFilterFailure());
     yield put(loadingActions.disableLoader({}));
   }

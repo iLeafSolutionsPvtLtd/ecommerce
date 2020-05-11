@@ -4,26 +4,26 @@
  * GuestSaga - handles guest saga methods
  */
 
-import {put, call, select} from 'redux-saga/effects';
 import {
-  createGuestCartAPI,
   guestAddToCartAPI,
+  createGuestCartAPI,
   getGuestquoteIdAPI,
   updateGuestProductsAPI,
-} from '../api/apiMethods';
-import * as loadingActions from '../actions/loadingActions';
-import * as guestActions from '../actions/guestActions';
-import * as cartActions from '../actions/cartActions';
-import {translate} from '../config/languageSwitching';
-import {showSingleAlert} from '../config/common';
+} from "../api/apiMethods";
+import { showSingleAlert } from "../config/common";
+import * as cartActions from "../actions/cartActions";
+import { put, call, select } from "redux-saga/effects";
+import { translate } from "../config/languageSwitching";
+import * as guestActions from "../actions/guestActions";
+import * as loadingActions from "../actions/loadingActions";
 
 export function* createGuestCartSaga(action) {
-  const {isNetworkAvailable, storeCode, adminToken} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, storeCode, adminToken } = yield select(
+    (state) => state.appReducer
   );
 
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -31,16 +31,16 @@ export function* createGuestCartSaga(action) {
   try {
     const response = yield call(createGuestCartAPI, storeCode, adminToken);
 
-    console.log('CREATE GUEST CART RESPONSE', response);
+    console.log("CREATE GUEST CART RESPONSE", response);
     if (response && response.length > 0) {
       const getGuestquoteResponse = yield call(
         getGuestquoteIdAPI,
         response,
         storeCode,
-        adminToken,
+        adminToken
       );
 
-      console.log('GUEST QUOTE GET RESPONSE', getGuestquoteResponse);
+      console.log("GUEST QUOTE GET RESPONSE", getGuestquoteResponse);
 
       if (getGuestquoteResponse && getGuestquoteResponse.id) {
         if (action.createGuestCartCallback) {
@@ -48,23 +48,23 @@ export function* createGuestCartSaga(action) {
         }
         yield put(loadingActions.disableLoader({}));
         yield put(
-          guestActions.onCreateGuestCart(response, getGuestquoteResponse.id),
+          guestActions.onCreateGuestCart(response, getGuestquoteResponse.id)
         );
       } else {
         if (action.createGuestCartCallback)
           action.createGuestCartCallback(false);
-        showSingleAlert(translate('API_Failed'));
+        showSingleAlert(translate("API_Failed"));
         yield put(loadingActions.disableLoader({}));
       }
     } else {
       if (action.createGuestCartCallback) action.createGuestCartCallback(false);
-      showSingleAlert(translate('API_Failed'));
+      showSingleAlert(translate("API_Failed"));
       yield put(loadingActions.disableLoader({}));
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
-    showSingleAlert(translate('API_Failed'));
+    showSingleAlert(translate("API_Failed"));
   }
 }
 
@@ -75,10 +75,10 @@ export function* guestAddToCartSaga(action) {
     adminToken,
     quoteId,
     guestToken,
-  } = yield select(state => state.appReducer);
+  } = yield select((state) => state.appReducer);
 
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -89,21 +89,21 @@ export function* guestAddToCartSaga(action) {
       action.inputParams,
       quoteId,
       storeCode,
-      adminToken,
+      adminToken
     );
 
-    console.log('GUEST ADD TO CART RESPONSE', response);
+    console.log("GUEST ADD TO CART RESPONSE", response);
     if (response && response.item_id) {
-      const {guestCartArray} = yield select(state => state.cartReducer);
+      const { guestCartArray } = yield select((state) => state.cartReducer);
       // yield put(guestActions.updateCartList([...guestCartArray, ...[response]]));
       const updatedArray = yield call(
         updateGuestProductsAPI,
         guestToken,
-        adminToken,
+        adminToken
       );
       console.log(
-        ' ++++++ getCartArray from add to cart saga +++ ',
-        updatedArray,
+        " ++++++ getCartArray from add to cart saga +++ ",
+        updatedArray
       );
       yield put(cartActions.updateGuestCartProducts(updatedArray));
       yield put(loadingActions.disableLoader({}));
@@ -111,11 +111,11 @@ export function* guestAddToCartSaga(action) {
     } else {
       yield put(loadingActions.disableLoader({}));
       if (action.guestAddToCartCallback) action.guestAddToCartCallback(false);
-      showSingleAlert(translate('API_Failed'));
+      showSingleAlert(translate("API_Failed"));
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
-    showSingleAlert(translate('API_Failed'));
+    showSingleAlert(translate("API_Failed"));
   }
 }

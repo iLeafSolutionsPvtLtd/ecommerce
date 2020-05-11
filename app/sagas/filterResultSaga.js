@@ -4,25 +4,20 @@
  * CategorySaga - handles search history state
  */
 
-import {put, call, select} from 'redux-saga/effects';
-import {getCategoryProductsAPI} from '../api/apiMethods';
-import * as loadingActions from '../actions/loadingActions';
-import * as filterResultAction from '../actions/filterResultAction';
-import {translate} from '../config/languageSwitching';
-import {showSingleAlert} from '../config/common';
-
-// //selector Function used to access reducer states
-// export const getNetworkState = state => {
-//   return {};
-// };
+import { showSingleAlert } from "../config/common";
+import { put, call, select } from "redux-saga/effects";
+import { translate } from "../config/languageSwitching";
+import { getCategoryProductsAPI } from "../api/apiMethods";
+import * as loadingActions from "../actions/loadingActions";
+import * as filterResultAction from "../actions/filterResultAction";
 
 // Our worker Saga that logins the user
 export function* getFilterProducts(action) {
-  const {isNetworkAvailable, adminToken, storeCode} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, adminToken, storeCode } = yield select(
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
   yield put(loadingActions.enableLoader());
@@ -31,9 +26,9 @@ export function* getFilterProducts(action) {
       getCategoryProductsAPI,
       action.params,
       storeCode,
-      adminToken,
+      adminToken
     );
-    console.log('response in filter products', response);
+    console.log("response in filter products", response);
     if (response && response.items) {
       yield put(filterResultAction.filterResponse(response));
       yield put(loadingActions.disableLoader({}));
@@ -42,7 +37,7 @@ export function* getFilterProducts(action) {
       yield put(loadingActions.disableLoader({}));
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }

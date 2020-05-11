@@ -4,33 +4,33 @@
  * CartSaga - handles search history state
  */
 
-import {put, call, select} from 'redux-saga/effects';
 import {
   getCartID,
   getCartProducts,
   addProductToCart,
   getGuestCartTotalCostAPI,
   getLoggedUserCartTotalCostAPI,
-} from '../api/apiMethods';
-import * as loadingActions from '../actions/loadingActions';
-import * as cartActions from '../actions/cartActions';
-import {showSingleAlert} from '../config/common';
-import * as loginActions from '../actions/loginActions';
+} from "../api/apiMethods";
+import { showSingleAlert } from "../config/common";
+import * as cartActions from "../actions/cartActions";
+import { put, call, select } from "redux-saga/effects";
+import * as loginActions from "../actions/loginActions";
+import * as loadingActions from "../actions/loadingActions";
 
 export function* getCartSaga(action) {
-  const {isNetworkAvailable, userToken} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, userToken } = yield select(
+    (state) => state.appReducer
   );
 
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
   yield put(loadingActions.enableLoader());
   try {
-    const response = yield call(getCartProducts, userToken); //userToken
-    console.log('response from cart list', response);
+    const response = yield call(getCartProducts, userToken);
+    console.log("response from cart list", response);
     if (response.length > 0) {
       yield put(cartActions.cartProductsList(response));
       yield put(loadingActions.disableLoader({}));
@@ -38,32 +38,32 @@ export function* getCartSaga(action) {
       alert(JSON.stringify(response.message));
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(cartActions.cartProductsCallFailed());
     yield put(loadingActions.disableLoader({}));
   }
 }
 
 export function* addProductToCartSaga(action) {
-  const {isNetworkAvailable, userToken, storeCode} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, userToken, storeCode } = yield select(
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
   yield put(loadingActions.enableLoader());
   try {
-    const {cartArray} = yield select(state => state.cartReducer);
+    const { cartArray } = yield select((state) => state.cartReducer);
     const response = yield call(addProductToCart, action.params, userToken); //userToken
-    console.log('+++++++  response from add product ++++++++ ', response);
+    console.log("+++++++  response from add product ++++++++ ", response);
 
     if (response && response.item_id) {
       const updatedArray = yield call(getCartProducts, userToken);
       console.log(
-        '++++++++++ updated array for logged user ++++++ ',
-        updatedArray,
+        "++++++++++ updated array for logged user ++++++ ",
+        updatedArray
       );
       yield put(cartActions.updateCartProducts(updatedArray));
       yield put(loadingActions.disableLoader({}));
@@ -75,7 +75,7 @@ export function* addProductToCartSaga(action) {
       yield put(loadingActions.disableLoader({}));
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(cartActions.cartProductsCallFailed());
     yield put(loadingActions.disableLoader({}));
   }
@@ -88,9 +88,9 @@ export function* getTotalCartCostSaga(action) {
     storeCode,
     adminToken,
     guestToken,
-  } = yield select(state => state.appReducer);
+  } = yield select((state) => state.appReducer);
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -101,23 +101,23 @@ export function* getTotalCartCostSaga(action) {
       response = yield call(
         getLoggedUserCartTotalCostAPI,
         storeCode,
-        userToken,
+        userToken
       );
     } else {
       response = yield call(
         getGuestCartTotalCostAPI,
         storeCode,
         guestToken,
-        adminToken,
+        adminToken
       );
     }
 
-    console.log('GET CART TOTAL COST RESPONSE==>>>', response);
+    console.log("GET CART TOTAL COST RESPONSE==>>>", response);
 
     if (response && response.grand_total) {
       if (userToken.length > 0) {
         const cartresponse = yield call(getCartProducts, userToken); //userToken
-        console.log('response from cart list', cartresponse);
+        console.log("response from cart list", cartresponse);
         if (response && !response.message) {
           yield put(cartActions.cartProductsList(cartresponse));
         }
@@ -133,18 +133,18 @@ export function* getTotalCartCostSaga(action) {
     }
     yield put(loadingActions.disableLoader({}));
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(cartActions.cartProductsCallFailed());
     yield put(loadingActions.disableLoader({}));
   }
 }
 
 export function* getLoggedUserCartIdSaga(action) {
-  const {isNetworkAvailable, userToken, storeCode} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, userToken, storeCode } = yield select(
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -152,10 +152,10 @@ export function* getLoggedUserCartIdSaga(action) {
   try {
     const cartIDResponse = yield call(getCartID, userToken, storeCode);
 
-    console.log('LOGGED USER CART ID RESPONSE', cartIDResponse);
+    console.log("LOGGED USER CART ID RESPONSE", cartIDResponse);
 
     if (cartIDResponse && cartIDResponse.message) {
-      console.log('CART LIST ID RESPONSE ERROR::: ', cartIDResponse.message);
+      console.log("CART LIST ID RESPONSE ERROR::: ", cartIDResponse.message);
       if (action.getLoggedUserCartIdCallback) {
         action.getLoggedUserCartIdCallback(false);
       }
@@ -167,7 +167,7 @@ export function* getLoggedUserCartIdSaga(action) {
     }
     yield put(loadingActions.disableLoader({}));
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(cartActions.cartProductsCallFailed());
     yield put(loadingActions.disableLoader({}));
   }

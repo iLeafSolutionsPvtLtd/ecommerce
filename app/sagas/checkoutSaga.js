@@ -4,27 +4,26 @@
  * Checkout Saga - handles checkout operations
  */
 
-import {put, call, all, select} from 'redux-saga/effects';
 import {
-  setShipmentGuestAPI,
-  setShipmentLoggedUserAPI,
-  placeOrderGuestAPI,
-  placeOrderLoggedUserAPI,
   getCartID,
-  applyVoucherCodeLoggedUserAPI,
+  placeOrderGuestAPI,
+  setShipmentGuestAPI,
+  placeOrderLoggedUserAPI,
+  setShipmentLoggedUserAPI,
   applyVoucherCodeGuestAPI,
-  getPaymentMethodsLoggedUserAPI,
   getPaymentMethodsGuestAPI,
-  getShipmentMethodsLoggedUserAPI,
   getShipmentMethodsGuestAPI,
-} from '../api/apiMethods';
-import * as loadingActions from '../actions/loadingActions';
-import * as categoryActions from '../actions/categoryActions';
-import * as cartActions from '../actions/cartActions';
-import {showSingleAlert} from '../config/common';
-import {translate} from '../config/languageSwitching';
-import * as loginActions from '../actions/loginActions';
-import * as guestActions from '../actions/guestActions';
+  applyVoucherCodeLoggedUserAPI,
+  getPaymentMethodsLoggedUserAPI,
+  getShipmentMethodsLoggedUserAPI,
+} from "../api/apiMethods";
+import { showSingleAlert } from "../config/common";
+import * as cartActions from "../actions/cartActions";
+import { translate } from "../config/languageSwitching";
+import * as loginActions from "../actions/loginActions";
+import * as guestActions from "../actions/guestActions";
+import * as loadingActions from "../actions/loadingActions";
+import { put, call, all, select } from "redux-saga/effects";
 
 // Our worker Saga that logins the user
 export function* setShipmentSaga(action) {
@@ -34,10 +33,10 @@ export function* setShipmentSaga(action) {
     storeCode,
     adminToken,
     guestToken,
-  } = yield select(state => state.appReducer);
+  } = yield select((state) => state.appReducer);
 
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -49,7 +48,7 @@ export function* setShipmentSaga(action) {
         setShipmentLoggedUserAPI,
         action.params,
         storeCode,
-        userToken,
+        userToken
       );
     } else {
       response = yield call(
@@ -57,14 +56,14 @@ export function* setShipmentSaga(action) {
         action.params,
         storeCode,
         guestToken,
-        adminToken,
+        adminToken
       );
     }
 
-    console.log('SET SHIPMENT RESPONSE', response);
+    console.log("SET SHIPMENT RESPONSE", response);
 
     if (response && response.payment_methods && action.isPlaceOrder) {
-      let createOrderParams = {paymentMethod: {method: 'checkmo'}};
+      let createOrderParams = { paymentMethod: { method: "checkmo" } };
 
       let placeOrderResponse;
 
@@ -73,7 +72,7 @@ export function* setShipmentSaga(action) {
           placeOrderLoggedUserAPI,
           createOrderParams,
           storeCode,
-          userToken,
+          userToken
         );
       } else {
         placeOrderResponse = yield call(
@@ -81,31 +80,31 @@ export function* setShipmentSaga(action) {
           createOrderParams,
           storeCode,
           guestToken,
-          adminToken,
+          adminToken
         );
       }
 
-      console.log('PLACE ORDER RESPONSE', placeOrderResponse);
+      console.log("PLACE ORDER RESPONSE", placeOrderResponse);
 
       if (placeOrderResponse && !isNaN(placeOrderResponse)) {
         if (userToken.length > 0) {
           yield put(cartActions.updateCartProducts([]));
           const cartIDResponse = yield call(getCartID, userToken, storeCode);
-          console.log('GET CARTID RESPONSE --- ', cartIDResponse);
+          console.log("GET CARTID RESPONSE --- ", cartIDResponse);
 
           yield put(loadingActions.disableLoader({}));
           if (cartIDResponse && cartIDResponse.message) {
             // yield put(loginActions.cartProductsCallFailed());
             console.log(
-              'CART LIST ID RESPONSE ERROR::: ',
-              cartIDResponse.message,
+              "CART LIST ID RESPONSE ERROR::: ",
+              cartIDResponse.message
             );
             if (action.orderPlacedCallback) {
               action.orderPlacedCallback(false);
             }
           } else {
             yield put(loginActions.updateCartId(cartIDResponse));
-            console.log('CART LIST ID RESPONSE::: ', cartIDResponse);
+            console.log("CART LIST ID RESPONSE::: ", cartIDResponse);
             if (action.orderPlacedCallback) {
               action.orderPlacedCallback(true);
             }
@@ -120,7 +119,7 @@ export function* setShipmentSaga(action) {
         }
       } else {
         yield put(loadingActions.disableLoader({}));
-        showSingleAlert(translate('API_Failed'));
+        showSingleAlert(translate("API_Failed"));
       }
     } else {
       if (
@@ -132,13 +131,13 @@ export function* setShipmentSaga(action) {
       } else if (action.orderPlacedCallback && !action.isPlaceOrder) {
         action.orderPlacedCallback(true);
       } else {
-        showSingleAlert(translate('API_Failed'));
+        showSingleAlert(translate("API_Failed"));
       }
       yield put(loadingActions.disableLoader({}));
     }
   } catch (error) {
-    showSingleAlert(translate('API_Failed'));
-    console.log('API ERROR!!!!', error);
+    showSingleAlert(translate("API_Failed"));
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }
@@ -150,10 +149,10 @@ export function* applyVoucherCodeSaga(action) {
     storeCode,
     adminToken,
     guestToken,
-  } = yield select(state => state.appReducer);
+  } = yield select((state) => state.appReducer);
 
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -165,7 +164,7 @@ export function* applyVoucherCodeSaga(action) {
         applyVoucherCodeLoggedUserAPI,
         action.voucherCode,
         storeCode,
-        userToken,
+        userToken
       );
     } else {
       response = yield call(
@@ -173,13 +172,13 @@ export function* applyVoucherCodeSaga(action) {
         action.voucherCode,
         storeCode,
         guestToken,
-        adminToken,
+        adminToken
       );
     }
 
     yield put(loadingActions.disableLoader({}));
 
-    console.log('APPLY VOUCHER CODE RESPONSE', response);
+    console.log("APPLY VOUCHER CODE RESPONSE", response);
 
     if (response && response.message) {
       if (action.apllyCodeCallback) action.apllyCodeCallback(false);
@@ -192,8 +191,8 @@ export function* applyVoucherCodeSaga(action) {
     //   showSingleAlert(translate('API_Failed'));
     // }
   } catch (error) {
-    showSingleAlert(translate('API_Failed'));
-    console.log('API ERROR!!!!', error);
+    showSingleAlert(translate("API_Failed"));
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }
@@ -205,10 +204,10 @@ export function* getPaymentAndShipmentMethodsSaga(action) {
     storeCode,
     adminToken,
     guestToken,
-  } = yield select(state => state.appReducer);
+  } = yield select((state) => state.appReducer);
 
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -220,25 +219,25 @@ export function* getPaymentAndShipmentMethodsSaga(action) {
     let paymentMethods = [];
 
     if (userToken.length > 0) {
-      const {shipment, payment} = yield all({
+      const { shipment, payment } = yield all({
         payment: call(getPaymentMethodsLoggedUserAPI, storeCode, userToken),
         shipment: call(getShipmentMethodsLoggedUserAPI, storeCode, userToken),
       });
       shipmentMethods = shipment;
       paymentMethods = payment;
     } else {
-      const {shipment, payment} = yield all({
+      const { shipment, payment } = yield all({
         payment: call(
           getPaymentMethodsGuestAPI,
           storeCode,
           guestToken,
-          adminToken,
+          adminToken
         ),
         shipment: call(
           getShipmentMethodsGuestAPI,
           storeCode,
           guestToken,
-          adminToken,
+          adminToken
         ),
       });
       shipmentMethods = shipment;
@@ -247,8 +246,8 @@ export function* getPaymentAndShipmentMethodsSaga(action) {
 
     yield put(loadingActions.disableLoader({}));
 
-    console.log('GET PAYMENT METHODS RESPONSE', paymentMethods);
-    console.log('GET SHIPMENT METHODS RESPONSE', shipmentMethods);
+    console.log("GET PAYMENT METHODS RESPONSE", paymentMethods);
+    console.log("GET SHIPMENT METHODS RESPONSE", shipmentMethods);
 
     if (
       paymentMethods &&
@@ -261,7 +260,7 @@ export function* getPaymentAndShipmentMethodsSaga(action) {
       if (action.getPaymentAndShippingMethodsCallback)
         action.getPaymentAndShippingMethodsCallback(
           paymentMethods,
-          shipmentMethods,
+          shipmentMethods
         );
     } else {
       if (action.getPaymentAndShippingMethodsCallback)
@@ -269,7 +268,7 @@ export function* getPaymentAndShipmentMethodsSaga(action) {
     }
   } catch (error) {
     // showSingleAlert(translate('API_Failed'));
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
     if (action.getPaymentAndShippingMethodsCallback)
       action.getPaymentAndShippingMethodsCallback([], []);

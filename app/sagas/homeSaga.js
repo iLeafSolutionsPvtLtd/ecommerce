@@ -4,36 +4,31 @@
  * CategorySaga - handles search history state
  */
 
-import {put, call, select} from 'redux-saga/effects';
-import * as loadingActions from '../actions/loadingActions';
-import * as homeAction from '../actions/homeAction';
-import {getHomePageDetails} from '../api/apiMethods';
-import {getCartProducts} from '../api/apiMethods';
-import * as cartActions from '../actions/cartActions';
-import {showSingleAlert} from '../config/common';
-
-// //selector Function used to access reducer states
-// export const getNetworkState = state => {
-//   return {};
-// };
+import { showSingleAlert } from "../config/common";
+import { getCartProducts } from "../api/apiMethods";
+import * as homeAction from "../actions/homeAction";
+import * as cartActions from "../actions/cartActions";
+import { put, call, select } from "redux-saga/effects";
+import { getHomePageDetails } from "../api/apiMethods";
+import * as loadingActions from "../actions/loadingActions";
 
 // Our worker Saga that logins the user
 export function* getHomeDetails(action) {
-  console.log('ACTION IN HOME RESPONSE', action);
-  const {isNetworkAvailable, adminToken, storeCode, userToken} = yield select(
-    state => state.appReducer,
+  console.log("ACTION IN HOME RESPONSE", action);
+  const { isNetworkAvailable, adminToken, storeCode, userToken } = yield select(
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
   yield put(loadingActions.enableLoader());
   try {
     const response = yield call(getHomePageDetails, storeCode, adminToken);
-    if (userToken !== '' && response.length > 0) {
+    if (userToken !== "" && response.length > 0) {
       const cartresponse = yield call(getCartProducts, userToken); //userToken
-      console.log('HOME RESPONSE', response);
-      console.log('response from cart list', cartresponse);
+      console.log("HOME RESPONSE", response);
+      console.log("response from cart list", cartresponse);
       yield put(loadingActions.disableLoader({}));
       if (cartresponse.length >= 0) {
         yield put(cartActions.cartProductsList(cartresponse));
@@ -44,41 +39,7 @@ export function* getHomeDetails(action) {
       yield put(loadingActions.disableLoader({}));
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
-    yield put(loadingActions.disableLoader({}));
-  }
-}
-
-export function* fffff(action) {
-  alert('gghh');
-  const {isNetworkAvailable, adminToken, storeCode} = yield select(
-    state => state.appReducer,
-  );
-  if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
-    return;
-  }
-
-  yield put(loadingActions.enableLoader());
-
-  try {
-    const response = yield call(
-      getProductDetailAPI,
-      action.productId,
-      storeCode,
-      adminToken,
-    );
-    console.log('API RESPONSE OF PRODUCTS DETAIL', response);
-    yield put(loadingActions.disableLoader({}));
-
-    if (response && response.length > 0 && response[0].entity_id) {
-      // yield put(productsActions.updateProductDetails(response[0]));
-      if (action.productDetailsCallback) {
-        action.productDetailsCallback(response[0]);
-      }
-    }
-  } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }
