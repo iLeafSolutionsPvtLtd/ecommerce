@@ -420,6 +420,31 @@ class ProductDetailView extends Component {
       return;
     }
 
+    let isProductInCart = false;
+    let cartProductInfo;
+    cartArray.map((item) => {
+      // productDetails.children.map((childItem) => {
+      //   if (childItem.sku === item.sku) {
+      //     isProductInCart = true;
+      //   }
+      // });
+      if (
+        (selectedProductDict && selectedProductDict.sku === item.sku) ||
+        productDetails.sku === item.sku
+      ) {
+        isProductInCart = true;
+        cartProductInfo = item;
+      }
+    });
+
+    if (isProductInCart) {
+      let cartProductCount = cartProductInfo.qty;
+      if (cartProductCount + productCount > Constants.MAX_PRODUCT_COUNT) {
+        showSingleAlert(translate("product count max in detail screen"));
+        return;
+      }
+    }
+
     // let colorId = '';
     // let sizeId = '';
 
@@ -564,7 +589,12 @@ class ProductDetailView extends Component {
   _didTapOnBuyNow = () => {
     const { selectedProductDict } = this.state;
     const { userToken, guestInfo, cartArray } = this.props;
-    let isOutOfStock = !selectedProductDict.is_in_stock;
+    // let isOutOfStock = !selectedProductDict.is_in_stock;
+
+    let isOutOfStock = false;
+    if (selectedProductDict && selectedProductDict.is_in_stock) {
+      isOutOfStock = !selectedProductDict.is_in_stock;
+    }
 
     if (isOutOfStock) {
       showSingleAlert(
@@ -1105,7 +1135,7 @@ class ProductDetailView extends Component {
                   </View>
                   <View style={styles.chooseColorContainer}>
                     <Text style={styles.sectionTitle}>
-                      {translate("Product Details")}
+                      {translate("Product Description")}
                     </Text>
                     <HTMLView
                       value={productdescription}

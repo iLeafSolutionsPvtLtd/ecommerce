@@ -11,7 +11,7 @@ const width = 100;
 const pointerWidth = width * 0.47;
 
 function LabelBase(props) {
-  const { position, value, leftDiff, pressed, currency } = props;
+  const { position, value, leftDiff, pressed, currency, isLeftData } = props;
   const scaleValue = React.useRef(new Animated.Value(0.1)); // Behaves oddly if set to 0
   const cachedPressed = React.useRef(pressed);
   React.useEffect(() => {
@@ -32,6 +32,7 @@ function LabelBase(props) {
           styles.sliderLabel,
           {
             left: position - width / 2,
+            bottom: isLeftData ? 0 : -60,
             // transform: [
             //   { translateY: width },
             //   { scale: scaleValue.current },
@@ -63,8 +64,6 @@ export default function CustomLabel(props) {
     currency,
   } = props;
 
-  console.log("CURRENCY", currency);
-
   return (
     <View style={styles.parentView}>
       <LabelBase
@@ -73,6 +72,7 @@ export default function CustomLabel(props) {
         leftDiff={leftDiff}
         pressed={oneMarkerPressed}
         currency={currency}
+        isLeftData={true}
       />
       <LabelBase
         position={twoMarkerLeftPosition}
@@ -80,6 +80,7 @@ export default function CustomLabel(props) {
         leftDiff={leftDiff}
         pressed={twoMarkerPressed}
         currency={currency}
+        isLeftData={false}
       />
     </View>
   );
@@ -92,7 +93,6 @@ const styles = StyleSheet.create({
   sliderLabel: {
     position: "absolute",
     justifyContent: "center",
-    // bottom: "50%",
     alignItems: "center",
     bottom: 0,
     width: width,
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
     // borderRadius: width / 2,
     // borderWidth: 2,
     borderColor: "#999",
-    // backgroundColor: "red",
     // height: 50,
     flex: 1,
     fontSize: 15,

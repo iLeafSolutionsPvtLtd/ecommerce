@@ -208,7 +208,7 @@
   "Filter": "Filter",
   "Your Cart": "Your Cart",
   "TOTAL PRICE": "TOTAL PRICE",
-  "FEE AND EASY  RETURNS": "FEE AND EASY  RETURNS",
+  "FREE AND EASY  RETURNS": "FREE AND EASY  RETURNS",
   "Send_back_order": "Send it back within 30 days of reciving your order.",
   "More info": "More info",
   "COLORS": "COLORS",
@@ -243,5 +243,7 @@
   "Invalid Email": "Invalid Email",
   "Password required": "Password required",
   "First name required": "First name required",
-  "Last name required": "Last name required"
+  "Last name required": "Last name required",
+  "Product Description": "Product Description",
+  "product count max in detail screen": "This product is already in your cart and its maximum count is attain. Please checkout the existing product."
 }

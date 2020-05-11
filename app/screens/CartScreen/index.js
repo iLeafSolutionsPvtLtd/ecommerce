@@ -12,13 +12,13 @@ import {
   StatusBar,
   TextInput,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import {
   isEmpty,
   showSingleAlert,
   showSimpleSnackbar,
-  showAlertWithCallback
+  showAlertWithCallback,
 } from "../../config/common";
 import styles from "./styles.js";
 import Login from "../LoginScreen";
@@ -34,10 +34,19 @@ import React, { useState, useCallback, memo, useEffect } from "react";
 import EmptyDataPlaceholder from "../../components/emptyDataPlaceholder";
 import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
-const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
+const QuantityControl = ({
+  quantiryItem,
+  getQuantity,
+  updateCartProduct,
+  isNetworkAvailable,
+}) => {
   const [quantityValue, setQuantity] = useState(quantiryItem.qty);
 
   function incrementQuantity() {
+    if (!isNetworkAvailable) {
+      showSingleAlert(translate("No internet connection"));
+      return;
+    }
     if (quantityValue >= Constants.MAX_PRODUCT_COUNT) {
       showSimpleSnackbar(
         translate("Product maximum count is") +
@@ -53,6 +62,10 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
   }
 
   function decrementQuantity() {
+    if (!isNetworkAvailable) {
+      showSingleAlert(translate("No internet connection"));
+      return;
+    }
     if (quantityValue - 1 >= 1) {
       setQuantity(quantityValue - 1);
       getQuantity(quantityValue - 1);
@@ -71,7 +84,7 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
         borderWidth: 1,
         borderRadius: 5,
         marginLeft: 10,
-        borderColor: Constants.APP_GRAY_COLOR
+        borderColor: Constants.APP_GRAY_COLOR,
       }}
     >
       <TouchableOpacity
@@ -82,14 +95,14 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
           justifyContent: "center",
           alignItems: "center",
           borderRightWidth: 1,
-          borderRightColor: Constants.APP_GRAY_COLOR
+          borderRightColor: Constants.APP_GRAY_COLOR,
         }}
       >
         <Text
           style={{
             color: Constants.APP_GREY_TEXT_COLOR,
             fontFamily: Constants.Fonts.REGULAR,
-            fontSize: 16
+            fontSize: 16,
           }}
         >
           -
@@ -103,7 +116,7 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
           fontSize: 16,
           height: 30,
           fontFamily: Constants.Fonts.MEDIUM,
-          color: Constants.APP_BLACK_COLOR
+          color: Constants.APP_BLACK_COLOR,
         }}
         value={quantityValue.toString()}
       />
@@ -116,14 +129,14 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
           justifyContent: "center",
           alignItems: "center",
           borderLeftColor: Constants.APP_GRAY_COLOR,
-          borderLeftWidth: 1
+          borderLeftWidth: 1,
         }}
       >
         <Text
           style={{
             color: Constants.APP_GREY_TEXT_COLOR,
             fontFamily: Constants.Fonts.REGULAR,
-            fontSize: 16
+            fontSize: 16,
           }}
         >
           +
@@ -145,9 +158,14 @@ const CategoryCall = memo(
     currency,
     totalCost,
     userToken,
-    loginCallback
+    loginCallback,
+    isNetworkAvailable,
   }) => {
     function removeFromCart() {
+      if (!isNetworkAvailable) {
+        showSingleAlert(translate("No internet connection"));
+        return;
+      }
       removeItemFromCart(item, index);
     }
     function addToWishList() {
@@ -187,7 +205,7 @@ const CategoryCall = memo(
           shadowOpacity: 0.3,
           shadowRadius: 5,
           borderRadius: 5,
-          elevation: 3
+          elevation: 3,
         }}
       >
         <View style={{ marginHorizontal: 0 }}>
@@ -202,6 +220,7 @@ const CategoryCall = memo(
             currency={currency}
             updateCartProductToParent={updateCartProduct}
             totalCost={totalCost}
+            isNetworkAvailable={isNetworkAvailable}
           />
         </View>
         <View
@@ -210,7 +229,7 @@ const CategoryCall = memo(
             height: 50,
             borderTopColor: Constants.APP_GRAY_COLOR,
             borderTopWidth: 0.5,
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <View style={{ flex: 1 }}>
@@ -218,6 +237,7 @@ const CategoryCall = memo(
               quantiryItem={item}
               getQuantity={getQuantity}
               updateCartProduct={updateCartProduct}
+              isNetworkAvailable={isNetworkAvailable}
             />
           </View>
           <TouchableOpacity
@@ -233,7 +253,7 @@ const CategoryCall = memo(
                 borderColor: Constants.APP_GRAY_COLOR,
                 alignItems: "center",
                 justifyContent: "center",
-                marginRight: 10
+                marginRight: 10,
               }}
             >
               <Image
@@ -241,7 +261,7 @@ const CategoryCall = memo(
                 style={{
                   tintColor: Constants.APP_GRAY_COLOR,
                   width: 10,
-                  height: 10
+                  height: 10,
                 }}
               />
             </View>
@@ -253,19 +273,26 @@ const CategoryCall = memo(
 );
 
 export default function CartScreen(props) {
-  const isRTL = useSelector(state =>
+  const isRTL = useSelector((state) =>
     state.appReducer.selectedLanguage === "ar" ? true : false
   );
-  const productsSizes = useSelector(state => state.appReducer.productsSizes);
-  const currency = useSelector(state => state.appReducer.currency);
-  const productsColors = useSelector(state => state.appReducer.productsColors);
-  const cartList = useSelector(state => state.cartReducer.cartArray);
-  const guestcartList = useSelector(state => state.cartReducer.guestCartArray);
-  const userToken = useSelector(state => state.appReducer.userToken);
-  const guestToken = useSelector(state => state.appReducer.guestToken);
-  const isLoading = useSelector(state => state.loadingReducer.isLoading);
-  const cartId = useSelector(state => state.loginReducer.cartID);
-  const guestInfo = useSelector(state => state.loginReducer.guestInfo);
+  const isNetworkAvailable = useSelector(
+    (state) => state.appReducer.isNetworkAvailable
+  );
+  const productsSizes = useSelector((state) => state.appReducer.productsSizes);
+  const currency = useSelector((state) => state.appReducer.currency);
+  const productsColors = useSelector(
+    (state) => state.appReducer.productsColors
+  );
+  const cartList = useSelector((state) => state.cartReducer.cartArray);
+  const guestcartList = useSelector(
+    (state) => state.cartReducer.guestCartArray
+  );
+  const userToken = useSelector((state) => state.appReducer.userToken);
+  const guestToken = useSelector((state) => state.appReducer.guestToken);
+  const isLoading = useSelector((state) => state.loadingReducer.isLoading);
+  const cartId = useSelector((state) => state.loginReducer.cartID);
+  const guestInfo = useSelector((state) => state.loginReducer.guestInfo);
 
   const isUserLoggedIn = isEmpty(userToken);
   const [modalVisible, setModalVisible] = useState(false);
@@ -293,7 +320,7 @@ export default function CartScreen(props) {
       CartActions.addProductFromCartToWishList(
         entityId,
         product.item_id,
-        status => {
+        (status) => {
           alert(status);
           if (status) {
             commonTotalPriceUpdate();
@@ -305,7 +332,7 @@ export default function CartScreen(props) {
 
   function commonTotalPriceUpdate() {
     dispatch(
-      CartActions.getTotalCost(totalCostDict => {
+      CartActions.getTotalCost((totalCostDict) => {
         if (totalCostDict) {
           setTotalCost(totalCostDict);
           setProductTotal(totalCostDict.subtotal_with_discount);
@@ -321,13 +348,17 @@ export default function CartScreen(props) {
   }
 
   function updateCartProductContainer(qty, item, index) {
+    if (!isNetworkAvailable) {
+      return;
+    }
+
     let guestparams = {
       cart_item: {
         sku: item.sku,
         qty: qty,
         quote_id: userToken === "" ? guestToken : cartId,
-        item_id: item.item_id
-      }
+        item_id: item.item_id,
+      },
     };
 
     if (userToken === "") {
@@ -412,7 +443,7 @@ export default function CartScreen(props) {
     }
 
     let isOverItem = false;
-    cartData.map(item => {
+    cartData.map((item) => {
       if (item.qty > Constants.MAX_PRODUCT_COUNT) {
         isOverItem = true;
       }
@@ -455,7 +486,7 @@ export default function CartScreen(props) {
             />
             <View style={{ marginHorizontal: 15 }}>
               <Text style={styles.sendBackTitleText}>
-                {translate("FEE AND EASY  RETURNS")}
+                {translate("FREE AND EASY  RETURNS")}
               </Text>
               <Text style={styles.sendBackText}>
                 {translate("Send_back_order")}
@@ -468,7 +499,7 @@ export default function CartScreen(props) {
         <View
           style={[
             styles.returnPolicyView,
-            { marginTop: 20, marginBottom: 8, height: 110 }
+            { marginTop: 20, marginBottom: 8, height: 110 },
           ]}
         >
           <View style={{ flexDirection: "row" }}>
@@ -490,8 +521,8 @@ export default function CartScreen(props) {
                 {
                   flex: 1,
                   color: Constants.APP_BLACK_COLOR,
-                  fontFamily: Constants.Fonts.MEDIUM
-                }
+                  fontFamily: Constants.Fonts.MEDIUM,
+                },
               ]}
             >
               TOTAL
@@ -501,8 +532,8 @@ export default function CartScreen(props) {
                 styles.orderInfo,
                 {
                   color: Constants.APP_BLACK_COLOR,
-                  fontFamily: Constants.Fonts.MEDIUM
-                }
+                  fontFamily: Constants.Fonts.MEDIUM,
+                },
               ]}
             >
               {finalPrice} {currency}
@@ -535,6 +566,7 @@ export default function CartScreen(props) {
 
       {!arrLength ? (
         <View style={{ flex: 1 }}>
+          <Text style={styles.titleStyle}>{translate("Your Cart")}</Text>
           <EmptyDataPlaceholder
             titleText={translate("Your Cart is empty")}
             descriptionText={translate("cart_empty_list_placeholder")}
@@ -551,7 +583,7 @@ export default function CartScreen(props) {
               <FlatList
                 style={{
                   flex: 1,
-                  backgroundColor: Constants.APP_WHITE_COLOR
+                  backgroundColor: Constants.APP_WHITE_COLOR,
                 }}
                 data={isUserLoggedIn ? guestcartList : cartList}
                 extraData={isUserLoggedIn ? guestcartList : cartList}
@@ -567,7 +599,8 @@ export default function CartScreen(props) {
                     currency={currency}
                     totalCost={totalCost}
                     userToken={userToken}
-                    loginCallback={value => setLoginModalVisible(value)}
+                    loginCallback={(value) => setLoginModalVisible(value)}
+                    isNetworkAvailable={isNetworkAvailable}
                   />
                 )}
                 ListFooterComponent={renderFooter}

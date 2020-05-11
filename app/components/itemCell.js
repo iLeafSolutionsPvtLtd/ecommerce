@@ -76,10 +76,20 @@ const KeyText = ({ itemKey, itemValue, keylabel, currency }) => {
   );
 };
 
-const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
+const QuantityControl = ({
+  quantiryItem,
+  getQuantity,
+  updateCartProduct,
+  isNetworkAvailable,
+}) => {
   const [quantityValue, setQuantity] = useState(quantiryItem.qty);
 
   function incrementQuantity() {
+    if (!isNetworkAvailable) {
+      showSingleAlert(translate("No internet connection"));
+      return;
+    }
+
     if (quantityValue >= Constants.MAX_PRODUCT_COUNT) {
       showSimpleSnackbar(
         translate("Product maximum count is") +
@@ -100,6 +110,10 @@ const QuantityControl = ({ quantiryItem, getQuantity, updateCartProduct }) => {
     updateCartProduct(quantityValue + 1);
   }
   function decrementQuantity() {
+    if (!isNetworkAvailable) {
+      showSingleAlert(translate("No internet connection"));
+      return;
+    }
     if (quantityValue - 1 >= 1) {
       setQuantity(quantityValue - 1);
       getQuantity(quantityValue - 1);

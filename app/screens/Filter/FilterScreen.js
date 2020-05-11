@@ -257,7 +257,8 @@ const AccordionComponent = memo(
                 style={{
                   height: 80,
                   alignItems: "center",
-                  justifyContent: "flex-end",
+                  // justifyContent: "flex-end",
+                  justifyContent: "center",
                 }}
               >
                 {/* <View
@@ -871,7 +872,16 @@ class FilterScreen extends Component {
 
     console.log("--------filters-------", filters);
 
-    this.props.updateFilters(filters);
+    if (
+      filters.sort_orer === "" &&
+      Object.keys(filters.filter_attributes) == 0
+    ) {
+      this.props.updateFilters({});
+    } else {
+      this.props.updateFilters(filters);
+    }
+
+    // this.props.updateFilters(filters);
     this.props.navigation.state.params.didTapOnApplyFilter(filters);
     this.props.navigation.goBack();
   };
