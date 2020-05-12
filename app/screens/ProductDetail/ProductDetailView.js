@@ -422,20 +422,22 @@ class ProductDetailView extends Component {
 
     let isProductInCart = false;
     let cartProductInfo;
-    cartArray.map((item) => {
-      // productDetails.children.map((childItem) => {
-      //   if (childItem.sku === item.sku) {
-      //     isProductInCart = true;
-      //   }
-      // });
-      if (
-        (selectedProductDict && selectedProductDict.sku === item.sku) ||
-        productDetails.sku === item.sku
-      ) {
-        isProductInCart = true;
-        cartProductInfo = item;
-      }
-    });
+    if (cartArray.length > 0) {
+      cartArray.map((item) => {
+        // productDetails.children.map((childItem) => {
+        //   if (childItem.sku === item.sku) {
+        //     isProductInCart = true;
+        //   }
+        // });
+        if (
+          (selectedProductDict && selectedProductDict.sku === item.sku) ||
+          productDetails.sku === item.sku
+        ) {
+          isProductInCart = true;
+          cartProductInfo = item;
+        }
+      });
+    }
 
     if (isProductInCart) {
       let cartProductCount = cartProductInfo.qty;

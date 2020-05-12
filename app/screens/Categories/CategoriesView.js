@@ -4,24 +4,24 @@
  * CategoriesView - Categories and subcategories list
  */
 
+import {
+  Text,
+  View,
+  Image,
+  StatusBar,
+  Dimensions,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import styles from "./styles";
+import Images from "../../config/images";
 import React, { Component } from "react";
 import Constants from "../../config/constants";
-import {
-  View,
-  SafeAreaView,
-  Dimensions,
-  StatusBar,
-  Image,
-  TouchableOpacity,
-  Text,
-} from "react-native";
-import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
-import { FlatList } from "react-native-gesture-handler";
-import Images from "../../config/images";
 import ImageLoader from "react-native-image-progress";
-import { normalizedHeight, normalizedWidth } from "../../config/common";
+import { FlatList } from "react-native-gesture-handler";
 import { translate } from "../../config/languageSwitching/index";
+import { normalizedHeight, normalizedWidth } from "../../config/common";
+import NavigationHeader2 from "../../components/NavigationHeaders/NavigationHeader2";
 
 const isPotrait = () => {
   const { width, height } = Dimensions.get("window");

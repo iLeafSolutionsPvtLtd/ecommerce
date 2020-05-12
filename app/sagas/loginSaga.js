@@ -3,29 +3,28 @@
  * requires username and password.
  */
 import {
+  getCartID,
   loginUser,
-  getUserInfoAPI,
+  getWishlist,
   profileUpdate,
   passwordUpdate,
-  getWishlist,
-  removeWishlistItem,
+  submitFeedback,
+  getUserInfoAPI,
   addWishlistItem,
   getCartProducts,
-  getCartID,
-  submitFeedback
+  removeWishlistItem,
 } from "../api/apiMethods";
-import { put, call, select } from "redux-saga/effects";
 import { showSingleAlert } from "../config/common";
 import * as cartActions from "../actions/cartActions";
+import { put, call, select } from "redux-saga/effects";
 import * as loginActions from "../actions/loginActions";
-import * as loadingActions from "../actions/loadingActions";
-import * as navigationActions from "../actions/navigationActions";
-import * as addAddressAction from "../actions/addAddressAction";
 import { translate } from "../config/languageSwitching";
+import * as loadingActions from "../actions/loadingActions";
+import * as addAddressAction from "../actions/addAddressAction";
 
 export function* loginUserSaga(action) {
   const { isNetworkAvailable, userToken, adminToken, storeCode } = yield select(
-    state => state.appReducer
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
     showSingleAlert(translate("No internet connection"));
@@ -131,7 +130,7 @@ export function* loginUserSaga(action) {
 
 export function* profileUpdateSaga(action) {
   const { isNetworkAvailable, userToken } = yield select(
-    state => state.appReducer
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
     showSingleAlert(translate("No internet connection"));
@@ -186,7 +185,7 @@ export function* profileUpdateSaga(action) {
 
 export function* removeWishlistItemSaga(action) {
   const { isNetworkAvailable, userToken } = yield select(
-    state => state.appReducer
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
     showSingleAlert(translate("No internet connection"));
@@ -234,7 +233,7 @@ export function* removeWishlistItemSaga(action) {
 
 export function* addWishlistItemSaga(action) {
   const { isNetworkAvailable, userToken } = yield select(
-    state => state.appReducer
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
     showSingleAlert(translate("No internet connection"));
@@ -277,7 +276,7 @@ export function* addWishlistItemSaga(action) {
 }
 
 export function* submitFeedbackSaga(action) {
-  const { isNetworkAvailable } = yield select(state => state.appReducer);
+  const { isNetworkAvailable } = yield select((state) => state.appReducer);
   if (!isNetworkAvailable) {
     showSingleAlert(translate("No internet connection"));
     return;

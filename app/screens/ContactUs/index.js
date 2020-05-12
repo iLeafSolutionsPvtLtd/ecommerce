@@ -4,11 +4,10 @@
  * ContactUsContainer -
  */
 
-import {connect} from 'react-redux';
-import React, {Component} from 'react';
-import ContactUsView from './ContactUsView';
-import * as loginActions from '../../actions/loginActions';
-//import * as appActions from '../../actions/appActions';
+import { connect } from "react-redux";
+import React, { Component } from "react";
+import ContactUsView from "./ContactUsView";
+import * as loginActions from "../../actions/loginActions";
 
 class ContactUsContainer extends Component {
   constructor(props) {
@@ -25,7 +24,7 @@ function mapStateToProps(state) {
     selectedLanguage: state.appReducer.selectedLanguage,
     userInfo: state.loginReducer.userInfo,
     isLoading: state.loadingReducer.isLoading,
-    isRTL: state.appReducer.selectedLanguage === 'ar' ? true : false,
+    isRTL: state.appReducer.selectedLanguage === "ar" ? true : false,
   };
 }
 
@@ -33,10 +32,13 @@ function mapDispatchToProps(dispatch) {
   return {
     onFeedbackSubmit: (name, email, phone, onMyMind, callBack) => {
       dispatch(
-        loginActions.onFeedbackSubmit(name, email, phone, onMyMind, callBack),
+        loginActions.onFeedbackSubmit(name, email, phone, onMyMind, callBack)
       );
     },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactUsContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactUsContainer);

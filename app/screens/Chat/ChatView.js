@@ -4,13 +4,13 @@
  * ChatView -
  */
 
-import { View, StatusBar, SafeAreaView, Text } from "react-native";
 import styles from "./styles";
 import React, { Component } from "react";
 import Constants from "../../config/constants";
 import { WebView } from "react-native-webview";
 import HudView from "../../components/hudView";
 import { translate } from "../../config/languageSwitching/index";
+import { View, StatusBar, SafeAreaView, Text } from "react-native";
 import NavigationHeader1 from "../../components/NavigationHeaders/NavigationHeader1";
 
 class ChatView extends Component {

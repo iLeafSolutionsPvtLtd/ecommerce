@@ -4,32 +4,31 @@
  * CategorySaga - handles search history state
  */
 
-import {put, call, select} from 'redux-saga/effects';
 import {
-  deleteGuestCartAPI,
-  getCartProducts,
   deleteCartAPI,
-  updateLoggedUserCartAPI,
+  getCartProducts,
+  deleteGuestCartAPI,
   updateGuestProductsAPI,
-} from '../api/apiMethods';
-import * as loadingActions from '../actions/loadingActions';
-import * as cartActions from '../actions/cartActions';
+} from "../api/apiMethods";
+import * as cartActions from "../actions/cartActions";
+import { put, call, select } from "redux-saga/effects";
+import * as loadingActions from "../actions/loadingActions";
 
 // Our worker Saga that logins the user
 export function* removeProductUserCart(action) {
-  const {userToken} = yield select(state => state.appReducer);
+  const { userToken } = yield select((state) => state.appReducer);
 
   yield put(loadingActions.enableLoader());
   try {
     const response = yield call(deleteCartAPI, action.productid, userToken);
     console.log(
-      '++++++++  response from delete user cart ++++++++++ ',
-      response,
+      "++++++++  response from delete user cart ++++++++++ ",
+      response
     );
     if (response) {
       const updatedArray = yield call(getCartProducts, userToken);
 
-      console.log('++++++++ remove user updated array ++++++ ', updatedArray);
+      console.log("++++++++ remove user updated array ++++++ ", updatedArray);
       yield put(cartActions.updateCartProducts(updatedArray));
       if (action.removeUserCartCallback) {
         action.removeUserCartCallback(true);
@@ -41,13 +40,13 @@ export function* removeProductUserCart(action) {
     }
     yield put(loadingActions.disableLoader({}));
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }
 
 export function* removeProductGuestCart(action) {
-  const {guestToken, adminToken} = yield select(state => state.appReducer);
+  const { guestToken, adminToken } = yield select((state) => state.appReducer);
 
   yield put(loadingActions.enableLoader());
   try {
@@ -55,13 +54,13 @@ export function* removeProductGuestCart(action) {
       deleteGuestCartAPI,
       guestToken,
       action.productid,
-      adminToken,
+      adminToken
     );
     if (response) {
       const updatedArray = yield call(
         updateGuestProductsAPI,
         guestToken,
-        adminToken,
+        adminToken
       );
 
       yield put(cartActions.updateGuestCartProducts(updatedArray));
@@ -75,7 +74,7 @@ export function* removeProductGuestCart(action) {
     }
     yield put(loadingActions.disableLoader({}));
   } catch (error) {
-    console.log('API ERROR updateGuestCart.js!!!!', error);
+    console.log("API ERROR updateGuestCart.js!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }

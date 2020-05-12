@@ -4,7 +4,7 @@ import {
   StatusBar,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import styles from "./styles";
 import React, { Component } from "react";
@@ -23,10 +23,13 @@ const ListItem = React.memo(
     productsColors,
     productsSizes,
     addProductToWishList,
-    props
+    props,
   }) => {
-    const orderCell = item.items.map(orderedItem => {
-      if (orderedItem.parent_item) {
+    const orderCell = item.items.map((orderedItem) => {
+      let itemData = orderedItem.parent_item
+        ? orderedItem.parent_item
+        : orderedItem;
+      if (itemData) {
         return (
           <View
             style={{
@@ -38,11 +41,11 @@ const ListItem = React.memo(
               shadowRadius: 5,
               borderRadius: 5,
               paddingBottom: 5,
-              elevation: 3
+              elevation: 3,
             }}
           >
             <ItemCell
-              item={orderedItem.parent_item}
+              item={itemData}
               addProductToWishList={addProductToWishList}
               index={index}
               productsSizes={productsSizes}
@@ -50,7 +53,7 @@ const ListItem = React.memo(
               allowAddOption={true}
               showQuantity={false}
               currency={props.currency}
-              itemTotalCost={orderedItem.parent_item.row_total}
+              itemTotalCost={itemData.row_total}
             />
           </View>
         );
@@ -61,7 +64,7 @@ const ListItem = React.memo(
       <View
         style={{
           marginTop: 3,
-          backgroundColor: Constants.APP_WHITE_COLOR
+          backgroundColor: Constants.APP_WHITE_COLOR,
         }}
       >
         <View style={{ marginHorizontal: 20, marginTop: 10 }}>
@@ -84,8 +87,8 @@ const ListItem = React.memo(
               style={[
                 styles.deliveryStatusText,
                 {
-                  color: item.status === "pending" ? "green" : "red"
-                }
+                  color: item.status === "pending" ? "green" : "red",
+                },
               ]}
             >
               {item.status}
@@ -102,7 +105,7 @@ class OrderHistoryDetailScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orderItem: ""
+      orderItem: "",
     };
   }
 
@@ -120,7 +123,7 @@ class OrderHistoryDetailScreen extends Component {
     this.props.navigation.goBack();
   };
 
-  _getShippingAddress = orderItem => {
+  _getShippingAddress = (orderItem) => {
     return (
       orderItem.billing_address.firstname +
       " " +
@@ -144,7 +147,7 @@ class OrderHistoryDetailScreen extends Component {
       productsColors,
       isLoading,
       isRTL,
-      currency
+      currency,
     } = this.props;
     const { orderItem } = this.state;
     const paymethod =
@@ -199,7 +202,7 @@ class OrderHistoryDetailScreen extends Component {
                   shadowRadius: 5,
                   borderRadius: 5,
                   paddingBottom: 5,
-                  elevation: 3
+                  elevation: 3,
                 }}
               >
                 <View
@@ -242,7 +245,7 @@ class OrderHistoryDetailScreen extends Component {
             <View
               style={{
                 backgroundColor: "#FFFFFF",
-                paddingBottom: 4
+                paddingBottom: 4,
               }}
             >
               <View style={styles.wrapperColumn}>
@@ -273,9 +276,7 @@ class OrderHistoryDetailScreen extends Component {
           <View style={{ alignSelf: "center" }}>
             <EmptyDataPlaceholder
               titleText={translate("Your order history is empty")}
-              descriptionText={
-                "Lorem Ipsum is simply dummy text of the printing"
-              }
+              descriptionText={""}
               placeHolderImage={Images.noWishlist}
             />
           </View>

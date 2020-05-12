@@ -4,35 +4,26 @@
  * LoginScreen - LoginScreen View
  */
 
-import React, { Component } from "react";
 import {
   View,
   Text,
   Image,
-  Platform,
   StatusBar,
   TextInput,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
-import styles from "./styles";
-import { translate } from "../../config/languageSwitching/index";
-import { LoginButton, AccessToken } from "react-native-fbsdk";
 import {
   isEmpty,
   showSingleAlert,
   checkEMailValidation,
   showAlertWithCallback,
-  normalizedHeight
 } from "../../config/common";
-import { LoginManager } from "react-native-fbsdk";
-import Images from "../../config/images";
-import LinearGradient from "react-native-linear-gradient";
 import {
+  statusCodes,
   GoogleSignin,
   GoogleSigninButton,
-  statusCodes
 } from "@react-native-community/google-signin";
 import appleAuth, {
   AppleButton,
@@ -40,16 +31,22 @@ import appleAuth, {
   AppleAuthRequestScope,
   AppleAuthRealUserStatus,
   AppleAuthCredentialState,
-  AppleAuthRequestOperation
+  AppleAuthRequestOperation,
 } from "@invertase/react-native-apple-authentication";
-import { TextField } from "react-native-material-textfield";
-import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import { BlurView } from "@react-native-community/blur";
-import Constants from "../../config/constants";
+import styles from "./styles";
 import Modal from "react-native-modal";
+import Images from "../../config/images";
+import React, { Component } from "react";
 import HudView from "../../components/hudView";
-
+import Constants from "../../config/constants";
+import { LoginManager } from "react-native-fbsdk";
 import SignUp from "../../screens/RegistrationScreen";
+import { BlurView } from "@react-native-community/blur";
+import LinearGradient from "react-native-linear-gradient";
+import { TextField } from "react-native-material-textfield";
+import { LoginButton, AccessToken } from "react-native-fbsdk";
+import { translate } from "../../config/languageSwitching/index";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -72,7 +69,7 @@ class LoginScreen extends Component {
       forgotEmail: "",
       forgotEmailError: "",
       isTermsChecked: false,
-      secureTextEntry: true
+      secureTextEntry: true,
     };
 
     this.onFocus = this.onFocus.bind(this);
@@ -101,7 +98,7 @@ class LoginScreen extends Component {
       forceConsentPrompt: true,
       accountName: "",
       iosClientId:
-        "855821477319-lof8mcnb5v133mt0ptpnk3rcgqie169e.apps.googleusercontent.com"
+        "855821477319-lof8mcnb5v133mt0ptpnk3rcgqie169e.apps.googleusercontent.com",
     });
 
     // /**
@@ -128,12 +125,7 @@ class LoginScreen extends Component {
     //   });
   }
 
-  componentWillUnmount() {
-    /**
-     * cleans up event listener
-     */
-    // this.authCredentialListener();
-  }
+  componentWillUnmount() {}
 
   updateRef(name, ref) {
     this[name] = ref;
@@ -152,7 +144,7 @@ class LoginScreen extends Component {
 
   onChangeText(text) {
     ["email", "password", "lastname", "firstname", "guestEmail"]
-      .map(name => ({ name, ref: this[name] }))
+      .map((name) => ({ name, ref: this[name] }))
       .forEach(({ name, ref }) => {
         if (ref && ref.isFocused()) {
           this.setState({ [name]: text });
@@ -196,7 +188,7 @@ class LoginScreen extends Component {
             "Login success with permissions: " +
               result.grantedPermissions.toString()
           );
-          AccessToken.getCurrentAccessToken().then(data => {
+          AccessToken.getCurrentAccessToken().then((data) => {
             console.log(data.accessToken.toString());
 
             let token = data.accessToken.toString();
@@ -205,8 +197,8 @@ class LoginScreen extends Component {
               "https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=" +
                 token
             )
-              .then(response => response.json())
-              .then(json => {
+              .then((response) => response.json())
+              .then((json) => {
                 console.log("DATA RESPONSE ==", json);
 
                 alert("Login success");
@@ -265,8 +257,8 @@ class LoginScreen extends Component {
         requestedOperation: AppleAuthRequestOperation.LOGIN,
         requestedScopes: [
           AppleAuthRequestScope.EMAIL,
-          AppleAuthRequestScope.FULL_NAME
-        ]
+          AppleAuthRequestScope.FULL_NAME,
+        ],
       });
 
       console.log("appleAuthRequestResponse", appleAuthRequestResponse);
@@ -276,7 +268,7 @@ class LoginScreen extends Component {
         email,
         nonce,
         identityToken,
-        realUserStatus /* etc */
+        realUserStatus /* etc */,
       } = appleAuthRequestResponse;
 
       const credentialState = await appleAuth.getCredentialStateForUser(
@@ -385,7 +377,7 @@ class LoginScreen extends Component {
   onSubmit() {
     let errors = {};
     let isValid = true;
-    ["email", "password"].forEach(name => {
+    ["email", "password"].forEach((name) => {
       let value = this[name].value();
       if ("email" === name) {
         if (!value) {
@@ -416,7 +408,7 @@ class LoginScreen extends Component {
   onSubmitGuest() {
     let errors = {};
     let isValid = true;
-    ["lastname", "firstname", "guestEmail"].forEach(name => {
+    ["lastname", "firstname", "guestEmail"].forEach((name) => {
       let value = this[name].value();
       if ("lastname" === name && !value) {
         errors[name] = translate("Last name required");
@@ -442,7 +434,7 @@ class LoginScreen extends Component {
       let params = {
         firstName: this["firstname"].value(),
         lastName: this["lastname"].value(),
-        email: this["guestEmail"].value()
+        email: this["guestEmail"].value(),
       };
       this.props.updateGuestInfo(params);
       if (this.props.guestInfoAddedCallback) {
@@ -455,7 +447,7 @@ class LoginScreen extends Component {
 
   onAccessoryPress() {
     this.setState(({ secureTextEntry }) => ({
-      secureTextEntry: !secureTextEntry
+      secureTextEntry: !secureTextEntry,
     }));
   }
 
@@ -468,7 +460,7 @@ class LoginScreen extends Component {
           paddingStart: 10,
           paddingEnd: 6,
           paddingBottom: 2,
-          paddingTop: 16
+          paddingTop: 16,
         }}
         size={22}
         name={name}
@@ -486,7 +478,7 @@ class LoginScreen extends Component {
       forgotEmailError,
       isTermsChecked,
       secureTextEntry,
-      errors = {}
+      errors = {},
     } = this.state;
     const { isLoading } = this.props;
 
@@ -496,7 +488,7 @@ class LoginScreen extends Component {
         <ScrollView
           style={{ flex: 1 }}
           scrollEventThrottle={16}
-          onScroll={event => {
+          onScroll={(event) => {
             if (event.nativeEvent.contentOffset.y > 100) {
               this.setState({ showClose: false });
             } else {
@@ -574,7 +566,7 @@ class LoginScreen extends Component {
                   style={{
                     alignSelf: "flex-end",
                     marginHorizontal: 12,
-                    marginVertical: 6
+                    marginVertical: 6,
                   }}
                   onPress={() => this.setState({ isForgotPasswordShow: true })}
                 >
@@ -738,7 +730,7 @@ class LoginScreen extends Component {
             <Image
               source={Images.close}
               style={{ width: 15, height: 15, tintColor: "rgb(0,0,0)" }}
-            ></Image>
+            />
           </TouchableOpacity>
         )}
 
@@ -773,7 +765,9 @@ class LoginScreen extends Component {
                   placeholder={translate("Enter your email Address")}
                   keyboardType="email-address"
                   returnKeyType={"done"}
-                  onChangeText={value => this.setState({ forgotEmail: value })}
+                  onChangeText={(value) =>
+                    this.setState({ forgotEmail: value })
+                  }
                   underlineColorAndroid="transparent"
                 />
               </View>

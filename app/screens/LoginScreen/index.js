@@ -4,9 +4,9 @@
  * LoginScreen - LoginScreen Container
  */
 
-import React, { Component } from "react";
-import LoginScreen from "./LoginScreen";
 import { connect } from "react-redux";
+import LoginScreen from "./LoginScreen";
+import React, { Component } from "react";
 import * as loginActions from "../../actions/loginActions";
 import * as navigationActions from "../../actions/navigationActions";
 
@@ -23,7 +23,7 @@ class LoginContainer extends Component {
 function mapStateToProps(state) {
   return {
     loginResponse: state.loginReducer.response,
-    isLoading: state.loadingReducer.isLoading
+    isLoading: state.loadingReducer.isLoading,
   };
 }
 function mapDispatchToProps(dispatch) {
@@ -37,9 +37,12 @@ function mapDispatchToProps(dispatch) {
     userDidLogOut: () => {
       dispatch(loginActions.userDidLogOut());
     },
-    updateGuestInfo: params => {
+    updateGuestInfo: (params) => {
       dispatch(loginActions.updateGuestInfo(params));
-    }
+    },
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginContainer);

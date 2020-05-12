@@ -4,27 +4,26 @@
  * ProductsSaga - handles listing products
  */
 
-import {put, call, select} from 'redux-saga/effects';
 import {
-  getSearchProductsAPI,
   getProductDetailAPI,
-  getCategoryProductsAPI,
+  getSearchProductsAPI,
   get360DegreeImagesAPI,
-} from '../api/apiMethods';
-import * as loadingActions from '../actions/loadingActions';
-import * as searchActions from '../actions/searchActions';
-import * as productsActions from '../actions/productsActions';
-import {translate} from '../config/languageSwitching';
-import {showSingleAlert} from '../config/common';
-import Constants from '../config/constants';
+  getCategoryProductsAPI,
+} from "../api/apiMethods";
+import { showSingleAlert } from "../config/common";
+import { put, call, select } from "redux-saga/effects";
+import { translate } from "../config/languageSwitching";
+import * as searchActions from "../actions/searchActions";
+import * as loadingActions from "../actions/loadingActions";
+import * as productsActions from "../actions/productsActions";
 
 export function* getProductsListSaga(action) {
-  const {isNetworkAvailable, adminToken, storeCode} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, adminToken, storeCode } = yield select(
+    (state) => state.appReducer
   );
 
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -32,25 +31,27 @@ export function* getProductsListSaga(action) {
 
   try {
     let params = {
-      'searchCriteria[current_page]': action.pageIndex,
-      'searchCriteria[page_size]': action.pageCount,
+      "searchCriteria[current_page]": action.pageIndex,
+      "searchCriteria[page_size]": action.pageCount,
     };
     const response = yield call(
       getSearchProductsAPI,
       params,
       storeCode,
-      adminToken,
+      adminToken
     );
-    console.log('API RESPONSE OF GET PRODUCTS ', response);
+    console.log("API RESPONSE OF GET PRODUCTS ", response);
     yield put(loadingActions.disableLoader({}));
 
     if (response && response.items && response.items) {
-      const {productsList} = yield select(state => state.productsListReducer);
+      const { productsList } = yield select(
+        (state) => state.productsListReducer
+      );
       yield put(
         searchActions.updateProductSearchList([
           ...productsList,
           ...response.items,
-        ]),
+        ])
       );
       if (action.getProductListCallback) {
         action.getProductListCallback(true);
@@ -82,17 +83,17 @@ export function* getProductsListSaga(action) {
     //   }, 200);
     // }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }
 
 export function* getProductDetailSaga(action) {
-  const {isNetworkAvailable, adminToken, storeCode} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, adminToken, storeCode } = yield select(
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -103,9 +104,9 @@ export function* getProductDetailSaga(action) {
       getProductDetailAPI,
       action.productId,
       storeCode,
-      adminToken,
+      adminToken
     );
-    console.log('API RESPONSE OF PRODUCTS DETAIL', response);
+    console.log("API RESPONSE OF PRODUCTS DETAIL", response);
     yield put(loadingActions.disableLoader({}));
 
     if (response && response.length > 0 && response[0].entity_id) {
@@ -114,48 +115,47 @@ export function* getProductDetailSaga(action) {
         action.productDetailsCallback(response[0]);
       }
     } else {
-      showSingleAlert(translate('API_Failed'));
+      showSingleAlert(translate("API_Failed"));
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
-    showSingleAlert(translate('API_Failed'));
+    console.log("API ERROR!!!!", error);
+    showSingleAlert(translate("API_Failed"));
     yield put(loadingActions.disableLoader({}));
   }
 }
 
 export function* getCategoryProductsListSaga(action) {
-  const {isNetworkAvailable, adminToken, storeCode} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, adminToken, storeCode } = yield select(
+    (state) => state.appReducer
   );
 
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
   // yield put(loadingActions.enableLoader());
   yield put(loadingActions.enableProductListLoader());
 
-
   try {
     let params = {
       category_id: action.categoryId,
-      sort_field: 'price',
-      sort_orer: action.filterParams.sort_orer || 'asc',
+      sort_field: "price",
+      sort_orer: action.filterParams.sort_orer || "asc",
       page: action.pageIndex,
       page_size: action.pageCount,
       filter_attributes: action.filterParams.filter_attributes || {},
     };
 
-    console.log('params !!!!!!!!', params);
+    console.log("params !!!!!!!!", params);
 
     const response = yield call(
       getCategoryProductsAPI,
       params,
       storeCode,
-      adminToken,
+      adminToken
     );
-    console.log('API RESPONSE OF CATEGORY PRODUCTS LIST ', response);
+    console.log("API RESPONSE OF CATEGORY PRODUCTS LIST ", response);
     yield put(loadingActions.disableProductListLoader({}));
 
     if (response && response.length >= 0 && response[0].products) {
@@ -172,68 +172,68 @@ export function* getCategoryProductsListSaga(action) {
         productsListOnCategory9,
         productsListOnCategory10,
       } = action.fromHome
-        ? yield select(state => state.productsListReducer)
-        : yield select(state => state.productListFromCategoryReducer);
+        ? yield select((state) => state.productsListReducer)
+        : yield select((state) => state.productListFromCategoryReducer);
 
       let selectedCategoryProductArray = [];
       let newProductArray = response[0].products;
 
       switch (action.categoryType) {
-        case 'categoryType1':
+        case "categoryType1":
           selectedCategoryProductArray = [
             ...productsListOnCategory1,
             ...newProductArray,
           ];
           break;
-        case 'categoryType2':
+        case "categoryType2":
           selectedCategoryProductArray = [
             ...productsListOnCategory2,
             ...newProductArray,
           ];
           break;
-        case 'categoryType3':
+        case "categoryType3":
           selectedCategoryProductArray = [
             ...productsListOnCategory3,
             ...newProductArray,
           ];
           break;
-        case 'categoryType4':
+        case "categoryType4":
           selectedCategoryProductArray = [
             ...productsListOnCategory4,
             ...newProductArray,
           ];
           break;
-        case 'categoryType5':
+        case "categoryType5":
           selectedCategoryProductArray = [
             ...productsListOnCategory5,
             ...newProductArray,
           ];
           break;
-        case 'categoryType6':
+        case "categoryType6":
           selectedCategoryProductArray = [
             ...productsListOnCategory6,
             ...newProductArray,
           ];
           break;
-        case 'categoryType7':
+        case "categoryType7":
           selectedCategoryProductArray = [
             ...productsListOnCategory7,
             ...newProductArray,
           ];
           break;
-        case 'categoryType8':
+        case "categoryType8":
           selectedCategoryProductArray = [
             ...productsListOnCategory8,
             ...newProductArray,
           ];
           break;
-        case 'categoryType9':
+        case "categoryType9":
           selectedCategoryProductArray = [
             ...productsListOnCategory9,
             ...newProductArray,
           ];
           break;
-        case 'categoryType10':
+        case "categoryType10":
           selectedCategoryProductArray = [
             ...productsListOnCategory10,
             ...newProductArray,
@@ -241,14 +241,14 @@ export function* getCategoryProductsListSaga(action) {
           break;
       }
 
-      console.log('selectedCategoryProductArray', selectedCategoryProductArray);
+      console.log("selectedCategoryProductArray", selectedCategoryProductArray);
 
       if (action.fromHome) {
         yield put(
           productsActions.updateCategoryProductList(
             selectedCategoryProductArray,
-            action.categoryType,
-          ),
+            action.categoryType
+          )
         );
 
         if (action.getCategoryProductsListCallback) {
@@ -257,9 +257,9 @@ export function* getCategoryProductsListSaga(action) {
             obj.total_count > selectedCategoryProductArray.length
               ? true
               : false;
-          console.log('######### TOTAL', obj.total_count);
-          console.log('######### ARRAY', selectedCategoryProductArray.length);
-          console.log('######### STATUS', isPendingDataAvailable);
+          console.log("######### TOTAL", obj.total_count);
+          console.log("######### ARRAY", selectedCategoryProductArray.length);
+          console.log("######### STATUS", isPendingDataAvailable);
 
           action.getCategoryProductsListCallback(true, isPendingDataAvailable);
         }
@@ -267,8 +267,8 @@ export function* getCategoryProductsListSaga(action) {
         yield put(
           productsActions.updateCategoryProductListFromCategory(
             selectedCategoryProductArray,
-            action.categoryType,
-          ),
+            action.categoryType
+          )
         );
         if (action.getCategoryProductsListCallback) {
           let obj = response[0];
@@ -276,9 +276,9 @@ export function* getCategoryProductsListSaga(action) {
             obj.total_count > selectedCategoryProductArray.length
               ? true
               : false;
-          console.log('######### TOTAL', obj.total_count);
-          console.log('######### ARRAY', selectedCategoryProductArray.length);
-          console.log('######### STATUS', isPendingDataAvailable);
+          console.log("######### TOTAL", obj.total_count);
+          console.log("######### ARRAY", selectedCategoryProductArray.length);
+          console.log("######### STATUS", isPendingDataAvailable);
 
           action.getCategoryProductsListCallback(true, isPendingDataAvailable);
         }
@@ -286,21 +286,21 @@ export function* getCategoryProductsListSaga(action) {
     } else {
       // showSingleAlert(translate('API_Failed'));
       yield put(
-        productsActions.updateCategoryProductList([], action.categoryType),
+        productsActions.updateCategoryProductList([], action.categoryType)
       );
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableProductListLoader({}));
   }
 }
 
 export function* get360ImagesSaga(action) {
-  const {isNetworkAvailable, adminToken, storeCode} = yield select(
-    state => state.appReducer,
+  const { isNetworkAvailable, adminToken, storeCode } = yield select(
+    (state) => state.appReducer
   );
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -311,9 +311,9 @@ export function* get360ImagesSaga(action) {
       get360DegreeImagesAPI,
       action.productId,
       storeCode,
-      adminToken,
+      adminToken
     );
-    console.log('API RESPONSE OF 360 degree Images array', response);
+    console.log("API RESPONSE OF 360 degree Images array", response);
     yield put(loadingActions.disableLoader({}));
 
     if (response && response.length > 0 && response[0].id) {
@@ -321,10 +321,10 @@ export function* get360ImagesSaga(action) {
         action.callback(response);
       }
     } else {
-      showSingleAlert(translate('API_Failed'));
+      showSingleAlert(translate("API_Failed"));
     }
   } catch (error) {
-    console.log('API ERROR!!!!', error);
+    console.log("API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }

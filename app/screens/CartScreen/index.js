@@ -497,23 +497,26 @@ export default function CartScreen(props) {
         </View>
 
         <View
-          style={[
-            styles.returnPolicyView,
-            { marginTop: 20, marginBottom: 8, height: 110 },
-          ]}
+          style={[styles.returnPolicyView, { marginTop: 20, marginBottom: 8 }]}
         >
-          <View style={{ flexDirection: "row" }}>
-            <Text style={[styles.orderInfo, { flex: 1 }]}>Order subtotal</Text>
-            <Text style={styles.orderInfo}>
-              {productTotal} {currency}
-            </Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={[styles.orderInfo, { flex: 1 }]}>Shipping </Text>
-            <Text style={styles.orderInfo}>
-              {shippingPrice} {currency}
-            </Text>
-          </View>
+          {shippingPrice > 0 && (
+            <View style={{ flexDirection: "row" }}>
+              <Text style={[styles.orderInfo, { flex: 1 }]}>
+                Order subtotal
+              </Text>
+              <Text style={styles.orderInfo}>
+                {productTotal} {currency}
+              </Text>
+            </View>
+          )}
+          {shippingPrice > 0 && (
+            <View style={{ flexDirection: "row" }}>
+              <Text style={[styles.orderInfo, { flex: 1 }]}>Shipping </Text>
+              <Text style={styles.orderInfo}>
+                {shippingPrice} {currency}
+              </Text>
+            </View>
+          )}
           <View style={{ flexDirection: "row" }}>
             <Text
               style={[
@@ -522,6 +525,7 @@ export default function CartScreen(props) {
                   flex: 1,
                   color: Constants.APP_BLACK_COLOR,
                   fontFamily: Constants.Fonts.MEDIUM,
+                  marginBottom: 10,
                 },
               ]}
             >

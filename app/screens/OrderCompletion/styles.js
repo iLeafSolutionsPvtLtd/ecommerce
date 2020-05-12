@@ -95,8 +95,16 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     marginTop: 8,
-    backgroundColor: "#FFFFFF",
     paddingBottom: 18,
+
+    backgroundColor: Constants.APP_WHITE_COLOR,
+    margin: 20,
+    shadowOffset: { width: 0, height: 5 },
+    shadowColor: "rgba(46,69,187,0.56)",
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    borderRadius: 5,
+    elevation: 3,
   },
   buttonOutlineContainer: {
     width: "80%",
@@ -108,6 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: Constants.APP_THEME_COLOR,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 25,
   },
   updateText: {
     fontFamily: Constants.Fonts.MEDIUM,
@@ -118,7 +127,7 @@ const styles = StyleSheet.create({
     // marginTop: 20,
     textAlign: "left",
     marginLeft: 20,
-    marginBottom: 10,
+    // marginBottom: 10,
     fontSize: 18,
     color: Constants.APP_THEME_COLOR,
     fontFamily: Constants.Fonts.MEDIUM,

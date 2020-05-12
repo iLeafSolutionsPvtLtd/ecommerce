@@ -4,12 +4,13 @@
  * Checkout Container -
  */
 
-import {connect} from 'react-redux';
-import React, {Component} from 'react';
-import CheckoutView from './CheckoutView';
-import * as appActions from '../../actions/appActions';
-import * as checkoutActions from '../../actions/checkoutActions';
-import * as historyActions from '../../actions/historyActions';
+import { connect } from "react-redux";
+import React, { Component } from "react";
+import CheckoutView from "./CheckoutView";
+import * as appActions from "../../actions/appActions";
+import * as cartActions from "../../actions/cartActions";
+import * as checkoutActions from "../../actions/checkoutActions";
+import * as historyActions from "../../actions/historyActions";
 
 class CheckoutContainer extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ function mapStateToProps(state) {
   return {
     isLoading: state.loadingReducer.isLoading,
     selectedLanguage: state.appReducer.selectedLanguage,
-    isRTL: state.appReducer.selectedLanguage === 'ar' ? true : false,
+    isRTL: state.appReducer.selectedLanguage === "ar" ? true : false,
     searchHistoryarray: state.searchHistoryReducer.searchHistoryarray,
     screenWidth: state.appReducer.screenWidth,
     screenHeight: state.appReducer.screenHeight,
@@ -51,21 +52,27 @@ function mapDispatchToProps(dispatch) {
         checkoutActions.setShipmentInfo(
           params,
           isPlaceOrder,
-          orderPlacedCallback,
-        ),
+          orderPlacedCallback
+        )
       );
     },
     applyVoucher: (voucherCode, apllyCodeCallback) => {
       dispatch(checkoutActions.applyVoucher(voucherCode, apllyCodeCallback));
     },
-    getPaymentAndShippingMethods: getPaymentAndShippingMethodsCallback => {
+    getPaymentAndShippingMethods: (getPaymentAndShippingMethodsCallback) => {
       dispatch(
         checkoutActions.getPaymentAndShippingMethods(
-          getPaymentAndShippingMethodsCallback,
-        ),
+          getPaymentAndShippingMethodsCallback
+        )
       );
+    },
+    getTotalCost: (getTotalCostCallback) => {
+      dispatch(cartActions.getTotalCost(getTotalCostCallback));
     },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckoutContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CheckoutContainer);

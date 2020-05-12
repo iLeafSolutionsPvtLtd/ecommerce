@@ -425,7 +425,7 @@ class ProductList extends React.Component {
       return (
         <EmptyDataPlaceholder
           titleText={translate("No matching product found")}
-          descriptionText={"Lorem Ipsum is simply dummy text of the printing"}
+          descriptionText={translate("Check your filter options and try again")}
           placeHolderImage={Images.emptyFilterResult}
         />
       );
@@ -434,7 +434,7 @@ class ProductList extends React.Component {
       return (
         <EmptyDataPlaceholder
           titleText={translate("No product found")}
-          descriptionText={"Lorem Ipsum is simply dummy text of the printing"}
+          descriptionText={translate("No products found in this category")}
           placeHolderImage={Images.noProductFoundPlaceholder}
         />
       );

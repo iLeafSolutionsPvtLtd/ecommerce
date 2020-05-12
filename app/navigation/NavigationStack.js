@@ -149,7 +149,7 @@ function Tab() {
         name={translate("WISHLIST")}
         component={WishListStack}
       />
-      <TabNavigator.Screen name={translate("More")} component={Account} />
+      <TabNavigator.Screen name={translate("ACCOUNT")} component={Account} />
     </TabNavigator.Navigator>
   );
 }

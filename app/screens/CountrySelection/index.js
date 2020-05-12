@@ -4,10 +4,10 @@
  * CountrySelectionContainer -
  */
 
-import {connect} from 'react-redux';
-import React, {Component} from 'react';
-import CountrySelectionView from './CountrySelectionView';
-import * as appActions from '../../actions/appActions';
+import { connect } from "react-redux";
+import React, { Component } from "react";
+import * as appActions from "../../actions/appActions";
+import CountrySelectionView from "./CountrySelectionView";
 
 class CountrySelectionContainer extends Component {
   constructor(props) {
@@ -28,22 +28,22 @@ function mapStateToProps(state) {
     stores: state.appReducer.stores,
     storesView: state.appReducer.storesView,
     storeConfiguration: state.appReducer.storeConfiguration,
-    isRTL: state.appReducer.selectedLanguage === 'ar' ? true : false,
+    isRTL: state.appReducer.selectedLanguage === "ar" ? true : false,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    didChangeLAnguage: language => {
+    didChangeLAnguage: (language) => {
       dispatch(appActions.onChangeLanguage(language));
     },
-    storeCodeUpdated: code => {
+    storeCodeUpdated: (code) => {
       dispatch(appActions.onstoreCodeUpdated(code));
     },
-    updateCurrency: currency => {
+    updateCurrency: (currency) => {
       dispatch(appActions.updateCurrency(currency));
     },
-    getLoggedUserCartId: getLoggedUserCartIdCallback => {
+    getLoggedUserCartId: (getLoggedUserCartIdCallback) => {
       dispatch(appActions.getLoggedUserCartId(getLoggedUserCartIdCallback));
     },
   };
@@ -51,5 +51,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(CountrySelectionContainer);

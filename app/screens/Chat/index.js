@@ -4,11 +4,9 @@
  * ChatContainer -
  */
 
-import {connect} from 'react-redux';
-import React, {Component} from 'react';
-import ChatView from './ChatView';
-//import * as loginActions from '../../actions/loginActions';
-//import * as appActions from '../../actions/appActions';
+import ChatView from "./ChatView";
+import { connect } from "react-redux";
+import React, { Component } from "react";
 
 class ChatContainer extends Component {
   constructor(props) {
@@ -32,4 +30,7 @@ function mapDispatchToProps(dispatch) {
   return {};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatContainer);

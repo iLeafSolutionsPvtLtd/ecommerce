@@ -37,6 +37,7 @@ const CategoryCall = React.memo(
           shadowRadius: 5,
           borderRadius: 5,
           paddingBottom: 5,
+          elevation: 3,
         }}
       >
         <View style={{ marginHorizontal: 0 }}>
@@ -64,6 +65,7 @@ class OrderCompletionScreen extends Component {
       addressDict: "",
       totalCostDict: "",
       itemArray: "",
+      shippingAmount: "",
     };
   }
 
@@ -71,10 +73,12 @@ class OrderCompletionScreen extends Component {
     const addressDict = this.props.navigation.state.params.addressDict;
     const totalCostDict = this.props.navigation.state.params.totalCostDict;
     const itemArray = this.props.navigation.state.params.itemArray;
+    const shippingAmount = this.props.navigation.state.params.shippingAmount;
 
     this.setState({ addressDict: addressDict });
     this.setState({ totalCostDict: totalCostDict });
     this.setState({ itemArray: itemArray });
+    this.setState({ shippingAmount });
 
     BackHandler.addEventListener(
       "hardwareBackPress",
@@ -126,7 +130,12 @@ class OrderCompletionScreen extends Component {
       currency,
       navigation,
     } = this.props;
-    const { itemArray, addressDict, totalCostDict } = this.state;
+    const {
+      itemArray,
+      addressDict,
+      totalCostDict,
+      shippingAmount,
+    } = this.state;
 
     return (
       <SafeAreaView style={styles.safeContainer}>
@@ -142,13 +151,13 @@ class OrderCompletionScreen extends Component {
           isRTL={selectedLanguage === "ar" ? true : false}
           hideSearch={true}
         />
-        <Text style={styles.titleStyle}>{translate("Order Completed")}</Text>
+        <Text style={styles.titleStyle}>{translate("Order confirmation")}</Text>
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{ backgroundColor: Constants.APP_WHITE_COLOR }}
         >
           <View style={styles.scrollContainer}>
-            <View
+            {/* <View
               style={{
                 paddingHorizontal: 20,
                 marginTop: 2,
@@ -165,8 +174,8 @@ class OrderCompletionScreen extends Component {
                   "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
                 }
               </Text>
-              {/* <View style={styles.underLineStyle} /> */}
-            </View>
+              <View style={styles.underLineStyle} />
+            </View> */}
 
             <FlatList
               style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}
@@ -186,22 +195,22 @@ class OrderCompletionScreen extends Component {
 
             <View style={styles.cardWrapper}>
               <View style={styles.wrapper}>
-                <Text style={styles.normalText}>{translate("Cart Total")}</Text>
+                <Text style={styles.normalText}>
+                  {translate("Order subtotal")}
+                </Text>
                 <Text style={styles.normalText}>
                   {totalCostDict.subtotal + " " + currency}
                 </Text>
               </View>
               <View style={styles.wrapper}>
+                <Text style={styles.normalText}>{translate("Shipping")}</Text>
                 <Text style={styles.normalText}>
-                  {translate("Shipping Charges")}
+                  {shippingAmount + " " + currency}
                 </Text>
-                <Text style={styles.normalText}>{"8" + " " + currency}</Text>
               </View>
-              <View style={[styles.underLineStyle2]} />
+              {/* <View style={[styles.underLineStyle2]} /> */}
               <View style={styles.wrapper}>
-                <Text style={styles.normalTextBold}>
-                  {translate("TOTAL PAYMENT")}
-                </Text>
+                <Text style={styles.normalTextBold}>{translate("TOTAL")}</Text>
                 <Text style={styles.normalTextBold}>
                   {totalCostDict.grand_total + " " + currency}
                 </Text>
@@ -217,7 +226,7 @@ class OrderCompletionScreen extends Component {
             >
               <View style={styles.wrapperColumn}>
                 <Text style={styles.largeTextBold}>
-                  {translate("Delivery and Shipping Address")}
+                  {translate("SHIPPING AND DELIVERY ADDRESS")}
                 </Text>
                 <Text style={styles.addressText}>
                   {//  'Cecilia Chapman \n711-2880 Nulla St. \nMankato Mississippi 96522 \n(257) 563-7401'

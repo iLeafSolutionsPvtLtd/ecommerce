@@ -245,5 +245,9 @@
   "First name required": "First name required",
   "Last name required": "Last name required",
   "Product Description": "Product Description",
-  "product count max in detail screen": "This product is already in your cart and its maximum count is attain. Please checkout the existing product."
+  "product count max in detail screen": "This product is already in your cart and its maximum count is attain. Please checkout the existing product.",
+  "SHIPPING AND DELIVERY ADDRESS": "DELIVERY AND BILLING ADDRESS",
+  "ACCOUNT": "ACCOUNT",
+  "No products found in this category": "No products found in this category",
+  "Check your filter options and try again": "Check your filter options and try again."
 }

@@ -1,30 +1,34 @@
-/* Redux saga class
+/**
+ * Created by Jebin for iLeaf Solutions Pvt.Ltd
+ * on February 28, 2020
+ * StoreSaga - handles store related operations
  */
-import {put, call, select, all} from 'redux-saga/effects';
+
 import {
   getStoresAPI,
   getStoresViewAPI,
-  getAllCategoriesAPI,
-  getStoreConfigurationAPI,
   getProductSizesAPI,
+  getProductBrandAPI,
+  getAllCategoriesAPI,
   getProductColorsAPI,
   getProductGradesAPI,
   getProductStylesAPI,
-  getProductAttachmentAPI,
   getProductStyleInchAPI,
-  getProductBrandAPI,
-} from '../api/apiMethods';
-import {showSingleAlert} from '../config/common';
-import * as loadingActions from '../actions/loadingActions';
-import * as categoryActions from '../actions/categoryActions';
-import * as storeActions from '../actions/storeActions';
-import {translate} from '../config/languageSwitching';
+  getProductAttachmentAPI,
+  getStoreConfigurationAPI,
+} from "../api/apiMethods";
+import { showSingleAlert } from "../config/common";
+import * as storeActions from "../actions/storeActions";
+import { translate } from "../config/languageSwitching";
+import { put, call, select, all } from "redux-saga/effects";
+import * as loadingActions from "../actions/loadingActions";
+import * as categoryActions from "../actions/categoryActions";
 
 export function* getStoresSaga(action) {
-  const {isNetworkAvailable} = yield select(state => state.appReducer);
-  const {adminToken} = yield select(state => state.appReducer);
+  const { isNetworkAvailable } = yield select((state) => state.appReducer);
+  const { adminToken } = yield select((state) => state.appReducer);
   if (!isNetworkAvailable) {
-    showSingleAlert(translate('No internet connection'));
+    showSingleAlert(translate("No internet connection"));
     return;
   }
 
@@ -56,15 +60,15 @@ export function* getStoresSaga(action) {
       productsStyleInch: call(getProductStyleInchAPI, adminToken),
       productsBrands: call(getProductBrandAPI, adminToken),
     });
-    console.log('API RESPONSE OF GET_STORES ', stores);
-    console.log('API RESPONSE OF GET_STORES_VIEW ', storesView);
-    console.log('API RESPONSE OF ALL CATEGORIES ', categories);
-    console.log('API RESPONSE OF STORE CONFIGURATIONS', storeConfiguration);
-    console.log('API RESPONSE OF productsSizes ', productsSizes);
-    console.log('API RESPONSE OF productsColors ', productsColors);
-    console.log('API RESPONSE OF productsGrades ', productsGrades);
-    console.log('API RESPONSE OF productsStyles', productsStyles);
-    console.log('API RESPONSE OF productsAttachments', productsAttachments);
+    console.log("API RESPONSE OF GET_STORES ", stores);
+    console.log("API RESPONSE OF GET_STORES_VIEW ", storesView);
+    console.log("API RESPONSE OF ALL CATEGORIES ", categories);
+    console.log("API RESPONSE OF STORE CONFIGURATIONS", storeConfiguration);
+    console.log("API RESPONSE OF productsSizes ", productsSizes);
+    console.log("API RESPONSE OF productsColors ", productsColors);
+    console.log("API RESPONSE OF productsGrades ", productsGrades);
+    console.log("API RESPONSE OF productsStyles", productsStyles);
+    console.log("API RESPONSE OF productsAttachments", productsAttachments);
 
     yield put(loadingActions.disableLoader({}));
 
@@ -82,7 +86,7 @@ export function* getStoresSaga(action) {
       productsBrands
     ) {
       yield put(
-        storeActions.updateStoreInfo(stores, storesView, storeConfiguration),
+        storeActions.updateStoreInfo(stores, storesView, storeConfiguration)
       );
       yield put(categoryActions.onCategoryResponse(categories));
       yield put(
@@ -93,8 +97,8 @@ export function* getStoresSaga(action) {
           productsStyles,
           productsAttachments,
           productsStyleInch,
-          productsBrands,
-        ),
+          productsBrands
+        )
       );
 
       if (action.getStoreInfoCallback) {
@@ -109,7 +113,7 @@ export function* getStoresSaga(action) {
     if (action.getStoreInfoCallback) {
       action.getStoreInfoCallback(false);
     }
-    console.log('GET_STORES API ERROR!!!!', error);
+    console.log("GET_STORES API ERROR!!!!", error);
     yield put(loadingActions.disableLoader({}));
   }
 }
