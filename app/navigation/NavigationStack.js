@@ -11,7 +11,7 @@ import React, { Component } from "react";
 import {
   createAppContainer,
   createSwitchNavigator,
-  createCompatNavigatorFactory,
+  createCompatNavigatorFactory
 } from "@react-navigation/compat";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -54,16 +54,16 @@ const LoginStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     LoginScreen: LoginScreen,
     RegistrationScreen: RegistrationScreen,
-    Welcome: Welcome,
+    Welcome: Welcome
   },
   {
     initialRouteName: "Welcome",
     //initialRouteName: 'RegistrationScreen',
     //initialRouteName: 'LoginScreen',
     navigationOptions: {
-      gesturesEnabled: false,
+      gesturesEnabled: false
     },
-    headerMode: "none",
+    headerMode: "none"
   }
 );
 
@@ -73,7 +73,7 @@ const HomeStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     Home: HomeScreen,
     Search: Search,
-    ProductList: ProductList,
+    ProductList: ProductList
     // FilterScreen: FilterScreen,
   },
   { headerMode: "none" }
@@ -83,7 +83,7 @@ const CategoriesStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     Categories,
     Search,
-    ProductListFromCategory,
+    ProductListFromCategory
   },
   { headerMode: "none" }
 );
@@ -91,7 +91,7 @@ const CategoriesStack = createCompatNavigatorFactory(createStackNavigator)(
 const WishListStack = createCompatNavigatorFactory(createStackNavigator)(
   {
     WishList,
-    Search,
+    Search
   },
   { headerMode: "none" }
 );
@@ -125,18 +125,19 @@ function Tab() {
                 height: 20,
                 tintColor: focused
                   ? Constants.APP_THEME_COLOR
-                  : Constants.APP_GRAY_COLOR3,
+                  : Constants.APP_GRAY_COLOR3
               }}
             />
           );
-        },
+        }
       })}
       tabBarOptions={{
         style: {
-          backgroundColor: Constants.APP_WHITE_COLOR,
+          backgroundColor: Constants.APP_WHITE_COLOR
         },
         activeTintColor: Constants.APP_THEME_COLOR,
         inactiveTintColor: Constants.APP_GRAY_COLOR3,
+        keyboardHidesTabBar: true
       }}
     >
       <TabNavigator.Screen name={translate("Home")} component={HomeStack} />
@@ -170,13 +171,13 @@ const TabStack = createCompatNavigatorFactory(createStackNavigator)(
     OrderHistory,
     OrderCompletion,
     OrderHistoryDetail,
-    Chat,
+    Chat
   },
   {
     headerMode: "none",
     navigationOptions: {
       // swipeEnabled: false,
-    },
+    }
   }
 );
 
@@ -185,7 +186,7 @@ const SwitchNavigator = createSwitchNavigator(
     PreLoaderScreen: PreLoaderScreen,
     HomeScreen: HomeScreen,
     LoginScreen: LoginStack,
-    Tab: TabStack,
+    Tab: TabStack
   },
   { headerMode: "none", initialRouteName: "PreLoaderScreen" }
 );

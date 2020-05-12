@@ -12,13 +12,13 @@ import { normalizedHeight, normalizedWidth } from "../../config/common";
 const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
-    backgroundColor: AppStyles.color.COLOR_WHITE,
+    backgroundColor: AppStyles.color.COLOR_WHITE
   },
   container: {
     backgroundColor: AppStyles.color.COLOR_WHITE,
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   wishListContainer: {
     width: normalizedWidth(37),
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.0)",
     borderRadius: normalizedWidth(37) / 2,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   imageRottationContainer: {
     width: normalizedWidth(41),
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,1.0)",
     borderRadius: normalizedWidth(20) / 2,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   pagerContainer: {
     position: "absolute",
@@ -48,22 +48,22 @@ const styles = StyleSheet.create({
     left: 20,
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row",
+    flexDirection: "row"
   },
   pagerItem: {
     width: 7,
     height: 7,
     backgroundColor: "rgba(255,255,255,0.3)",
     margin: 2,
-    borderRadius: 3.5,
+    borderRadius: 3.5
   },
   likeButtonImage: {
     width: 46, //normalizedWidth(30),
-    height: 46, // normalizedWidth(25),
+    height: 46 // normalizedWidth(25),
     // tintColor: Constants.APP_RED_COLOR,
   },
   scrollContainer: {
-    backgroundColor: Constants.APP_GRAY_COLOR2,
+    backgroundColor: Constants.APP_GRAY_COLOR2
   },
   watchVideoContainer: {
     height: normalizedHeight(70),
@@ -71,17 +71,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   videoText: {
     fontFamily: Constants.Fonts.MEDIUM,
     fontSize: 13,
     color: Constants.APP_BLACK_COLOR,
-    marginLeft: 10,
+    marginLeft: 10
   },
   productInfoContainer: {
     // marginTop: 5,
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   productInfoText: {
     fontSize: 15,
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 5,
     marginBottom: 10,
-    textAlign: "left",
+    textAlign: "left"
   },
   productCostContainer: {
     flexDirection: "row",
@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
     // marginVertical: 15,
     marginTop: 10,
     marginBottom: 10,
-    alignItems: "center",
+    alignItems: "center"
   },
   productCost: {
     // flex: 1,
     fontSize: 15,
     fontFamily: Constants.Fonts.MEDIUM,
-    color: "rgb(203,39,100)",
+    color: "rgb(203,39,100)"
   },
   productCostOffer: {
     fontSize: 15,
@@ -112,17 +112,17 @@ const styles = StyleSheet.create({
     color: Constants.APP_GRAY_COLOR3,
     marginLeft: 15,
     textDecorationLine: "line-through",
-    textDecorationStyle: "solid",
+    textDecorationStyle: "solid"
   },
   productCostOfferPercantage: {
     fontSize: 12,
     fontFamily: Constants.Fonts.REGULAR,
     color: Constants.APP_GRAY_COLOR3,
-    marginLeft: 15,
+    marginLeft: 15
   },
   chooseColorContainer: {
     // marginTop: 5,
-    backgroundColor: Constants.APP_WHITE_COLOR,
+    backgroundColor: Constants.APP_WHITE_COLOR
   },
   sectionTitle: {
     flex: 1,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     color: Constants.APP_BLACK_COLOR,
     marginLeft: 20,
     marginTop: 10,
-    textAlign: "left",
+    textAlign: "left"
   },
   sizeChart: {
     fontSize: 15,
@@ -140,17 +140,17 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10,
-    textAlign: "left",
+    textAlign: "left"
   },
   sizeText: {
     fontSize: 13,
     fontFamily: Constants.Fonts.REGULAR,
-    color: Constants.APP_BLACK_COLOR,
+    color: Constants.APP_BLACK_COLOR
   },
   quantityContainer: {
     flexDirection: "row",
     marginLeft: 20,
-    marginVertical: 10,
+    marginVertical: 10
   },
   quantityButton: {
     width: 21,
@@ -158,18 +158,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Constants.APP_GRAY_COLOR3,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   quantityButtonText: {
     fontSize: 15,
     fontFamily: Constants.Fonts.BOLD,
-    color: Constants.APP_GRAY_COLOR3,
+    color: Constants.APP_GRAY_COLOR3
   },
   countText: {
     fontSize: 18,
     fontFamily: Constants.Fonts.MEDIUM,
     color: Constants.APP_BLACK_COLOR,
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   productDescription: {
     marginHorizontal: 20,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     fontFamily: Constants.Fonts.REGULAR,
     color: Constants.APP_GRAY_COLOR3,
     lineHeight: 22,
-    textAlign: "left",
+    textAlign: "left"
   },
   bottomButtonContainer: {
     height: normalizedHeight(100),
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     backgroundColor: Constants.APP_WHITE_COLOR,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   addTocartButton: {
     flex: 1,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderColor: Constants.APP_THEME_COLOR,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   buyNowButton: {
     flex: 1,
@@ -207,17 +207,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     backgroundColor: Constants.APP_THEME_COLOR,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   addToCartText: {
     fontFamily: Constants.Fonts.REGULAR,
     fontSize: 15,
-    color: Constants.APP_THEME_COLOR,
+    color: Constants.APP_THEME_COLOR
   },
   buyNowText: {
     fontFamily: Constants.Fonts.MEDIUM,
     fontSize: 15,
-    color: Constants.APP_WHITE_COLOR,
+    color: Constants.APP_WHITE_COLOR
   },
   sizeChartView: {
     position: "absolute",
@@ -226,17 +226,17 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   sizeChartImageView: {
     width: Constants.SCREEN_WIDTH - 20,
-    height: Constants.SCREEN_WIDTH - 20,
+    height: Constants.SCREEN_WIDTH - 20
   },
   sizeChartContainerView: {
     flex: 1,
     backgroundColor: Constants.APP_TRANSPARENT_COLOR,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   curveView: {
     position: "absolute",
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderColor: Constants.APP_GRAY_COLOR,
     borderWidth: 1,
-    borderBottomColor: Constants.APP_TRANSPARENT_COLOR,
+    borderBottomColor: Constants.APP_TRANSPARENT_COLOR
   },
   quantityControlContainer: {
     flexDirection: "row",
@@ -259,28 +259,28 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 10,
     marginBottom: 10,
-    borderColor: Constants.APP_GRAY_COLOR,
+    borderColor: Constants.APP_GRAY_COLOR
   },
   incrementButton: {
-    width: 30,
+    width: "30%",
     height: 30,
     justifyContent: "center",
     alignItems: "center",
     borderRightWidth: 1,
-    borderRightColor: Constants.APP_GRAY_COLOR,
+    borderRightColor: Constants.APP_GRAY_COLOR
   },
   quantityText: {
-    width: 40,
+    width: "40%",
     textAlign: "center",
     fontSize: 16,
-    height: 30,
+    height: 50,
     fontFamily: Constants.Fonts.MEDIUM,
-    color: Constants.APP_BLACK_COLOR,
+    color: Constants.APP_BLACK_COLOR
   },
   quantityButtonTitle: {
     color: Constants.APP_GREY_TEXT_COLOR,
     fontFamily: Constants.Fonts.REGULAR,
-    fontSize: 16,
+    fontSize: 16
   },
   child_color_view: {
     flex: 1,
@@ -291,9 +291,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: 60,
     // borderBottomWidth: 1,
-    borderBottomColor: Constants.APP_BOX_BACKGROUND_GREY,
+    borderBottomColor: Constants.APP_BOX_BACKGROUND_GREY
     // backgroundColor:Constants.APP_BOX_BACKGROUND_GREY
-  },
+  }
 });
 
 export default styles;
