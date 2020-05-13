@@ -234,7 +234,7 @@ class SearchView extends Component {
               />
               <View
                 style={{
-                  height: Constants.IS_ANDROID ? 0 : keyboardHeight - 50,
+                  height: Constants.IS_ANDROID ? 0 : keyboardHeight,
                 }}
               />
             </View>
