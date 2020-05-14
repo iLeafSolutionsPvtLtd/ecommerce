@@ -641,6 +641,7 @@ class CheckoutView extends Component {
                               fontFamily: Constants.Fonts.REGULAR,
                               color: Constants.APP_THEME_COLOR,
                               fontSize: 13,
+                              textAlign: "left",
                             }}
                           >
                             {translate("Change")}

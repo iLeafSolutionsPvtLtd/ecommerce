@@ -4,11 +4,11 @@
  * ProfileContainer -
  */
 
-import {connect} from 'react-redux';
-import React, {Component} from 'react';
-import ProfileDetailView from './ProfileDetailView';
-import * as loginActions from '../../actions/loginActions';
-import * as appActions from '../../actions/appActions';
+import { connect } from "react-redux";
+import React, { Component } from "react";
+import ProfileDetailView from "./ProfileDetailView";
+import * as loginActions from "../../actions/loginActions";
+import * as appActions from "../../actions/appActions";
 
 class ProfileContainer extends Component {
   constructor(props) {
@@ -25,6 +25,7 @@ function mapStateToProps(state) {
     selectedLanguage: state.appReducer.selectedLanguage,
     userInfo: state.loginReducer.userInfo,
     isLoading: state.loadingReducer.isLoading,
+    isRTL: state.appReducer.selectedLanguage === "ar" ? true : false,
   };
 }
 
@@ -34,18 +35,21 @@ function mapDispatchToProps(dispatch) {
       userInfo,
       oldPassword,
       newPassword,
-      profileUpdateCallback,
+      profileUpdateCallback
     ) => {
       dispatch(
         loginActions.profileUpdateRequest(
           userInfo,
           oldPassword,
           newPassword,
-          profileUpdateCallback,
-        ),
+          profileUpdateCallback
+        )
       );
     },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProfileContainer);

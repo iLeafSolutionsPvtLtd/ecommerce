@@ -133,7 +133,7 @@ class SearchView extends Component {
               textAlign: isRTL ? "right" : "left",
               fontSize: 15,
               flex: 1,
-              textAlign: "left",
+              // textAlign: "left",
               marginLeft: 35,
               fontFamily: Constants.Fonts.REGULAR,
               color: Constants.APP_GRAY_COLOR3,

@@ -71,12 +71,14 @@ const styles = StyleSheet.create({
     color: "rgb(142,142,142)",
     fontFamily: Constants.Fonts.REGULAR,
     marginVertical: 3,
+    textAlign: "left",
   },
   sendBackTitleText: {
     fontSize: 13,
     color: Constants.APP_THEME_COLOR,
     fontFamily: Constants.Fonts.MEDIUM,
     marginVertical: 3,
+    textAlign: "left",
   },
   moreinfo: {
     fontSize: 12,
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
     fontFamily: Constants.Fonts.REGULAR,
     textDecorationLine: "underline",
     marginVertical: 3,
+    textAlign: "left",
   },
   orderInfo: {
     fontSize: 15,
@@ -92,6 +95,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 15,
     marginRight: 10,
+    textAlign: "left",
   },
 });
 
