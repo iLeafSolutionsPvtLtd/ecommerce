@@ -641,7 +641,7 @@ export default function CartScreen(props) {
       >
         <View style={{ flex: 1 }}>
           <Login
-            isGuestLogin={true}
+            isGuestLogin={false}
             didTapOnclose={() => setModalVisible(false)}
             guestInfoAddedCallback={() => {
               setModalVisible(false);

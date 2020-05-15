@@ -136,7 +136,7 @@ class CheckoutView extends Component {
     paymentMethodsArray,
     shipmentMethodsArray
   ) => {
-    if (paymentMethodsArray.length > 0 && shipmentMethodsArray.length > 0) {
+    if (paymentMethodsArray.length >= 0 && shipmentMethodsArray.length >= 0) {
       this.setState({
         paymentMethods: paymentMethodsArray,
         shipmentMethods: shipmentMethodsArray,
