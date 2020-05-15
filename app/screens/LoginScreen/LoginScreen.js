@@ -346,6 +346,7 @@ class LoginScreen extends Component {
         );
       }
       this.props.userDidLogOut();
+      this.password.clear();
     }
   };
 
