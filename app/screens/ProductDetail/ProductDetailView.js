@@ -618,7 +618,7 @@ class ProductDetailView extends Component {
       this._didTapOnAddToCart(true);
     } else {
       if (!guestInfo) {
-        this.setState({ modalVisible: true });
+        this.setState({ isLoginViewShow: true });
       } else {
         this._didTapOnAddToCart(true);
       }
@@ -1043,7 +1043,7 @@ class ProductDetailView extends Component {
                       <TouchableOpacity
                         onPress={this._didTapOnIncrement}
                         style={{
-                          width: '30%',
+                          width: "30%",
                           height: 30,
                           justifyContent: "center",
                           alignItems: "center",
