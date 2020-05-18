@@ -244,6 +244,30 @@ class OrderHistoryDetailScreen extends Component {
 
             <View
               style={{
+                flexDirection: "row",
+                marginVertical: 10,
+                marginHorizontal: 20,
+                alignItems: "center",
+              }}
+            >
+              <Text style={styles.largeTextBold}>
+                {translate("DELIVERY BY")}
+              </Text>
+              <Text>{" : "}</Text>
+              <Text
+                style={[
+                  styles.deliveryStatusText,
+                  {
+                    color: Constants.APP_THEME_COLOR,
+                  },
+                ]}
+              >
+                {"SAT, 23 MAY 12:00 PM"}
+              </Text>
+            </View>
+
+            <View
+              style={{
                 backgroundColor: "#FFFFFF",
                 paddingBottom: 4,
               }}

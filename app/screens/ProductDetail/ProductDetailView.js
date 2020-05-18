@@ -761,6 +761,7 @@ class ProductDetailView extends Component {
       isLoading,
       currency,
       cartArray,
+      userToken,
       isNetworkAvailable,
     } = this.props;
     const {
@@ -1204,7 +1205,22 @@ class ProductDetailView extends Component {
         >
           <View style={{ flex: 1 }}>
             <Login
-              didTapOnclose={() => this.setState({ isLoginViewShow: false })}
+              didTapOnclose={() => {
+                this.setState({
+                  isLoginViewShow: false,
+                });
+
+                setTimeout(() => {
+                  if (userToken.length > 0) {
+                    this._didTapOnAddToCart(true);
+                  } else {
+                    if (!this.props.guestInfo) {
+                    } else {
+                      this._didTapOnAddToCart(true);
+                    }
+                  }
+                }, 500);
+              }}
             />
           </View>
         </Modal>

@@ -239,7 +239,7 @@
   "CATEGORIES": "التصنيفات",
   "WISHLIST": "قائمة الرغبات",
   "Please enter a valid phone number": "يرجى إدخال رقم هاتف صالح",
-  
+
   "Email required": "البريد الإلكتروني (مطلوب",
   "Invalid Email": "بريد إلكتروني خاطئ",
   "Password required": "كلمة المرور مطلوبة",
@@ -250,5 +250,6 @@
   "SHIPPING AND DELIVERY ADDRESS": "عنوان التسليم والفواتير",
   "ACCOUNT": "الحساب",
   "No products found in this category": "لا توجد منتجات وجدت في هذه الفئة",
-  "Check your filter options and try again": "تحقق من خيارات التصفية وحاول مرة أخرى."
+  "Check your filter options and try again": "تحقق من خيارات التصفية وحاول مرة أخرى.",
+  "DELIVERY BY": "التوصيل بواسطه"
 }

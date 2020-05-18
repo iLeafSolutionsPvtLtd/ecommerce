@@ -90,6 +90,23 @@ const ListItem = React.memo(
           </View>
 
           <View style={{ flexDirection: "row", marginTop: 10 }}>
+            <Text style={styles.orderNumberText}>
+              {translate("DELIVERY BY")}
+            </Text>
+            <Text>{" : "}</Text>
+            <Text
+              style={[
+                styles.deliveryStatusText,
+                {
+                  color: Constants.APP_THEME_COLOR,
+                },
+              ]}
+            >
+              {"SAT, 23 MAY 12:00 PM"}
+            </Text>
+          </View>
+
+          <View style={{ flexDirection: "row", marginTop: 10 }}>
             <Text style={styles.orderNumberText}>{translate("Status")}</Text>
             <Text>{" : "}</Text>
             <Text
