@@ -13,20 +13,20 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
-} from "react-native";
-import styles from "./styles";
-import Modal from "react-native-modal";
-import Images from "../../config/images";
-import { format, addHours } from "date-fns";
-import HudView from "../../components/hudView";
-import Constants from "../../config/constants";
-import ItemCell from "../../components/itemCell";
-import DatePicker from "react-native-date-picker";
-import { showSingleAlert } from "../../config/common";
-import React, { Component, memo, useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
-import { translate } from "../../config/languageSwitching/index";
-import NavigationHeader1 from "../../components/NavigationHeaders/NavigationHeader1";
+} from 'react-native';
+import styles from './styles';
+import Modal from 'react-native-modal';
+import Images from '../../config/images';
+import {format, addHours} from 'date-fns';
+import HudView from '../../components/hudView';
+import Constants from '../../config/constants';
+import ItemCell from '../../components/itemCell';
+import DatePicker from 'react-native-date-picker';
+import {showSingleAlert} from '../../config/common';
+import React, {Component, memo, useState} from 'react';
+import {ScrollView} from 'react-native-gesture-handler';
+import {translate} from '../../config/languageSwitching/index';
+import NavigationHeader1 from '../../components/NavigationHeaders/NavigationHeader1';
 
 const CategoryCall = memo(
   ({
@@ -47,7 +47,7 @@ const CategoryCall = memo(
     const [totalGross, setTotalGross] = useState(totalProductGross);
 
     function getQuantity(quantityValue) {
-      console.log("quantityValue", quantityValue);
+      console.log('quantityValue', quantityValue);
       setTotalGross(quantityValue * item.price);
     }
 
@@ -56,16 +56,15 @@ const CategoryCall = memo(
         style={{
           backgroundColor: Constants.APP_WHITE_COLOR,
           margin: 20,
-          shadowOffset: { width: 0, height: 5 },
-          shadowColor: "rgba(46,69,187,0.56)",
+          shadowOffset: {width: 0, height: 5},
+          shadowColor: 'rgba(46,69,187,0.56)',
           shadowOpacity: 0.3,
           shadowRadius: 5,
           borderRadius: 5,
           paddingBottom: 5,
           paddingTop: 5,
           elevation: 3,
-        }}
-      >
+        }}>
         <ItemCell
           item={item}
           addProductToWishList={addProductToWishList}
@@ -79,7 +78,7 @@ const CategoryCall = memo(
         />
       </View>
     );
-  }
+  },
 );
 
 class CheckoutView extends Component {
@@ -92,15 +91,15 @@ class CheckoutView extends Component {
       totalCostDict,
       nowDate: new Date(),
       newDate: new Date(),
-      nowTime: "10:00 am - 11:00 am",
-      newTime: "10:00 am - 11:00 am",
+      nowTime: '10:00 am - 11:00 am',
+      newTime: '10:00 am - 11:00 am',
       showDatePicker: false,
       showTimePicker: false,
       selectedAddressIndex: -1,
-      voucherCode: "",
+      voucherCode: '',
       isVoucherApplied: false,
-      mCartList: "",
-      mGuestcartList: "",
+      mCartList: '',
+      mGuestcartList: '',
       paymentMethods: [],
       shipmentMethods: [],
       selectedShippingOptionIndex: 0,
@@ -108,10 +107,10 @@ class CheckoutView extends Component {
   }
 
   componentDidMount() {
-    const { addressList, cartList, userToken, guestcartList } = this.props;
+    const {addressList, cartList, userToken, guestcartList} = this.props;
     let defaultAddress = null;
     if (addressList && addressList.length > 0) {
-      addressList.map((item) => {
+      addressList.map(item => {
         if (item.default_billing) {
           defaultAddress = item;
         }
@@ -119,22 +118,22 @@ class CheckoutView extends Component {
     }
 
     if (defaultAddress) {
-      this.setState({ addressDict: defaultAddress }, () => {
+      this.setState({addressDict: defaultAddress}, () => {
         if (userToken && userToken.length > 0) {
           this._setShippingAddress();
-          console.log("defaultAddress", defaultAddress);
+          console.log('defaultAddress', defaultAddress);
         }
       });
     }
-    this.setState({ mCartList: cartList });
-    this.setState({ mGuestcartList: guestcartList });
+    this.setState({mCartList: cartList});
+    this.setState({mGuestcartList: guestcartList});
   }
 
   componentWillUnmount() {}
 
   _getPaymentAndShippingMethodsCallback = (
     paymentMethodsArray,
-    shipmentMethodsArray
+    shipmentMethodsArray,
   ) => {
     if (paymentMethodsArray.length >= 0 && shipmentMethodsArray.length >= 0) {
       this.setState({
@@ -142,8 +141,8 @@ class CheckoutView extends Component {
         shipmentMethods: shipmentMethodsArray,
       });
 
-      this.props.getTotalCost((totalCostDict) => {
-        console.log("######TOTAL COST DICT####", totalCostDict);
+      this.props.getTotalCost(totalCostDict => {
+        console.log('######TOTAL COST DICT####', totalCostDict);
         if (totalCostDict && totalCostDict.grand_total) {
           this.setState({
             totalCostDict,
@@ -151,21 +150,21 @@ class CheckoutView extends Component {
         }
       });
     } else {
-      showSingleAlert(translate("API_Failed"), translate("Ok"), () => {
+      showSingleAlert(translate('API_Failed'), translate('Ok'), () => {
         this.props.navigation.goBack();
       });
     }
   };
 
   _didTapOnAddAddress = () => {
-    const { userToken } = this.props;
+    const {userToken} = this.props;
     if (userToken.length > 0) {
-      this.props.navigation.navigate("AddressListScreen", {
+      this.props.navigation.navigate('AddressListScreen', {
         selectedAddressIndex: this.state.selectedAddressIndex,
         didSelectUserAddress: this._didSelectUserAddress,
       });
     } else {
-      this.props.navigation.navigate("AddAddressScreen", {
+      this.props.navigation.navigate('AddAddressScreen', {
         details: this.state.addressDict,
         isFromGuestCheckout: true,
         addAddressCallback: this._addAddressCallback,
@@ -173,23 +172,23 @@ class CheckoutView extends Component {
     }
   };
 
-  _addAddressCallback = (addressDict) => {
-    this.setState({ addressDict }, () => {
-      console.log("ADDRESS==>", addressDict);
+  _addAddressCallback = addressDict => {
+    this.setState({addressDict}, () => {
+      console.log('ADDRESS==>', addressDict);
       this._setShippingAddress();
     });
   };
 
   _didSelectUserAddress = (addressDict, selectedAddressIndex) => {
-    console.log("ADDRESS====", addressDict);
-    this.setState({ addressDict, selectedAddressIndex }, () => {
+    console.log('ADDRESS====', addressDict);
+    this.setState({addressDict, selectedAddressIndex}, () => {
       this._setShippingAddress();
     });
   };
 
   _setShippingAddress = () => {
-    const { addressDict } = this.state;
-    const { userToken, guestInfo, userInfo } = this.props;
+    const {addressDict} = this.state;
+    const {userToken, guestInfo, userInfo} = this.props;
 
     let email = userToken.length > 0 ? userInfo.email : guestInfo.email;
 
@@ -218,28 +217,28 @@ class CheckoutView extends Component {
           lastname: addressDict.lastname,
           email: email,
         },
-        shipping_method_code: "flatrate",
-        shipping_carrier_code: "flatrate",
+        shipping_method_code: 'flatrate',
+        shipping_carrier_code: 'flatrate',
       },
     };
     this.props.setShipmentInfo(params, false, this._setShippingAddressCallback);
   };
 
-  _setShippingAddressCallback = (status) => {
+  _setShippingAddressCallback = status => {
     if (status) {
       this.props.getPaymentAndShippingMethods(
-        this._getPaymentAndShippingMethodsCallback
+        this._getPaymentAndShippingMethodsCallback,
       );
     } else {
-      showSingleAlert(translate("shipping address error"));
+      showSingleAlert(translate('shipping address error'));
     }
   };
 
-  _didTapOnShipmentMethod = (item) => {
+  _didTapOnShipmentMethod = item => {
     //TODO: shipment tap
   };
 
-  _didTapOnPaymentMethod = (item) => {
+  _didTapOnPaymentMethod = item => {
     //TODO: payment tap
   };
 
@@ -252,16 +251,16 @@ class CheckoutView extends Component {
       shipmentMethods,
       selectedShippingOptionIndex,
     } = this.state;
-    const { userToken } = this.props;
+    const {userToken} = this.props;
     let itemArray = userToken.length > 0 ? mCartList : mGuestcartList;
 
-    let shippingAmount = "";
+    let shippingAmount = '';
     if (shipmentMethods.length > 0) {
       let shippingDict = shipmentMethods[selectedShippingOptionIndex];
       shippingAmount = shippingDict.amount;
     }
 
-    this.props.navigation.navigate("OrderCompletion", {
+    this.props.navigation.navigate('OrderCompletion', {
       addressDict: addressDict,
       totalCostDict: totalCostDict,
       itemArray: itemArray,
@@ -270,11 +269,11 @@ class CheckoutView extends Component {
   };
 
   _didTapOnPlaceOrder = () => {
-    const { addressDict } = this.state;
-    const { userToken, guestInfo, userInfo } = this.props;
+    const {addressDict} = this.state;
+    const {userToken, guestInfo, userInfo} = this.props;
 
     if (!addressDict.firstname) {
-      showSingleAlert(translate("Please add your address"));
+      showSingleAlert(translate('Please add your address'));
       return;
     }
 
@@ -305,14 +304,14 @@ class CheckoutView extends Component {
           lastname: addressDict.lastname,
           email: email,
         },
-        shipping_method_code: "flatrate",
-        shipping_carrier_code: "flatrate",
+        shipping_method_code: 'flatrate',
+        shipping_carrier_code: 'flatrate',
       },
     };
     this.props.setShipmentInfo(params, true, this._orderPlacedCallback);
   };
 
-  _orderPlacedCallback = (status) => {
+  _orderPlacedCallback = status => {
     if (status) {
       // showSingleAlert(
       //   translate('Order placed Successfully'),
@@ -330,21 +329,46 @@ class CheckoutView extends Component {
   };
 
   _didTapOnApplyVoucher = () => {
-    const { voucherCode } = this.state;
-    if (voucherCode === "") {
-      showSingleAlert(translate("voucher code empty"));
+    const {voucherCode} = this.state;
+    if (voucherCode === '') {
+      showSingleAlert(translate('voucher code empty'));
       return;
     }
-    this.props.applyVoucher(voucherCode, (status) => {
+    this.props.applyVoucher(voucherCode, status => {
       if (status) {
-        showSingleAlert(translate("Voucher applied successfully"));
-        this.setState({ isVoucherApplied: true });
+        showSingleAlert(translate('Voucher applied successfully'));
+        this.setState({isVoucherApplied: true});
       } else {
-        showSingleAlert(translate("Invalid Voucher"));
-        this.setState({ voucherCode: "", isVoucherApplied: false });
+        showSingleAlert(translate('Invalid Voucher'));
+        this.setState({voucherCode: '', isVoucherApplied: false});
       }
     });
   };
+
+  PickerView() {
+    let {nowTime} = this.state;
+    return (
+      <Picker
+        selectedValue={nowTime}
+        style={{
+          height: Constants.IS_ANDROID ? 50 : 200,
+          width: Constants.SCREEN_WIDTH - 100,
+        }}
+        onValueChange={(itemValue, itemIndex) =>
+          this.setState({nowTime: itemValue})
+        }>
+        <Picker.Item label="10:00 am - 11:00 am" value="10:00 am - 11:00 am" />
+        <Picker.Item label="11:00 am - 12:00 pm" value="11:00 am - 12:00 pm" />
+        <Picker.Item label="12:00 pm - 01:00 pm" value="12:00 pm - 01:00 pm" />
+        <Picker.Item label="01:00 pm - 02:00 pm" value="01:00 pm - 02:00 pm" />
+        <Picker.Item label="02:00 pm - 03:00 pm" value="02:00 pm - 03:00 pm" />
+        <Picker.Item label="03:00 pm - 04:00 pm" value="03:00 pm - 04:00 pm" />
+        <Picker.Item label="04:00 pm - 05:00 pm" value="04:00 pm - 05:00 pm" />
+        <Picker.Item label="05:00 pm - 06:00 pm" value="05:00 pm - 06:00 pm" />
+        <Picker.Item label="06:00 pm - 07:00 pm" value="06:00 pm - 07:00 pm" />
+      </Picker>
+    );
+  }
 
   render() {
     const {
@@ -395,15 +419,15 @@ class CheckoutView extends Component {
     // ];
 
     let itemArray = userToken.length > 0 ? cartList : guestcartList;
-    let newStreetAddress = "";
+    let newStreetAddress = '';
     let isAddressAvailable = false;
     if (addressDict && addressDict.firstname) {
       newStreetAddress =
-        addressDict.street.length > 0 ? addressDict.street[0] : "";
+        addressDict.street.length > 0 ? addressDict.street[0] : '';
       isAddressAvailable = true;
     }
 
-    let shippingAmount = "";
+    let shippingAmount = '';
     if (shipmentMethods.length > 0) {
       let shippingDict = shipmentMethods[selectedShippingOptionIndex];
       shippingAmount = shippingDict.amount;
@@ -421,14 +445,13 @@ class CheckoutView extends Component {
           didTapOnLeftButton={() => this.props.navigation.goBack()}
         />
         <ScrollView
-          styl={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}
-        >
-          <View style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}>
+          styl={{flex: 1, backgroundColor: Constants.APP_WHITE_COLOR}}>
+          <View style={{flex: 1, backgroundColor: Constants.APP_WHITE_COLOR}}>
             <FlatList
-              style={{ flex: 1, backgroundColor: Constants.APP_WHITE_COLOR }}
+              style={{flex: 1, backgroundColor: Constants.APP_WHITE_COLOR}}
               data={itemArray}
               extraData={itemArray}
-              renderItem={({ item, index }) => (
+              renderItem={({item, index}) => (
                 <CategoryCall
                   item={item}
                   index={index}
@@ -440,23 +463,19 @@ class CheckoutView extends Component {
               )}
             />
 
-            {(storeCode === "kwstoreen" || storeCode === "kwstorear") && (
+            {(storeCode === 'kwstoreen' || storeCode === 'kwstorear') && (
               <View style={styles.itemCellContainer}>
                 <View
                   style={{
-                    flexDirection: "row",
+                    flexDirection: 'row',
                     marginHorizontal: 20,
-                  }}
-                >
+                  }}>
                   <TouchableOpacity
                     hitSlop={{}}
                     onPress={() => {
-                      this.setState({ isSameDayDelivery: !isSameDayDelivery });
-                    }}
-                  >
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
+                      this.setState({isSameDayDelivery: !isSameDayDelivery});
+                    }}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Image
                         source={
                           !isSameDayDelivery
@@ -465,8 +484,8 @@ class CheckoutView extends Component {
                         }
                         style={styles.tickSwitch}
                       />
-                      <Text style={[styles.addVoucherCode, { marginLeft: 10 }]}>
-                        {translate("Sameday Delivery")}
+                      <Text style={[styles.addVoucherCode, {marginLeft: 10}]}>
+                        {translate('Sameday Delivery')}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -480,45 +499,45 @@ class CheckoutView extends Component {
                       }}
                     />
 
-                    <View
-                      style={{ flexDirection: "row", marginHorizontal: 20 }}
-                    >
+                    <View style={{flexDirection: 'row', marginHorizontal: 20}}>
                       <View
                         style={[
                           styles.sameDayDeliveryPickerContainer,
-                          { marginRight: 10 },
-                        ]}
-                      >
+                          {marginRight: 10},
+                        ]}>
                         <Text style={styles.deliveryDateText}>
-                          {translate("Delivery Date")}
+                          {translate('Delivery Date')}
                         </Text>
                         <TouchableOpacity
                           onPress={() => {
-                            this.setState({ showDatePicker: true });
+                            this.setState({showDatePicker: true});
                           }}
-                          style={styles.pickerButton}
-                        >
+                          style={styles.pickerButton}>
                           <Text style={styles.dateText}>
-                            {format(this.state.newDate, "dd-MM-yyyy")}
+                            {format(this.state.newDate, 'dd-MM-yyyy')}
                           </Text>
                         </TouchableOpacity>
                       </View>
                       <View
                         style={[
                           styles.sameDayDeliveryPickerContainer,
-                          { marginLeft: 10 },
-                        ]}
-                      >
+                          {marginLeft: 10},
+                        ]}>
                         <Text style={styles.deliveryDateText}>
-                          {translate("Delivery Time")}
+                          {translate('Delivery Time')}
                         </Text>
                         <TouchableOpacity
                           onPress={() => {
-                            this.setState({ showTimePicker: true });
+                            this.setState({showTimePicker: true});
                           }}
-                          style={styles.pickerButton}
-                        >
+                          activeOpacity={0.7}
+                          style={styles.pickerButton}>
                           <Text style={styles.dateText}>{nowTime}</Text>
+                          {Constants.IS_ANDROID && (
+                            <View style={{position: 'absolute'}}>
+                              {this.PickerView()}
+                            </View>
+                          )}
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -528,47 +547,42 @@ class CheckoutView extends Component {
             )}
 
             <View style={styles.itemCellContainer}>
-              <View style={{ marginHorizontal: 20 }}>
+              <View style={{marginHorizontal: 20}}>
                 <View
                   style={{
-                    flexDirection: "row",
+                    flexDirection: 'row',
                     marginBottom: 25,
                     marginTop: 10,
-                  }}
-                >
+                  }}>
                   <TextInput
                     style={[
                       styles.voucherInput,
-                      { textAlign: isRTL ? "right" : "left" },
+                      {textAlign: isRTL ? 'right' : 'left'},
                     ]}
                     value={voucherCode}
-                    onChangeText={(text) =>
-                      this.setState({ voucherCode: text })
-                    }
-                    placeholder={translate("APPLY PROMO CODE HERE")}
+                    onChangeText={text => this.setState({voucherCode: text})}
+                    placeholder={translate('APPLY PROMO CODE HERE')}
                   />
                   <TouchableOpacity
                     style={[
                       styles.applyButton,
                       {
                         backgroundColor: isVoucherApplied
-                          ? "green"
+                          ? 'green'
                           : Constants.APP_BLACK_COLOR,
                       },
                     ]}
-                    onPress={this._didTapOnApplyVoucher}
-                  >
+                    onPress={this._didTapOnApplyVoucher}>
                     {isVoucherApplied ? (
                       <Text
                         style={[
                           styles.applyText,
-                          { color: Constants.APP_WHITE_COLOR },
-                        ]}
-                      >
-                        {translate("Applied")}
+                          {color: Constants.APP_WHITE_COLOR},
+                        ]}>
+                        {translate('Applied')}
                       </Text>
                     ) : (
-                      <Text style={styles.applyText}>{translate("Apply")}</Text>
+                      <Text style={styles.applyText}>{translate('Apply')}</Text>
                     )}
                   </TouchableOpacity>
                 </View>
@@ -577,25 +591,24 @@ class CheckoutView extends Component {
 
             {paymentMethods.length > 0 && (
               <View style={styles.itemCellContainer}>
-                <View style={{ marginHorizontal: 20 }}>
+                <View style={{marginHorizontal: 20}}>
                   <Text style={styles.addVoucherCode}>
-                    {translate("CHOOSE YOUR PAYMENT METHOD")}
+                    {translate('CHOOSE YOUR PAYMENT METHOD')}
                   </Text>
-                  {paymentMethods.map((item) => (
+                  {paymentMethods.map(item => (
                     <TouchableOpacity
                       onPress={() => this._didTapOnPaymentMethod(item)}
                       style={styles.paymentMethodButton}
-                      activeOpacity={Constants.ACTIVE_OPACITY}
-                    >
+                      activeOpacity={Constants.ACTIVE_OPACITY}>
                       <View style={styles.paymentOption}>
                         <View
                           style={[
                             styles.paymentOption2,
                             {
                               backgroundColor:
-                                item === "Cash on Delivery"
+                                item === 'Cash on Delivery'
                                   ? Constants.APP_THEME_COLOR
-                                  : "rgb(167,174,194)",
+                                  : 'rgb(167,174,194)',
                             },
                           ]}
                         />
@@ -603,27 +616,27 @@ class CheckoutView extends Component {
                       <Text style={styles.paymentText}>{item.title}</Text>
                     </TouchableOpacity>
                   ))}
-                  <View style={{ height: 10 }} />
+                  <View style={{height: 10}} />
                 </View>
               </View>
             )}
             <View style={styles.shippingAndTotal}>
               <View style={styles.itemCellContainer}>
-                <View style={{ marginHorizontal: 20 }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={[styles.addVoucherCode, { flex: 1 }]}>
-                      {translate("SHIPPING ADDRESS")}
+                <View style={{marginHorizontal: 20}}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={[styles.addVoucherCode, {flex: 1}]}>
+                      {translate('SHIPPING ADDRESS')}
                     </Text>
                   </View>
 
                   {isAddressAvailable ? (
                     <View>
                       <Text style={styles.addressText}>
-                        {addressDict.firstname + " " + addressDict.lastname}
+                        {addressDict.firstname + ' ' + addressDict.lastname}
                       </Text>
                       <Text style={styles.addressText}>{newStreetAddress}</Text>
                       <Text style={styles.addressText}>
-                        {addressDict.city + " " + addressDict.postcode}
+                        {addressDict.city + ' ' + addressDict.postcode}
                       </Text>
                       <Text style={styles.addressText}>
                         {addressDict.telephone}
@@ -631,20 +644,18 @@ class CheckoutView extends Component {
                       {isAddressAvailable && (
                         <TouchableOpacity
                           onPress={this._didTapOnAddAddress}
-                          hitSlop={{ left: 10, right: 10, top: 10, bottom: 10 }}
+                          hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
                           style={{
                             marginVertical: 10,
-                          }}
-                        >
+                          }}>
                           <Text
                             style={{
                               fontFamily: Constants.Fonts.REGULAR,
                               color: Constants.APP_THEME_COLOR,
                               fontSize: 13,
-                              textAlign: "left",
-                            }}
-                          >
-                            {translate("Change")}
+                              textAlign: 'left',
+                            }}>
+                            {translate('Change')}
                           </Text>
                         </TouchableOpacity>
                       )}
@@ -656,21 +667,19 @@ class CheckoutView extends Component {
                         height: 26,
                         width: 126,
                         borderRadius: 13,
-                        alignItems: "center",
-                        justifyContent: "center",
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         borderWidth: 1,
                         borderColor: Constants.APP_GRAY_COLOR2,
                         marginBottom: 10,
-                      }}
-                    >
+                      }}>
                       <Text
                         style={{
                           fontFamily: Constants.Fonts.REGULAR,
                           color: Constants.APP_GREY_TEXT_COLOR,
                           fontSize: 13,
-                        }}
-                      >
-                        {translate("Add Address")}
+                        }}>
+                        {translate('Add Address')}
                       </Text>
                     </TouchableOpacity>
                   )}
@@ -684,23 +693,22 @@ class CheckoutView extends Component {
                 }}
               />
 
-              {storeCode !== "kwstoreen" &&
-                storeCode !== "kwstorear" &&
+              {storeCode !== 'kwstoreen' &&
+                storeCode !== 'kwstorear' &&
                 shipmentMethods.length > 0 && (
                   <View style={styles.itemCellContainer}>
-                    <View style={{ marginHorizontal: 20 }}>
+                    <View style={{marginHorizontal: 20}}>
                       <Text style={styles.addVoucherCode}>
-                        {translate("Shipment Methods")}
+                        {translate('Shipment Methods')}
                       </Text>
                       {shipmentMethods.map((item, index) => (
                         <TouchableOpacity
                           onPress={() => this._didTapOnShipmentMethod(item)}
                           style={[
                             styles.paymentMethodButton,
-                            { backgroundColor: Constants.APP_WHITE_COLOR },
+                            {backgroundColor: Constants.APP_WHITE_COLOR},
                           ]}
-                          activeOpacity={Constants.ACTIVE_OPACITY}
-                        >
+                          activeOpacity={Constants.ACTIVE_OPACITY}>
                           <View style={styles.paymentOption}>
                             <View
                               style={[
@@ -717,15 +725,15 @@ class CheckoutView extends Component {
                           <Text style={styles.paymentText}>
                             {item.carrier_title}
                           </Text>
-                          <Text style={[styles.paymentText, { flex: 1 }]}>
+                          <Text style={[styles.paymentText, {flex: 1}]}>
                             {/* {item.delivery} */}
                           </Text>
                           <Text style={styles.paymentText}>
-                            {item.amount + " " + currency}
+                            {item.amount + ' ' + currency}
                           </Text>
                         </TouchableOpacity>
                       ))}
-                      <View style={{ height: 10 }} />
+                      <View style={{height: 10}} />
                     </View>
                   </View>
                 )}
@@ -738,60 +746,58 @@ class CheckoutView extends Component {
               />
 
               <View style={styles.itemCellContainer}>
-                <View style={{ marginHorizontal: 20 }}>
-                  <View style={{ flexDirection: "row" }}>
+                <View style={{marginHorizontal: 20}}>
+                  <View style={{flexDirection: 'row'}}>
                     <Text style={styles.titleLabel}>
-                      {translate("Order subtotal")}
+                      {translate('Order subtotal')}
                     </Text>
                     <Text style={styles.titleValueLabel}>
-                      {totalCostDict.subtotal + " " + currency}
+                      {totalCostDict.subtotal + ' ' + currency}
                     </Text>
                   </View>
 
                   {totalCostDict.items.map((data, index) => (
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{flexDirection: 'row'}}>
                       <Text style={styles.titleLabel}>
-                        {translate("item") +
+                        {translate('item') +
                           (index + 1) +
-                          translate("Discount")}
+                          translate('Discount')}
                       </Text>
                       <Text
                         style={[
                           styles.titleValueLabel,
-                          { color: "rgb(249,91,91)" },
-                        ]}
-                      >
-                        {"-" + data.discount_amount + " " + currency}
+                          {color: 'rgb(249,91,91)'},
+                        ]}>
+                        {'-' + data.discount_amount + ' ' + currency}
                       </Text>
                     </View>
                   ))}
 
-                  {storeCode !== "kwstoreen" && storeCode !== "kwstorear" && (
-                    <View style={{ flexDirection: "row" }}>
+                  {storeCode !== 'kwstoreen' && storeCode !== 'kwstorear' && (
+                    <View style={{flexDirection: 'row'}}>
                       <Text style={styles.titleLabel}>
-                        {translate("Shipping")}
+                        {translate('Shipping')}
                       </Text>
                       <Text style={styles.titleValueLabel}>
-                        {shippingAmount + " " + currency}
+                        {shippingAmount + ' ' + currency}
                       </Text>
                     </View>
                   )}
 
-                  <View style={{ flexDirection: "row", marginBottom: 5 }}>
+                  <View style={{flexDirection: 'row', marginBottom: 5}}>
                     <Text style={styles.titleLabel}>
-                      {translate("Cart Total (After Discounts)")}
+                      {translate('Cart Total (After Discounts)')}
                     </Text>
                     <Text style={styles.titleValueLabel}>
-                      {totalCostDict.subtotal_with_discount + " " + currency}
+                      {totalCostDict.subtotal_with_discount + ' ' + currency}
                     </Text>
                   </View>
 
                   <View
                     style={{
-                      flexDirection: "row",
+                      flexDirection: 'row',
                       marginBottom: 10,
-                    }}
-                  >
+                    }}>
                     <Text
                       style={[
                         styles.titleLabel,
@@ -800,9 +806,8 @@ class CheckoutView extends Component {
                           fontFamily: Constants.Fonts.BOLD,
                           color: Constants.APP_BLACK_COLOR,
                         },
-                      ]}
-                    >
-                      {translate("TOTAL")}
+                      ]}>
+                      {translate('TOTAL')}
                     </Text>
                     <Text
                       style={[
@@ -811,9 +816,8 @@ class CheckoutView extends Component {
                           fontFamily: Constants.Fonts.BOLD,
                           color: Constants.APP_BLACK_COLOR,
                         },
-                      ]}
-                    >
-                      {totalCostDict.grand_total + " " + currency}
+                      ]}>
+                      {totalCostDict.grand_total + ' ' + currency}
                     </Text>
                   </View>
                 </View>
@@ -826,46 +830,41 @@ class CheckoutView extends Component {
           <TouchableOpacity
             style={styles.buyNowButton}
             activeOpacity={Constants.activeOpacity}
-            onPress={this._didTapOnPlaceOrder}
-          >
+            onPress={this._didTapOnPlaceOrder}>
             {/* onPress={this._didOpenCompletionPage}> */}
-            <Text style={styles.buyNowText}>{translate("PLACE ORDER")}</Text>
+            <Text style={styles.buyNowText}>{translate('PLACE ORDER')}</Text>
           </TouchableOpacity>
         </View>
         {isLoading && <HudView />}
 
         <Modal
           isVisible={this.state.showDatePicker}
-          onBackdropPress={() => this.setState({ showDatePicker: false })}
-          onBackButtonPress={() => this.setState({ showDatePicker: false })}
-        >
+          onBackdropPress={() => this.setState({showDatePicker: false})}
+          onBackButtonPress={() => this.setState({showDatePicker: false})}>
           <View
             style={{
-              alignSelf: "center",
-              backgroundColor: "rgb(255,255,255)",
-            }}
-          >
+              alignSelf: 'center',
+              backgroundColor: 'rgb(255,255,255)',
+            }}>
             <DatePicker
               mode="date"
               minimumDate={this.state.nowDate}
               maximumDate={maxDate}
               date={this.state.newDate}
-              onDateChange={(date) => this.setState({ newDate: date })}
+              onDateChange={date => this.setState({newDate: date})}
             />
           </View>
         </Modal>
 
         <Modal
-          isVisible={this.state.showTimePicker}
-          onBackdropPress={() => this.setState({ showTimePicker: false })}
-          onBackButtonPress={() => this.setState({ showTimePicker: false })}
-        >
+          isVisible={this.state.showTimePicker && !Constants.IS_ANDROID}
+          onBackdropPress={() => this.setState({showTimePicker: false})}
+          onBackButtonPress={() => this.setState({showTimePicker: false})}>
           <View
             style={{
-              alignSelf: "center",
-              backgroundColor: "rgb(255,255,255)",
-            }}
-          >
+              alignSelf: 'center',
+              backgroundColor: 'rgb(255,255,255)',
+            }}>
             {/* <DatePicker
               mode="time"
               minuteInterval={60}
@@ -873,53 +872,7 @@ class CheckoutView extends Component {
               date={this.state.newTime}
               onDateChange={date => this.setState({newTime: date})}
             /> */}
-            <Picker
-              selectedValue={this.state.nowTime}
-              style={{
-                height: Constants.IS_ANDROID ? 50 : 200,
-                width: Constants.SCREEN_WIDTH - 100,
-              }}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ nowTime: itemValue })
-              }
-            >
-              <Picker.Item
-                label="10:00 am - 11:00 am"
-                value="10:00 am - 11:00 am"
-              />
-              <Picker.Item
-                label="11:00 am - 12:00 pm"
-                value="11:00 am - 12:00 pm"
-              />
-              <Picker.Item
-                label="12:00 pm - 01:00 pm"
-                value="12:00 pm - 01:00 pm"
-              />
-              <Picker.Item
-                label="01:00 pm - 02:00 pm"
-                value="01:00 pm - 02:00 pm"
-              />
-              <Picker.Item
-                label="02:00 pm - 03:00 pm"
-                value="02:00 pm - 03:00 pm"
-              />
-              <Picker.Item
-                label="03:00 pm - 04:00 pm"
-                value="03:00 pm - 04:00 pm"
-              />
-              <Picker.Item
-                label="04:00 pm - 05:00 pm"
-                value="04:00 pm - 05:00 pm"
-              />
-              <Picker.Item
-                label="05:00 pm - 06:00 pm"
-                value="05:00 pm - 06:00 pm"
-              />
-              <Picker.Item
-                label="06:00 pm - 07:00 pm"
-                value="06:00 pm - 07:00 pm"
-              />
-            </Picker>
+            {this.PickerView()}
           </View>
         </Modal>
 
