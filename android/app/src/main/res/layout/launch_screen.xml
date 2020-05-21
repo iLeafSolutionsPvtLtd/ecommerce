@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:layout_centerInParent="true"
-        android:textSize="92sp" 
+        android:textSize="110sp" 
         android:textStyle="bold"
         android:text="E"/> 
 
@@ -39,7 +39,8 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:layout_below="@+id/tvMain"
-        android:textSize="22sp"
+        android:textSize="24sp"
+        android:layout_marginTop="-26dp"
         android:layout_centerHorizontal="true"
         android:text="COM"/> 
 
